@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>飞碟游戏序列化 | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="什么是序列化呢？序列化就是把一个内存对象变为与地址无关的可传输的数据格式，通常是文本格式；反序列化反之。更通俗一点说，就是把游戏运行时保存在内存中的对象或数据输出为文本，如json等；反序列化就是把这些文本重新转换为内存中对象的数据。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="飞碟游戏序列化">
+<meta property="og:url" content="https://duzwl.github.io/3D游戏开发/序列化/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="什么是序列化呢？序列化就是把一个内存对象变为与地址无关的可传输的数据格式，通常是文本格式；反序列化反之。更通俗一点说，就是把游戏运行时保存在内存中的对象或数据输出为文本，如json等；反序列化就是把这些文本重新转换为内存中对象的数据。">
+<meta property="og:image" content="https://duzwl.github.io/a.png">
+<meta property="og:image" content="https://duzwl.github.io/b.png">
+<meta property="og:image" content="https://duzwl.github.io/c.png">
+<meta property="og:image" content="https://duzwl.github.io/d.png">
+<meta property="og:image" content="https://duzwl.github.io/f.png">
+<meta property="og:updated_time" content="2016-07-23T05:18:11.652Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="飞碟游戏序列化">
+<meta name="twitter:description" content="什么是序列化呢？序列化就是把一个内存对象变为与地址无关的可传输的数据格式，通常是文本格式；反序列化反之。更通俗一点说，就是把游戏运行时保存在内存中的对象或数据输出为文本，如json等；反序列化就是把这些文本重新转换为内存中对象的数据。">
+<meta name="twitter:image" content="https://duzwl.github.io/a.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Something that I have learned</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">作为一个零基础的菜鸡程序猿，目标是迅速成长为攻城狮。大山中学14级本科生。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Something that I have learned</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-序列化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/3D游戏开发/序列化/" class="article-date">
+  	<time datetime="2016-07-23T04:53:23.000Z" itemprop="datePublished">2016-07-23</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      飞碟游戏序列化
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity3d/">unity3d</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工厂模式/">工厂模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/序列化/">序列化</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/3D游戏开发/">3D游戏开发</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>什么是序列化呢？序列化就是把一个内存对象变为与地址无关的可传输的数据格式，通常是文本格式；反序列化反之。更通俗一点说，就是把游戏运行时保存在内存中的对象或数据输出为文本，如json等；反序列化就是把这些文本重新转换为内存中对象的数据。<a id="more"></a>像本次飞碟的序列化，就是把每个关卡中飞碟的颜色，大小，发射位置和方向等等数据，转换为json文件保存在根文件夹的Data目录中，每次游戏启动都会读取序列文本，将读取到的数据作为初始化飞碟的函数的参数。现在许多大型的游戏如LOL，更新周期短，每次更新时要更新代码是不可能的，他们每次更新的是资源而不是程序，生成的exe文件是不会改变的，更改的只是json之类的文本文件。在一个类前面加上[SerializeField]说明这个类是可序列化的，也就是要和文本文件打交道的。</p>
+<h2 id="序列化过程"><a href="#序列化过程" class="headerlink" title="序列化过程"></a><strong>序列化过程</strong></h2><p> 首先，在Assets目录下新建Data文件夹，在Data文件夹下新建disk_level_1、disk_level_2、disk_level_3保存三个关卡的具体文本，新建game_info保存游戏版本信息，具体如下：<br><img src="a.png" alt="">   <img src="b.png" alt=""><br>原先的飞碟版本中，游戏信息在Basecode.cs文件中，现在不需要这些内容了，删除。<br><img src="c.png" alt=""><br>更改后Basecode类为空。</p>
+<p>在Basecode.cs中添加两个新类：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> GameInfo</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="built_in">string</span> version;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> totalRound;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> GameInfo <span class="title">CreateFromJSON</span><span class="params">(<span class="built_in">string</span> json)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> JsonUtility.FromJson&lt;GameInfo&gt;(json);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">[SerializeField]</div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> LevelData</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="built_in">string</span> color;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> emitNum;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">float</span> emitPosX, emitPosY, emitPosZ;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">float</span> emitDirX, emitDirY, emitDirZ;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">float</span> speed;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> round;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LevelData <span class="title">CreateFromJSON</span><span class="params">(<span class="built_in">string</span> json)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> JsonUtility.FromJson&lt;LevelData&gt;(json);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后，需要有一个负责文件读取的类，将json文件的信息读取进来并返回读到的 json 字符串，同样在游戏进行过程中读取游戏关卡文件，返回读到的 json 字符串。将新添加的FileManager.cs挂到主摄像机上。下面是代码：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> Com.Mygame;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> FileManager : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="built_in">string</span> url;</div><div class="line">    SceneController scene = SceneController.getInstance();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        scene.setFileManager(<span class="keyword">this</span>);    <span class="comment">//  注册到场景控制器</span></div><div class="line">        LoadGameInfoJson(<span class="string">"game_info.json"</span>);   <span class="comment">//  获取游戏版本等信息</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 输入关卡文件名，启动协程读取文件</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadLevelJson</span><span class="params">(<span class="built_in">string</span> name)</span></span></div><div class="line">    &#123;</div><div class="line">        url = <span class="string">"file://"</span> + Application.dataPath + <span class="string">"/Data/"</span> + name;</div><div class="line">        StartCoroutine(LoadLevel());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function">IEnumerator <span class="title">LoadLevel</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (url.Length &gt; <span class="number">0</span>)</div><div class="line">        &#123;</div><div class="line">            WWW www = <span class="keyword">new</span> WWW(url);</div><div class="line">            yield <span class="keyword">return</span> www;</div><div class="line">            <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(www.error))</div><div class="line">                Debug.Log(www.error);</div><div class="line">            <span class="keyword">else</span></div><div class="line">                scene.stageLevel(www.text.ToString());   <span class="comment">//  返回json字符串给scene</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 输入游戏信息文件名，启动协程读取文件</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">LoadGameInfoJson</span><span class="params">(<span class="built_in">string</span> name)</span></span></div><div class="line">    &#123;</div><div class="line">        url = <span class="string">"file://"</span> + Application.dataPath + <span class="string">"/Data/"</span> + name;</div><div class="line">        StartCoroutine(LoadGameInfo());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function">IEnumerator <span class="title">LoadGameInfo</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (url.Length &gt; <span class="number">0</span>)</div><div class="line">        &#123;</div><div class="line">            WWW www = <span class="keyword">new</span> WWW(url);</div><div class="line">            yield <span class="keyword">return</span> www;</div><div class="line">            <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(www.error))</div><div class="line">                Debug.Log(www.error);</div><div class="line">            <span class="keyword">else</span></div><div class="line">                scene.stageGameInfo(www.text.ToString());   <span class="comment">// 返回json字符串给scene</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>由于需要将FileManager注册到场景控制器，在SceneController中添加相应注册函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> FileManager <span class="number">_f</span>ileManager;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFileManager</span><span class="params">(FileManager fileManager)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="number">_f</span>ileManager = fileManager;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在FileManager的场景控制器中，需要用到stageLevel函数（返回json字符串给scene）、stageGameInfo函数（返回json字符串给scene），在场景控制器中完善它。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stageGameInfo</span><span class="params">(<span class="built_in">string</span> json)</span></span></div><div class="line">&#123;</div><div class="line">    GameInfo data = GameInfo.CreateFromJSON(json);</div><div class="line">    <span class="number">_</span>version = data.version;</div><div class="line">    <span class="number">_</span>totalRound = data.totalRound;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stageLevel</span><span class="params">(<span class="built_in">string</span> json)</span>    <span class="comment">// 把读到的字符串转换为实例对象然后通过_gameModel的setting方法初始化关卡设置</span></span></div><div class="line">&#123;</div><div class="line">    LevelData data = LevelData.CreateFromJSON(json);</div><div class="line"></div><div class="line">    Color color;</div><div class="line">    <span class="keyword">if</span> (!ColorUtility.TryParseHtmlString(data.color, out color))</div><div class="line">    &#123;</div><div class="line">        color = Color.gray;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> emitNum = data.emitNum;</div><div class="line">    Vector3 emitPos = <span class="keyword">new</span> Vector3(data.emitPosX, data.emitPosY, data.emitPosZ);</div><div class="line">    Vector3 emitDir = <span class="keyword">new</span> Vector3(data.emitDirX, data.emitDirY, data.emitDirZ);</div><div class="line">    <span class="keyword">float</span> speed = data.speed;</div><div class="line"></div><div class="line">    <span class="number">_</span>gameModel.setting(<span class="number">1</span>, color, emitPos, emitDir.normalized, speed, emitNum);</div><div class="line">    <span class="number">_</span>judge.disksEachRound = emitNum;</div><div class="line">    <span class="number">_</span>judge.round = data.round;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p> 同时需要在SceneController中添加两个私有变量来保存版本信息以及保存总关卡数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="built_in">string</span> <span class="number">_</span>version;</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> <span class="number">_</span>totalRound;</div><div class="line"><span class="keyword">private</span> FileManager <span class="number">_f</span>ileManager;</div></pre></td></tr></table></figure></p>
+<p>由于游戏的关卡是游戏过程中读取的，所以修改SceneController的 nextRound() 方法：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">nextRound</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="number">_</span>point = <span class="number">0</span>;</div><div class="line">    <span class="keyword">if</span> (++<span class="number">_</span>round &gt; <span class="number">_</span>totalRound)</div><div class="line">    &#123;</div><div class="line">        <span class="number">_</span>round = <span class="number">1</span>; <span class="comment">// 循环  </span></div><div class="line">    &#125;</div><div class="line">    <span class="built_in">string</span> file = <span class="string">"disk_level_"</span> + <span class="number">_</span>round.ToString() + <span class="string">".json"</span>;</div><div class="line">    <span class="number">_f</span>ileManager.loadLevelJson(file);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p> 接着，修改SceneController的接口方便UI的使用，如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> interface IQueryStatus</div><div class="line">&#123;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isCounting</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isShooting</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getRound</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getPoint</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getEmitTime</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getTotalRound</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="built_in">string</span> <span class="title">getVersion</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getTotalRound</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> <span class="number">_</span>totalRound;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">getVersion</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> <span class="number">_</span>version;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>FileManager执行LoadGameInfoJson函数读取指定位置文件的内容传给场景控制器的stageGameInfo，在stageGameInfo完成json对象的序列化。在游戏关卡执行下一关的函数nextRound()的时候会执行loadLevelJson，把读到的字符串转换为实例对象，然后通过GameModel的setting方法初始化关卡设置，下一次发射就是新的关卡了。</p>
+<p>最后，修改UserInterface.cs文件：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在UserInterface 中添加文本变量versionText来显示版本号</span></div><div class="line"><span class="keyword">public</span> Text versionText;</div></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// roundText.text = "Round: " + queryInt.getRound().ToString();</span></div><div class="line">roundText.text = <span class="string">"Round: "</span> + queryInt.getRound().ToString() + <span class="string">"/"</span> + queryInt.getTotalRound().ToString();</div><div class="line">scoreText.text = <span class="string">"Score: "</span> + queryInt.getPoint().ToString();</div><div class="line">versionText.text = <span class="string">"Version: "</span> + queryInt.getVersion();</div></pre></td></tr></table></figure>
+<p> 在游戏场景里新建一个Text命名为Version，并拖到UserInterface.cs中的versionText：<br><img src="d.png" alt="">   <img src="f.png" alt=""></p>
+<p>这样，飞碟游戏的序列化已经完成了，以后想修改游戏的关卡难度系数等等就只需要编辑json文本就好了。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/3D游戏开发/Coroutines/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Coroutines
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/3D游戏开发/粒子系统/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">粒子系统</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="序列化" data-title="飞碟游戏序列化" data-url="https://duzwl.github.io/3D游戏开发/序列化/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>

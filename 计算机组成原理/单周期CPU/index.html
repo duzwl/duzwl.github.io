@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>MIPS单周期CPU | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="指令是计算机软件和硬件的交界处，高级语言编译链接后生成大量的指令传送到CPU中完成相应的功能。本文介绍的是单周期CPU，即虽然每条指令能拆分成多条微指令，但是每条指令都必须在一个时钟周期内执行完毕。往后会介绍多周期CPU，相应的可能也更复杂一些。模拟过程需要Xilinx ISE软件，软件包比较大，而且一般有闪退问题，win10不兼容问题，解决方法百度上都有，不慌。这里提供一个友情链接。友情提示：i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MIPS单周期CPU">
+<meta property="og:url" content="https://duzwl.github.io/计算机组成原理/单周期CPU/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="指令是计算机软件和硬件的交界处，高级语言编译链接后生成大量的指令传送到CPU中完成相应的功能。本文介绍的是单周期CPU，即虽然每条指令能拆分成多条微指令，但是每条指令都必须在一个时钟周期内执行完毕。往后会介绍多周期CPU，相应的可能也更复杂一些。模拟过程需要Xilinx ISE软件，软件包比较大，而且一般有闪退问题，win10不兼容问题，解决方法百度上都有，不慌。这里提供一个友情链接。友情提示：i">
+<meta property="og:image" content="https://duzwl.github.io/r.png">
+<meta property="og:image" content="https://duzwl.github.io/i.png">
+<meta property="og:image" content="https://duzwl.github.io/j.png">
+<meta property="og:image" content="https://duzwl.github.io/suansu.png">
+<meta property="og:image" content="https://duzwl.github.io/luoji.png">
+<meta property="og:image" content="https://duzwl.github.io/chuansong.png">
+<meta property="og:image" content="https://duzwl.github.io/duxie.png">
+<meta property="og:image" content="https://duzwl.github.io/fenzhi.png">
+<meta property="og:image" content="https://duzwl.github.io/tingji.png">
+<meta property="og:image" content="https://duzwl.github.io/yuanli.png">
+<meta property="og:image" content="https://duzwl.github.io/tonglu.png">
+<meta property="og:image" content="https://duzwl.github.io/xinhao.png">
+<meta property="og:image" content="https://duzwl.github.io/alu.png">
+<meta property="og:image" content="https://duzwl.github.io/zong.png">
+<meta property="og:image" content="https://duzwl.github.io/yanzheng.png">
+<meta property="og:updated_time" content="2016-07-16T12:10:20.239Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MIPS单周期CPU">
+<meta name="twitter:description" content="指令是计算机软件和硬件的交界处，高级语言编译链接后生成大量的指令传送到CPU中完成相应的功能。本文介绍的是单周期CPU，即虽然每条指令能拆分成多条微指令，但是每条指令都必须在一个时钟周期内执行完毕。往后会介绍多周期CPU，相应的可能也更复杂一些。模拟过程需要Xilinx ISE软件，软件包比较大，而且一般有闪退问题，win10不兼容问题，解决方法百度上都有，不慌。这里提供一个友情链接。友情提示：i">
+<meta name="twitter:image" content="https://duzwl.github.io/r.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Something that I have learned</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">作为一个零基础的菜鸡程序猿，目标是迅速成长为攻城狮。大山中学14级本科生。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Something that I have learned</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-单周期CPU" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/计算机组成原理/单周期CPU/" class="article-date">
+  	<time datetime="2016-07-16T11:12:21.000Z" itemprop="datePublished">2016-07-16</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MIPS单周期CPU
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPU/">CPU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MIPS/">MIPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/verilog/">verilog</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/计算机组成原理/">计算机组成原理</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>指令是计算机软件和硬件的交界处，高级语言编译链接后生成大量的指令传送到CPU中完成相应的功能。本文介绍的是单周期CPU，即虽然每条指令能拆分成多条微指令，但是每条指令都必须在一个时钟周期内执行完毕。往后会介绍多周期CPU，相应的可能也更复杂一些。<br>模拟过程需要Xilinx ISE软件，软件包比较大，而且一般有闪退问题，win10不兼容问题，解决方法百度上都有，不慌。这里提供一个<a href="http://blog.sina.com.cn/s/blog_5252f6ca0101je0q.html" target="_blank" rel="external">友情链接</a>。<br>友情提示：ise不会提示你变量名拼写错误</p>
+<a id="more"></a>
+<h2 id="MIPS32指令格式"><a href="#MIPS32指令格式" class="headerlink" title="MIPS32指令格式"></a><strong>MIPS32指令格式</strong></h2><h3 id="R类型"><a href="#R类型" class="headerlink" title="R类型"></a><strong>R类型</strong></h3><p><img src="r.png" alt=""></p>
+<h3 id="I类型"><a href="#I类型" class="headerlink" title="I类型"></a><strong>I类型</strong></h3><p><img src="i.png" alt=""></p>
+<h3 id="J类型"><a href="#J类型" class="headerlink" title="J类型"></a><strong>J类型</strong></h3><p><img src="j.png" alt=""></p>
+<p>其中，</p>
+<ul>
+<li>op：为操作码；</li>
+<li>rs：为第1个源操作数寄存器，寄存器地址（编号）是00000~11111，00~1F；</li>
+<li>rt：为第2个源操作数寄存器，或目的操作数寄存器，寄存器地址（同上）；</li>
+<li>rd：为目的操作数寄存器，寄存器地址（同上）；</li>
+<li>sa：为位移量（shift amt），移位指令用于指定移多少位；</li>
+<li>func：为功能码，在寄存器类型指令中（R类型）用来指定指令的功能；</li>
+<li>immediate：为16位立即数，用作无符号的逻辑操作数、有符号的算术操作数、数据加载（Laod）/数据保存（Store）指令的数据地址字节偏移量和分支指令中相对程序计数器（PC）的有符号偏移量；</li>
+<li>address：为地址。<h2 id="单周期CPU能执行的指令"><a href="#单周期CPU能执行的指令" class="headerlink" title="单周期CPU能执行的指令"></a><strong>单周期CPU能执行的指令</strong></h2><h3 id="算术运算指令"><a href="#算术运算指令" class="headerlink" title="算术运算指令"></a><strong>算术运算指令</strong></h3><img src="suansu.png" alt=""><br>reserved为预留部分，即未用，一般填“0”。<h3 id="逻辑运算指令"><a href="#逻辑运算指令" class="headerlink" title="逻辑运算指令"></a><strong>逻辑运算指令</strong></h3><img src="luoji.png" alt=""><h3 id="传送指令"><a href="#传送指令" class="headerlink" title="传送指令"></a><strong>传送指令</strong></h3><img src="chuansong.png" alt=""><h3 id="存储器读写指令"><a href="#存储器读写指令" class="headerlink" title="存储器读写指令"></a><strong>存储器读写指令</strong></h3><img src="duxie.png" alt=""><h3 id="分支指令"><a href="#分支指令" class="headerlink" title="分支指令"></a><strong>分支指令</strong></h3><img src="fenzhi.png" alt=""><br>immediate是从PC+4地址开始和转移到的指令之间指令条数。immediate符号扩展之后左移2位再相加。为什么要左移2位？由于跳转到的指令地址肯定是4的倍数（每条指令占4个字节），最低两位是“00”，因此将immediate放进指令码中的时候，是右移了2位的，也就是以上说的“指令之间指令条数”。<h3 id="停机指令"><a href="#停机指令" class="headerlink" title="停机指令"></a><strong>停机指令</strong></h3><img src="tingji.png" alt=""><br>功能：停机，不改变PC值<h2 id="设计原理"><a href="#设计原理" class="headerlink" title="设计原理"></a><strong>设计原理</strong></h2>单周期CPU指的是一条指令的执行在一个时钟周期内完成，然后开始下一条指令的执行，即一条指令用一个时钟周期完成。电平从低到高变化的瞬间称为时钟上升沿，两个相邻时钟上升沿之间的时间间隔称为一个时钟周期。时钟周期一般也称振荡周期（如果晶振的输出没有经过分频就直接作为CPU的工作时钟，则时钟周期就等于振荡周期。若振荡周期经二分频后形成时钟脉冲信号作为CPU的工作时钟，这样，时钟周期就是振荡周期的两倍。）<br>CPU在处理指令时，一般需要经过以下几个步骤：</li>
+</ul>
+<ul>
+<li>取指令(IF)：根据程序计数器PC中的指令地址，从存储器中取出一条指令，同时，PC根据指令字长度自动递增产生下一条指令所需要的指令地址，但遇到“地址转移”指令时，则控制器把“转移地址”送入PC，当然得到的“地址”需要做些变换才送入PC。</li>
+</ul>
+<ul>
+<li>指令译码(ID)：对取指令操作中得到的指令进行分析并译码，确定这条指令需要完成的操作，从而产生相应的操作控制信号，用于驱动执行状态中的各种操作。</li>
+<li>指令执行(EXE)：根据指令译码得到的操作控制信号，具体地执行指令动作，然后转移到结果写回状态。</li>
+<li>存储器访问(MEM)：所有需要访问存储器的操作都将在这个步骤中执行，该步骤给出存储器的数据地址，把数据写入到存储器中数据地址所指定的存储单元或者从存储器中得到数据地址单元中的数据。</li>
+<li><p>结果写回(WB)：指令执行的结果或者访问存储器中得到的数据写回相应的目的寄存器中。<br>单周期CPU，是在一个时钟周期内完成这五个阶段的处理。<br><img src="yuanli.png" alt=""></p>
+<h2 id="数据通路及其控制"><a href="#数据通路及其控制" class="headerlink" title="数据通路及其控制"></a><strong>数据通路及其控制</strong></h2><h3 id="数据通路"><a href="#数据通路" class="headerlink" title="数据通路"></a><strong>数据通路</strong></h3><p>接下来需要了解CPU的数据通路及其控制信号，这是重点也是难点。下面这图需要完完全全弄得，理解每条指令执行过程中控制信号相应的值及其执行过程。多看几次也就不觉得很复杂了。<br><img src="tonglu.png" alt=""><br>上图是基本上能够在单周期上完成所要求设计的指令功能的数据通路和必要的控制线路图。其中指令和数据各存储在不同存储器中，即有指令存储器和数据存储器。访问存储器时，先给出地址，然后由读/写信号控制（1-写，0-读。当然，也可以由时钟信号控制，但必须在图上标出）。对于寄存器组，读操作时，先给出地址，输出端就直接输出相应数据；而在写操作时，在 WE使能信号为1时，在时钟边沿触发写入</p>
+<h3 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a><strong>控制信号</strong></h3><p>控制信号的作用说明如下：<br><img src="xinhao.png" alt=""></p>
+</li>
+<li><p>Instruction Memory：指令存储器，</p>
+<ul>
+<li>Iaddr，指令存储器地址输入端口</li>
+<li>IDataIn，指令存储器数据输入端口（指令代码输入端口）</li>
+<li>IDataOut，指令存储器数据输出端口（指令代码输出端口）</li>
+<li>RW，指令存储器读写控制信号，为1写，为0读</li>
+</ul>
+</li>
+<li>Data Memory：数据存储器，<ul>
+<li>Daddr，数据存储器地址输入端口</li>
+<li>DataIn，数据存储器数据输入端口</li>
+<li>DataOut，数据存储器数据输出端口</li>
+<li>RW，数据存储器读写控制信号，为1写，为0读</li>
+</ul>
+</li>
+<li>Register File：（寄存器组）<ul>
+<li>Read Reg1，rs寄存器地址输入端口</li>
+<li>Read Reg2，rt寄存器地址输入端口</li>
+<li>Write Reg，将数据写入的寄存器端口，其地址来源rt或rd字段</li>
+<li>Write Data，写入寄存器的数据输入端口</li>
+<li>Read Data1，rs寄存器数据输出端口</li>
+<li>Read Data2，rt寄存器数据输出端口</li>
+<li>WE，写使能信号，为1时，在时钟上升沿写入</li>
+</ul>
+</li>
+</ul>
+<h3 id="ALU运算功能表"><a href="#ALU运算功能表" class="headerlink" title="ALU运算功能表"></a><strong>ALU运算功能表</strong></h3><p><img src="alu.png" alt=""></p>
+<p>ALU:</p>
+<ul>
+<li>result，ALU运算结果</li>
+<li>zero，运算结果标志，结果为0输出1，否则输出0</li>
+</ul>
+<p><img src="zong.png" alt=""></p>
+<p>注：关系表中有两个数字的表示取两个值都行，不影响实验结果，但为了代码设计的方便，代码中使用的是右边的数值。</p>
+<h2 id="设计方法"><a href="#设计方法" class="headerlink" title="设计方法"></a><strong>设计方法</strong></h2><p>采用模块设计的思想，依次设计InsMEM模块、ControlUnit模块、registerFile模块、Extend模块、ALU模块、DataMEM模块，最后设计CPU总模块，需要注意的是，PC没有独立为一个模块，免去参数传递的麻烦。</p>
+<h3 id="InsMEM模块"><a href="#InsMEM模块" class="headerlink" title="InsMEM模块"></a><strong>InsMEM模块</strong></h3><p>把将要执行的指令my_test_rom.txt加载到储存指令的内存中。根据PC的值返回相应的指令。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> InsMEM(</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] PC,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] instruction</div><div class="line">    );</div><div class="line">    <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] mem [<span class="number">0</span>:<span class="number">64</span>];</div><div class="line">	 </div><div class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">        <span class="built_in">$readmemb</span>(<span class="string">"my_test_rom.txt"</span>, mem);</div><div class="line">    <span class="keyword">end</span></div><div class="line"></div><div class="line">    <span class="keyword">always</span>@(PC) <span class="keyword">begin</span></div><div class="line">        instruction &lt;= mem[(PC-<span class="number">4</span>)/<span class="number">4</span>];  <span class="comment">// 初始化为4'b0100</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">	 </div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="ControlUnit模块"><a href="#ControlUnit模块" class="headerlink" title="ControlUnit模块"></a><strong>ControlUnit模块</strong></h3><p>模块设计中，每个operation，比如ADD，对应的变量初始化为0，当需要使用时，改为1；控制信号的变量，比如PCWre，采用|操作符拼接，减少代码量又简洁，这里用到了表3中的值，用到右边的值。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> ControlUnit(</div><div class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] operation,</div><div class="line">    <span class="keyword">input</span> zero,</div><div class="line">    <span class="keyword">output</span> PCWre,</div><div class="line">    <span class="keyword">output</span> ALUSrcB,</div><div class="line">    <span class="keyword">output</span> ALUM2Reg,</div><div class="line">    <span class="keyword">output</span> RegWre,</div><div class="line">    <span class="keyword">output</span> InsMemRW,</div><div class="line">    <span class="keyword">output</span> DataMemRW,</div><div class="line">    <span class="keyword">output</span> ExtSel,</div><div class="line">    <span class="keyword">output</span> PCSrc,</div><div class="line">    <span class="keyword">output</span> RegOut,</div><div class="line">    <span class="keyword">output</span> [<span class="number">2</span>:<span class="number">0</span>] ALUOp</div><div class="line">    );</div><div class="line">	 </div><div class="line">	<span class="keyword">parameter</span> ADD = <span class="number">6'b000000</span>, ADDI = <span class="number">6'b000001</span>, SUB = <span class="number">6'b000010</span>, ORI = <span class="number">6'b010000</span>,</div><div class="line">              AND = <span class="number">6'b010001</span>, OR = <span class="number">6'b010010</span>, MOVE = <span class="number">6'b100000</span>, SW = <span class="number">6'b100110</span>,</div><div class="line">              LW = <span class="number">6'b100111</span>, BEQ = <span class="number">6'b110000</span>, HALT = <span class="number">6'b111111</span>;</div><div class="line">    <span class="keyword">reg</span> i_add, i_addi, i_sub, i_ori, i_and, i_or, i_move, i_sw, i_lw, i_beq, i_halt;</div><div class="line">	 </div><div class="line">	<span class="keyword">always</span> @(operation) <span class="keyword">begin</span></div><div class="line">	 </div><div class="line">	    i_add = <span class="number">0</span>; i_addi = <span class="number">0</span>; i_sub = <span class="number">0</span>; i_ori = <span class="number">0</span>;</div><div class="line">        i_and = <span class="number">0</span>; i_or = <span class="number">0</span>; i_move = <span class="number">0</span>; i_sw = <span class="number">0</span>;</div><div class="line">        i_lw = <span class="number">0</span>; i_beq = <span class="number">0</span>; i_halt = <span class="number">0</span>;</div><div class="line">		  </div><div class="line">        <span class="keyword">case</span>(operation)</div><div class="line">            ADD: i_add = <span class="number">1</span>;</div><div class="line">            ADDI: i_addi = <span class="number">1</span>;</div><div class="line">            SUB: i_sub = <span class="number">1</span>;</div><div class="line">            ORI: i_ori = <span class="number">1</span>;</div><div class="line">            AND: i_and = <span class="number">1</span>;</div><div class="line">            OR: i_or = <span class="number">1</span>;</div><div class="line">            MOVE: i_move = <span class="number">1</span>;</div><div class="line">            SW: i_sw = <span class="number">1</span>;</div><div class="line">            LW: i_lw = <span class="number">1</span>;</div><div class="line">            BEQ: i_beq = <span class="number">1</span>;</div><div class="line">            HALT: i_halt = <span class="number">1</span>;</div><div class="line">        <span class="keyword">endcase</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	<span class="keyword">assign</span> PCWre = !i_halt;</div><div class="line">    <span class="keyword">assign</span> ALUSrcB = i_addi || i_ori || i_sw || i_lw;</div><div class="line">    <span class="keyword">assign</span> ALUM2Reg = i_lw;</div><div class="line">    <span class="keyword">assign</span> RegWre = !(i_sw || i_beq);</div><div class="line">    <span class="keyword">assign</span> InsMemRW = <span class="number">0</span>;    <span class="comment">// 无相关</span></div><div class="line">    <span class="keyword">assign</span> DataMemRW = i_sw;</div><div class="line">    <span class="keyword">assign</span> ExtSel = !i_ori;   <span class="comment">// 除了ori是0扩展，其他的也可以为符号扩展</span></div><div class="line">    <span class="keyword">assign</span> PCSrc = (i_beq &amp;&amp; zero); <span class="comment">// beq且相减之后值为0!!!!!</span></div><div class="line">    <span class="keyword">assign</span> RegOut = !(i_addi || i_ori || i_lw);</div><div class="line">    <span class="keyword">assign</span> ALUOp = &#123;i_and, i_ori || i_or, i_sub || i_ori || i_or || i_beq&#125;;</div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="registerFile模块"><a href="#registerFile模块" class="headerlink" title="registerFile模块"></a><strong>registerFile模块</strong></h3><p>申明31个寄存器，0号寄存器一直当做0处理；寄存器的值在这个模块中取出，同时也可以向寄存器写值，由CU控制。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> registerFile(</div><div class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rs, rt, rd,  <span class="comment">// 相应的赋值在主模块实现</span></div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] write_data,</div><div class="line">    <span class="keyword">input</span> RegWre, RegOut, clk,  </div><div class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] readData1, readData2</div><div class="line">    );</div><div class="line">    </div><div class="line">	<span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] write_reg;</div><div class="line">	<span class="keyword">assign</span> write_reg = (RegOut == <span class="number">0</span>) ? rt : rd;</div><div class="line">	 </div><div class="line">	<span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] register [<span class="number">1</span>:<span class="number">31</span>];  <span class="comment">// 声明r1~r31</span></div><div class="line">    <span class="keyword">integer</span> i;</div><div class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i = i + <span class="number">1</span>)</div><div class="line">            register[i] = <span class="number">0</span>;</div><div class="line">    <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="comment">// 0号寄存器值固定为0</span></div><div class="line">    <span class="keyword">assign</span> readData1 = (rs == <span class="number">0</span>)? <span class="number">0</span> : register[rs];</div><div class="line">    <span class="keyword">assign</span> readData2 = (rt == <span class="number">0</span>)? <span class="number">0</span> : register[rt];</div><div class="line">	 </div><div class="line">	<span class="keyword">always</span> @(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></div><div class="line">	     <span class="keyword">if</span> ((RegWre == <span class="number">1</span>) &amp;&amp; (write_reg != <span class="number">0</span>)) <span class="keyword">begin</span></div><div class="line">		      register[write_reg] &lt;= write_data;</div><div class="line">		 <span class="keyword">end</span></div><div class="line">	<span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure>
+<h3 id="Extend模块"><a href="#Extend模块" class="headerlink" title="Extend模块"></a><strong>Extend模块</strong></h3><p>本模块比较简单，分为零拓展或符号拓展，16位-&gt;32位。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> Extend(</div><div class="line">    <span class="keyword">input</span> [<span class="number">15</span>:<span class="number">0</span>] imme_16,</div><div class="line">    <span class="keyword">input</span> ExtSel,</div><div class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] imme_32</div><div class="line">    );</div><div class="line">    <span class="comment">// 1为符号拓展，0为零拓展</span></div><div class="line">    <span class="keyword">assign</span> imme_32 = (ExtSel)? &#123;&#123;<span class="number">16</span>&#123;imme_16[<span class="number">15</span>]&#125;&#125;, imme_16[<span class="number">15</span>:<span class="number">0</span>]&#125; : &#123;&#123;<span class="number">16</span>&#123;<span class="number">1'b0</span>&#125;&#125;, imme_16[<span class="number">15</span>:<span class="number">0</span>]&#125;;</div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure>
+<h3 id="ALU模块"><a href="#ALU模块" class="headerlink" title=" ALU模块"></a><strong> ALU模块</strong></h3><p>根据CU发出的控制信号ALUOp的不同，ALU对传进去的值执行不同的操作。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> ALU(</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] readData1,</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] readData2,</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] imme_32,</div><div class="line">    <span class="keyword">input</span> ALUSrcB,</div><div class="line">    <span class="keyword">input</span> [<span class="number">2</span>:<span class="number">0</span>] ALUOp,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">wire</span> zero,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] result</div><div class="line">    );</div><div class="line">	 </div><div class="line">	<span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] alub;</div><div class="line">    <span class="keyword">assign</span> alub = (ALUSrcB == <span class="number">0</span>) ? readData2 : imme_32;</div><div class="line">	 </div><div class="line">	<span class="keyword">always</span>@(readData1 <span class="keyword">or</span> alub <span class="keyword">or</span> ALUOp) <span class="keyword">begin</span></div><div class="line">        <span class="keyword">case</span> (ALUOp)</div><div class="line">            <span class="number">3'b000</span>: result &lt;= readData1 + alub;</div><div class="line">            <span class="number">3'b001</span>: result &lt;= readData1 - alub;</div><div class="line">            <span class="number">3'b010</span>: result &lt;= alub - readData1;</div><div class="line">            <span class="number">3'b011</span>: result &lt;= readData1 | alub;</div><div class="line">            <span class="number">3'b100</span>: result &lt;= readData1 &amp; alub;</div><div class="line">            <span class="number">3'b101</span>: result &lt;= ~readData1 &amp; alub;</div><div class="line">            <span class="number">3'b110</span>: result &lt;= (~readData1 &amp; alub) | (readData1 &amp; ~alub);</div><div class="line">            <span class="number">3'b111</span>: result &lt;= (readData1 &amp; alub) | (~readData1 &amp; ~alub);</div><div class="line">        <span class="keyword">endcase</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">    <span class="keyword">assign</span> zero = (result == <span class="number">0</span>) ? <span class="number">1</span> : <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="DataMEM模块"><a href="#DataMEM模块" class="headerlink" title="DataMEM模块"></a><strong>DataMEM模块</strong></h3><p>数据储存在模块中申请的数组当中，并根据控制信号的不同，可以存值也可以取值。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> DataMEM(</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] result,</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] readData2,</div><div class="line">    <span class="keyword">input</span> DataMemRW,</div><div class="line">    <span class="keyword">input</span> ALUM2Reg,</div><div class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] write_data</div><div class="line">    );</div><div class="line"></div><div class="line">    <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] DataMem [<span class="number">0</span>:<span class="number">63</span>];  <span class="comment">// 声明内存</span></div><div class="line">    <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] DataOut;</div><div class="line">    <span class="keyword">integer</span> i;</div><div class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">64</span>; i = i + <span class="number">1</span>)</div><div class="line">            DataMem[i] = <span class="number">0</span>;</div><div class="line">    <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">always</span>@(result <span class="keyword">or</span> DataMemRW) <span class="keyword">begin</span></div><div class="line">        <span class="keyword">if</span> (DataMemRW == <span class="number">0</span>) <span class="comment">// 取字</span></div><div class="line">            DataOut = DataMem[result];</div><div class="line">        <span class="keyword">else</span>   <span class="comment">// 存字</span></div><div class="line">            DataMem[result] = readData2;</div><div class="line">    <span class="keyword">end</span></div><div class="line">	 <span class="keyword">assign</span> write_data = (ALUM2Reg == <span class="number">0</span>) ? result : DataOut;</div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="CPU总模块"><a href="#CPU总模块" class="headerlink" title="CPU总模块"></a><strong>CPU总模块</strong></h3><p>总模块中将各个模块之间的接口连起来，并且将指令拆分为几个部分，传入不同的模块；然后实例化各个模块，需要注意的是，实例化模块时，变量名和顺序一定一定要和小模块申明时相同；此外，总模块中根据具体情况改变PC的值。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">module</span> CPU();</div><div class="line"></div><div class="line">    <span class="comment">// CU控制信号线</span></div><div class="line">    <span class="keyword">wire</span> PCWre;</div><div class="line">    <span class="keyword">wire</span> ALUSrcB;</div><div class="line">    <span class="keyword">wire</span> ALUM2Reg;</div><div class="line">    <span class="keyword">wire</span> RegWre;</div><div class="line">    <span class="keyword">wire</span> InsMemRW;</div><div class="line">    <span class="keyword">wire</span> DataMemRW;</div><div class="line">    <span class="keyword">wire</span> ExtSel;</div><div class="line">    <span class="keyword">wire</span> PCSrc;</div><div class="line">    <span class="keyword">wire</span> RegOut;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">2</span>:<span class="number">0</span>] ALUOp;</div><div class="line">	 </div><div class="line">    <span class="comment">// 此模块中需要赋值的变量</span></div><div class="line">    <span class="keyword">wire</span> [<span class="number">5</span>:<span class="number">0</span>] operation;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] rs;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] rt;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] rd;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">15</span>:<span class="number">0</span>] imme_16;</div><div class="line">    <span class="keyword">reg</span> clk;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] result;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] write_data;</div><div class="line"></div><div class="line">    <span class="comment">// 其他的模块相互传递的线</span></div><div class="line">    <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] instruction;</div><div class="line">    <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] PC;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] imme_32;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] readData1;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] readData2;</div><div class="line">    <span class="keyword">wire</span> zero;</div><div class="line">	 </div><div class="line">	 <span class="comment">// 拆分指令的位</span></div><div class="line">	 <span class="keyword">assign</span> operation[<span class="number">5</span>:<span class="number">0</span>] = instruction[<span class="number">31</span>:<span class="number">26</span>];</div><div class="line">    <span class="keyword">assign</span> rs = instruction[<span class="number">25</span>:<span class="number">21</span>];</div><div class="line">    <span class="keyword">assign</span> rt = instruction[<span class="number">20</span>:<span class="number">16</span>];</div><div class="line">    <span class="keyword">assign</span> rd = instruction[<span class="number">15</span>:<span class="number">11</span>];</div><div class="line">    <span class="keyword">assign</span> imme_16 = instruction[<span class="number">15</span>:<span class="number">0</span>];</div><div class="line">	 </div><div class="line">	 <span class="comment">// 初始化  设置时钟周期</span></div><div class="line">	 <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">        PC = <span class="number">4'b0100</span>;</div><div class="line">        clk = <span class="number">0</span>;</div><div class="line">    <span class="keyword">end</span></div><div class="line">    <span class="keyword">always</span> #<span class="number">500</span></div><div class="line">        clk = ~clk;</div><div class="line">	 </div><div class="line">	 <span class="comment">// 实例化各个模块，注意变量名不能拼写错误</span></div><div class="line">	 InsMEM insmem(PC, instruction);</div><div class="line">	 ControlUnit controlunit(operation, zero, PCWre, ALUSrcB, ALUM2Reg, RegWre, InsMemRW, DataMemRW, ExtSel, PCSrc, RegOut,ALUOp);</div><div class="line">    registerFile registerfile(rs, rt, rd, write_data, RegWre, RegOut, clk, readData1, readData2);</div><div class="line">    Extend extend(imme_16, ExtSel, imme_32);</div><div class="line">	 ALU alu(readData1, readData2, imme_32, ALUSrcB, ALUOp, zero, result);</div><div class="line">	 DataMEM datamem(result, readData2, DataMemRW, ALUM2Reg, write_data);</div><div class="line">	 </div><div class="line">	 <span class="comment">// PC的值需要适当更改</span></div><div class="line">	 <span class="keyword">always</span>@(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></div><div class="line">        <span class="keyword">if</span>  (PCWre == <span class="number">1</span>)</div><div class="line">            PC &lt;= (PCSrc == <span class="number">0</span>)? (PC + <span class="number">4</span>) : (PC + <span class="number">4</span> + imme_32 * <span class="number">4</span>);</div><div class="line">        <span class="keyword">else</span> </div><div class="line">            PC &lt;= PC;</div><div class="line">    <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h2 id="验证方法"><a href="#验证方法" class="headerlink" title="验证方法"></a><strong>验证方法</strong></h2><p>完善如下表格，将指令写到my_test_rom.txt文件，文件放在project根文件夹，即可仿真验证。<br><img src="yanzheng.png" alt=""><br>验证过程复杂繁琐，这里不一一说明。总的来说验证过程就是看每条指令执行之后寄存器以及控制信号的值是否正确，是否符合要求。</p>
+<p>经验证，以上代码是没有bug的。如果有任何问题，欢迎指出。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/计算机组成原理/多周期CPU/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          MIPS多周期CPU
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/计算机组成原理/汇编/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">汇编--选择排序</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="单周期CPU" data-title="MIPS单周期CPU" data-url="https://duzwl.github.io/计算机组成原理/单周期CPU/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>

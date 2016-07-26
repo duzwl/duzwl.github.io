@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>牧师与魔鬼改进 | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="上一篇已经基本上写完了牧师与魔鬼的小游戏，然而代码还是存在不少缺陷的。最主要的就是小船、牧师以及魔鬼的移动问题，我们可以把移动这一动作抽象化出来，添加到动作工厂中，由工厂类控制小船移动。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="牧师与魔鬼改进">
+<meta property="og:url" content="https://duzwl.github.io/3D游戏开发/牧师与魔鬼改进/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="上一篇已经基本上写完了牧师与魔鬼的小游戏，然而代码还是存在不少缺陷的。最主要的就是小船、牧师以及魔鬼的移动问题，我们可以把移动这一动作抽象化出来，添加到动作工厂中，由工厂类控制小船移动。">
+<meta property="og:image" content="https://duzwl.github.io/a.png">
+<meta property="og:image" content="https://duzwl.github.io/b.png">
+<meta property="og:image" content="https://duzwl.github.io/c.png">
+<meta property="og:image" content="https://duzwl.github.io/d.png">
+<meta property="og:image" content="https://duzwl.github.io/e.png">
+<meta property="og:updated_time" content="2016-07-22T08:06:13.910Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="牧师与魔鬼改进">
+<meta name="twitter:description" content="上一篇已经基本上写完了牧师与魔鬼的小游戏，然而代码还是存在不少缺陷的。最主要的就是小船、牧师以及魔鬼的移动问题，我们可以把移动这一动作抽象化出来，添加到动作工厂中，由工厂类控制小船移动。">
+<meta name="twitter:image" content="https://duzwl.github.io/a.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Something that I have learned</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">作为一个零基础的菜鸡程序猿，目标是迅速成长为攻城狮。大山中学14级本科生。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Something that I have learned</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-牧师与魔鬼改进" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/3D游戏开发/牧师与魔鬼改进/" class="article-date">
+  	<time datetime="2016-07-21T11:12:23.000Z" itemprop="datePublished">2016-07-21</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      牧师与魔鬼改进
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity3d/">unity3d</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工厂模式/">工厂模式</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/3D游戏开发/">3D游戏开发</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一篇已经基本上写完了牧师与魔鬼的小游戏，然而代码还是存在不少缺陷的。最主要的就是小船、牧师以及魔鬼的移动问题，我们可以把移动这一动作抽象化出来，添加到动作工厂中，由工厂类控制小船移动。<br><a id="more"></a></p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a><strong>基本概念</strong></h2><p>简单工厂模式，MoveToYZAction为组合动作，负责游戏对象的上下船动作，利用IU3dActionCompleted和MoveToAction完成YZ轴上的二段运动。<br><img src="a.png" alt=""></p>
+<h2 id="修改类的动作"><a href="#修改类的动作" class="headerlink" title="修改类的动作"></a><strong>修改类的动作</strong></h2><h3 id="单例类GameSceneController"><a href="#单例类GameSceneController" class="headerlink" title="单例类GameSceneController"></a><strong>单例类GameSceneController</strong></h3><ul>
+<li><p>添加了私有变量moving和message(用来显示输赢信息)</p>
+</li>
+<li><p>添加接口IQueryGameStatus，实现moving和message的查询和设置。</p>
+</li>
+<li><p>去掉了枚举变量state（由moving和message替代）</p>
+</li>
+<li><h3 id="类GenGameObject"><a href="#类GenGameObject" class="headerlink" title="类GenGameObject"></a><strong>类GenGameObject</strong></h3></li>
+<li><p>修改枚举依赖</p>
+</li>
+<li><p>修改输赢提示方式为设置message</p>
+</li>
+<li><p>修改动作实现方式为ActionManage，不在Update中实现。</p>
+</li>
+<li><h3 id="UserInterface"><a href="#UserInterface" class="headerlink" title="UserInterface"></a><strong>UserInterface</strong></h3></li>
+<li><p>修改枚举依赖，通过IQueryGameStatus查询</p>
+</li>
+<li><p>修改输赢提示方式为显示message</p>
+</li>
+</ul>
+<h3 id="人机交互"><a href="#人机交互" class="headerlink" title="人机交互"></a><strong>人机交互</strong></h3><p>小船在移动到对岸过程中，应该组织人机交互，通过UserInterface按钮的隐藏来实现。UserInterface在渲染前会通过IQueryGameStatus查询moving值，moving值为真则不渲染。Moving值在ActionManager中的每个动作完成前会设置成真。</p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a><strong>完整代码</strong></h2><h3 id="BaseCode-cs"><a href="#BaseCode-cs" class="headerlink" title="BaseCode.cs"></a><strong>BaseCode.cs</strong></h3><p><img src="b.png" alt=""><br><img src="c.png" alt=""><br>以上所有类都写在Com.Mygame空间中，BaseCode类只初始化介绍界面。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> Com.Mygame;</div><div class="line"></div><div class="line"><span class="keyword">namespace</span> Com.Mygame</div><div class="line">&#123;</div><div class="line">    <span class="comment">//-------------------------SceneController-------------------------------//</span></div><div class="line">    <span class="keyword">public</span> interface IUserActions</div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">priestSOnB</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">priestEOnB</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">devilSOnB</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">devilEOnB</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">moveBoat</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">offBoatL</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">offBoatR</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">restart</span><span class="params">()</span></span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> interface IQueryGameStatus</div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">isMoving</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">setMoving</span><span class="params">(<span class="keyword">bool</span> state)</span></span>;</div><div class="line">        <span class="function"><span class="built_in">string</span> <span class="title">isMessage</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(<span class="built_in">string</span> message)</span></span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> GameSceneController : System.Object, IUserActions, IQueryGameStatus</div><div class="line">    &#123;</div><div class="line"></div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> GameSceneController <span class="number">_</span>instance;</div><div class="line">        <span class="keyword">private</span> BaseCode <span class="number">_b</span>ase_code;</div><div class="line">        <span class="keyword">private</span> GenGameObject <span class="number">_</span>gen_game_obj;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">bool</span> moving = <span class="literal">false</span>;</div><div class="line">        <span class="keyword">private</span> <span class="built_in">string</span> message = <span class="string">""</span>;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> GameSceneController <span class="title">GetInstance</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (null == <span class="number">_</span>instance)</div><div class="line">            &#123;</div><div class="line">                <span class="number">_</span>instance = <span class="keyword">new</span> GameSceneController();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="number">_</span>instance;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> BaseCode <span class="title">getBaseCode</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">_b</span>ase_code;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function">internal <span class="keyword">void</span> <span class="title">setBaseCode</span><span class="params">(BaseCode bc)</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (null == <span class="number">_b</span>ase_code)</div><div class="line">            &#123;</div><div class="line">                <span class="number">_b</span>ase_code = bc;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> GenGameObject <span class="title">getGenGameObject</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">_</span>gen_game_obj;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function">internal <span class="keyword">void</span> <span class="title">setGenGameObject</span><span class="params">(GenGameObject ggo)</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (null == <span class="number">_</span>gen_game_obj)</div><div class="line">            &#123;</div><div class="line">                <span class="number">_</span>gen_game_obj = ggo;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">isMoving</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> moving; &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMoving</span><span class="params">(<span class="keyword">bool</span> state)</span> </span>&#123; <span class="keyword">this</span>.moving = state; &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">isMessage</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> message; &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(<span class="built_in">string</span> message)</span> </span>&#123; <span class="keyword">this</span>.message = message; &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">priestSOnB</span><span class="params">()</span> </span>&#123; <span class="number">_</span>gen_game_obj.priestStartOnBoat(); &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">priestEOnB</span><span class="params">()</span> </span>&#123; <span class="number">_</span>gen_game_obj.priestEndOnBoat(); &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">devilSOnB</span><span class="params">()</span> </span>&#123; <span class="number">_</span>gen_game_obj.devilStartOnBoat(); &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">devilEOnB</span><span class="params">()</span> </span>&#123; <span class="number">_</span>gen_game_obj.devilEndOnBoat(); &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">moveBoat</span><span class="params">()</span> </span>&#123; <span class="number">_</span>gen_game_obj.moveBoat(); &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">offBoatL</span><span class="params">()</span> </span>&#123; <span class="number">_</span>gen_game_obj.getOffTheBoat(<span class="number">0</span>); &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">offBoatR</span><span class="params">()</span> </span>&#123; <span class="number">_</span>gen_game_obj.getOffTheBoat(<span class="number">1</span>); &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">restart</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            moving = <span class="literal">false</span>;</div><div class="line">            message = <span class="string">""</span>;</div><div class="line">            Application.LoadLevel(Application.loadedLevelName);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//----------------------------ActionManager-------------------------------//</span></div><div class="line">    <span class="keyword">public</span> interface IU3dActionCompleted</div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">OnActionCompleted</span><span class="params">(U3dAction action)</span></span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> ActionManager : System.Object</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> ActionManager <span class="number">_</span>instance;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ActionManager <span class="title">GetInstance</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (<span class="number">_</span>instance == null)</div><div class="line">            &#123;</div><div class="line">                <span class="number">_</span>instance = <span class="keyword">new</span> ActionManager();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="number">_</span>instance;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> U3dAction <span class="title">ApplyMoveToAction</span><span class="params">(GameObject obj, Vector3 target, <span class="keyword">float</span> speed, IU3dActionCompleted completed)</span></span></div><div class="line">        &#123;</div><div class="line">            MoveToAction ac = obj.AddComponent&lt;MoveToAction&gt;();</div><div class="line">            ac.setting(target, speed, completed);</div><div class="line">            <span class="keyword">return</span> ac;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> U3dAction <span class="title">ApplyMoveToAction</span><span class="params">(GameObject obj, Vector3 target, <span class="keyword">float</span> speed)</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">return</span> ApplyMoveToAction(obj, target, speed, null);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> U3dAction <span class="title">ApplyMoveToYZAction</span><span class="params">(GameObject obj, Vector3 target, <span class="keyword">float</span> speed, IU3dActionCompleted completed)</span></span></div><div class="line">        &#123;</div><div class="line">            MoveToYZAction ac = obj.AddComponent&lt;MoveToYZAction&gt;();</div><div class="line">            ac.setting(obj, target, speed, completed);</div><div class="line">            <span class="keyword">return</span> ac;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> U3dAction <span class="title">ApplyMoveToYZAction</span><span class="params">(GameObject obj, Vector3 target, <span class="keyword">float</span> speed)</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">return</span> ApplyMoveToYZAction(obj, target, speed, null);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> U3dActionException : System.Exception &#123; &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> U3dAction : MonoBehaviour</div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Free</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            Destroy(<span class="keyword">this</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> U3dActionAuto : U3dAction &#123; &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> U3dActionMan : U3dAction &#123; &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> MoveToAction : U3dActionAuto</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">public</span> Vector3 target;</div><div class="line">        <span class="keyword">public</span> <span class="keyword">float</span> speed;</div><div class="line"></div><div class="line">        <span class="keyword">private</span> IU3dActionCompleted monitor = null;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setting</span><span class="params">(Vector3 target, <span class="keyword">float</span> speed, IU3dActionCompleted monitor)</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">this</span>.target = target;</div><div class="line">            <span class="keyword">this</span>.speed = speed;</div><div class="line">            <span class="keyword">this</span>.monitor = monitor;</div><div class="line">            GameSceneController.GetInstance().setMoving(<span class="literal">true</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Update</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">float</span> step = speed * Time.deltaTime;</div><div class="line">            transform.position = Vector3.MoveTowards(transform.position, target, step);</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (transform.position == target)</div><div class="line">            &#123;</div><div class="line">                GameSceneController.GetInstance().setMoving(<span class="literal">false</span>);</div><div class="line">                <span class="keyword">if</span> (monitor != null)</div><div class="line">                &#123;</div><div class="line">                    monitor.OnActionCompleted(<span class="keyword">this</span>);</div><div class="line">                &#125;</div><div class="line">                Destroy(<span class="keyword">this</span>);   <span class="comment">// 移动到目标时删除本组件</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// MoveToYZAction 将移动分为y z两个轴，包含两个MoveToAction</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> MoveToYZAction : U3dActionAuto, IU3dActionCompleted</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">public</span> GameObject obj;</div><div class="line">        <span class="keyword">public</span> Vector3 target;</div><div class="line">        <span class="keyword">public</span> <span class="keyword">float</span> speed;</div><div class="line"></div><div class="line">        <span class="keyword">private</span> IU3dActionCompleted monitor = null;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setting</span><span class="params">(GameObject obj, Vector3 target, <span class="keyword">float</span> speed, IU3dActionCompleted monitor)</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">this</span>.obj = obj;</div><div class="line">            <span class="keyword">this</span>.target = target;</div><div class="line">            <span class="keyword">this</span>.speed = speed;</div><div class="line">            <span class="keyword">this</span>.monitor = monitor;</div><div class="line">            GameSceneController.GetInstance().setMoving(<span class="literal">true</span>);</div><div class="line"></div><div class="line">			<span class="comment">// 若obj比较高，移动到target的z先，然后 回调函数 移动到target的y</span></div><div class="line">            <span class="comment">//  若obj比较低则相反</span></div><div class="line">            <span class="keyword">if</span> (target.y &lt; obj.transform.position.y)</div><div class="line">            &#123;</div><div class="line">                Vector3 targetZ = <span class="keyword">new</span> Vector3(target.x, obj.transform.position.y, target.z);</div><div class="line">                ActionManager.GetInstance().ApplyMoveToAction(obj, targetZ, speed, <span class="keyword">this</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                Vector3 targetY = <span class="keyword">new</span> Vector3(target.x, target.y, obj.transform.position.z);</div><div class="line">                ActionManager.GetInstance().ApplyMoveToAction(obj, targetY, speed, <span class="keyword">this</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnActionCompleted</span><span class="params">(U3dAction action)</span></span></div><div class="line">        &#123;</div><div class="line">            ActionManager.GetInstance().ApplyMoveToAction(obj, target, speed, null);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Update</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (obj.transform.position == target)</div><div class="line">            &#123;</div><div class="line">                GameSceneController.GetInstance().setMoving(<span class="literal">false</span>);</div><div class="line">                <span class="keyword">if</span> (monitor != null)</div><div class="line">                &#123;</div><div class="line">                    monitor.OnActionCompleted(<span class="keyword">this</span>);</div><div class="line">                &#125;</div><div class="line">                Destroy(<span class="keyword">this</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> BaseCode : MonoBehaviour</div><div class="line">&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="built_in">string</span> gameName;</div><div class="line">    <span class="keyword">public</span> <span class="built_in">string</span> gameRule;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        GameSceneController my = GameSceneController.GetInstance();</div><div class="line">        my.setBaseCode(<span class="keyword">this</span>);</div><div class="line">        gameName = <span class="string">"Priests and Devils"</span>;</div><div class="line">        gameRule = <span class="string">"Priests and Devils is a puzzle game in which you will help the Priests and Devils to cross the river within the time limit. There are 3 priests and 3 devils at one side of the river. They all want to get to the other side of this river, but there is only one boat and this boat can only carry two persons each time. And there must be one person steering the boat from one side to the other side. In the flash game, you can click on them to move them and click the go button to move the boat to the other direction. If the priests are out numbered by the devils on either side of the river, they get killed and the game is over. You can try it in many ways. Keep all priests alive! Good luck!             Sphere -- Priest	Cube -- Devil"</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="GenGameObject-cs"><a href="#GenGameObject-cs" class="headerlink" title="GenGameObject.cs"></a><strong>GenGameObject.cs</strong></h3><p><img src="d.png" alt=""></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> System.Collections.Generic;</div><div class="line"><span class="keyword">using</span> Com.Mygame;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> GenGameObject : MonoBehaviour</div><div class="line">&#123;</div><div class="line"></div><div class="line">    List&lt;GameObject&gt; priests_start = <span class="keyword">new</span> List&lt;GameObject&gt;();</div><div class="line">    List&lt;GameObject&gt; priests_end = <span class="keyword">new</span> List&lt;GameObject&gt;();</div><div class="line">    List&lt;GameObject&gt; devils_start = <span class="keyword">new</span> List&lt;GameObject&gt;();</div><div class="line">    List&lt;GameObject&gt; devils_end = <span class="keyword">new</span> List&lt;GameObject&gt;();</div><div class="line"></div><div class="line">    GameObject[] boat = <span class="keyword">new</span> GameObject[<span class="number">2</span>];</div><div class="line">    GameObject boat_obj;</div><div class="line">    <span class="keyword">int</span> side = <span class="number">1</span>;               <span class="comment">// 记录船停在哪边，1为开始岸</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">float</span> speed = <span class="number">5f</span>;</div><div class="line"></div><div class="line">    Vector3 shoreStartPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">-12</span>);</div><div class="line">    Vector3 shoreEndPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">12</span>);</div><div class="line">    Vector3 boatStartPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">-4</span>);</div><div class="line">    Vector3 boatEndPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">4</span>);</div><div class="line">    Vector3 leftBoatPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1.2f</span>, <span class="number">-1.2</span>f);</div><div class="line">    Vector3 rightBoatPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1.2f</span>, <span class="number">1.2f</span>);</div><div class="line"></div><div class="line">    <span class="keyword">float</span> gap = <span class="number">1.5f</span>;</div><div class="line">    Vector3 priestStartPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">2.7f</span>, <span class="number">-11</span>f);</div><div class="line">    Vector3 priestEndPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">2.7f</span>, <span class="number">8f</span>);</div><div class="line">    Vector3 devilStartPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">2.7f</span>, <span class="number">-16</span>f);</div><div class="line">    Vector3 devilEndPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">2.7f</span>, <span class="number">13f</span>);</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        GameSceneController.GetInstance().setGenGameObject(<span class="keyword">this</span>);</div><div class="line">        loadSrc();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">loadSrc</span><span class="params">()</span>    <span class="comment">// 加载资源</span></span></div><div class="line">    &#123;</div><div class="line"></div><div class="line">        Instantiate(Resources.Load(<span class="string">"Prefabs/Shore"</span>), shoreStartPos, Quaternion.identity);</div><div class="line">        Instantiate(Resources.Load(<span class="string">"Prefabs/Shore"</span>), shoreEndPos, Quaternion.identity);</div><div class="line"></div><div class="line">        boat_obj = Instantiate(Resources.Load(<span class="string">"Prefabs/Boat"</span>), boatStartPos, Quaternion.identity) as GameObject;</div><div class="line">        </div><div class="line">        <span class="comment">// 初始化牧师和魔鬼</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; ++i)</div><div class="line">        &#123;</div><div class="line">            GameObject priest = Instantiate(Resources.Load(<span class="string">"Prefabs/Priest"</span>)) as GameObject;</div><div class="line">            priest.transform.position = getCharacterPosition(priestStartPos, i);</div><div class="line">            priest.tag = <span class="string">"Priest"</span>;</div><div class="line">            priests_start.Add(priest);</div><div class="line"></div><div class="line">            GameObject devil = Instantiate(Resources.Load(<span class="string">"Prefabs/Devil"</span>)) as GameObject;</div><div class="line">            devil.transform.position = getCharacterPosition(devilStartPos, i);</div><div class="line">            devil.tag = <span class="string">"Devil"</span>;</div><div class="line">            devils_start.Add(devil);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">boatCapacity</span><span class="params">()</span>    <span class="comment">// 船容量</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">int</span> capacity = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; ++i)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (boat[i] == null) capacity++;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> capacity;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getOnTheBoat</span><span class="params">(GameObject obj)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (boatCapacity() != <span class="number">0</span>)</div><div class="line">        &#123;</div><div class="line">            obj.transform.parent = boat_obj.transform;</div><div class="line">            Vector3 target = <span class="keyword">new</span> Vector3();</div><div class="line">            <span class="keyword">if</span> (boat[<span class="number">0</span>] == null)</div><div class="line">            &#123;</div><div class="line">                boat[<span class="number">0</span>] = obj;</div><div class="line">                target = boat_obj.transform.position + leftBoatPos;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> &#123;</div><div class="line">                boat[<span class="number">1</span>] = obj;</div><div class="line">                target = boat_obj.transform.position + rightBoatPos;</div><div class="line">            &#125;</div><div class="line">            ActionManager.GetInstance().ApplyMoveToYZAction(obj, target, speed);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">moveBoat</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (boatCapacity() != <span class="number">2</span>)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (side == <span class="number">1</span>)</div><div class="line">            &#123;</div><div class="line">                ActionManager.GetInstance().ApplyMoveToAction(boat_obj, boatEndPos, speed);</div><div class="line">                side = <span class="number">2</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (side == <span class="number">2</span>)</div><div class="line">            &#123;</div><div class="line">                ActionManager.GetInstance().ApplyMoveToAction(boat_obj, boatStartPos, speed);</div><div class="line">                side = <span class="number">1</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getOffTheBoat</span><span class="params">(<span class="keyword">int</span> bside)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (boat[bside] != null)</div><div class="line">        &#123;</div><div class="line">            boat[bside].transform.parent = null;</div><div class="line">            Vector3 target = <span class="keyword">new</span> Vector3();</div><div class="line">            <span class="keyword">if</span> (side == <span class="number">1</span>)</div><div class="line">            &#123;</div><div class="line">                <span class="keyword">if</span> (boat[bside].tag == <span class="string">"Priest"</span>)</div><div class="line">                &#123;</div><div class="line">                    priests_start.Add(boat[bside]);</div><div class="line">                    target = getCharacterPosition(priestStartPos, priests_start.Count - <span class="number">1</span>);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (boat[bside].tag == <span class="string">"Devil"</span>)</div><div class="line">                &#123;</div><div class="line">                    devils_start.Add(boat[bside]);</div><div class="line">                    target = getCharacterPosition(devilStartPos, devils_start.Count - <span class="number">1</span>);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (side == <span class="number">2</span>)</div><div class="line">            &#123;</div><div class="line">                <span class="keyword">if</span> (boat[bside].tag == <span class="string">"Priest"</span>)</div><div class="line">                &#123;</div><div class="line">                    priests_end.Add(boat[bside]);</div><div class="line">                    target = getCharacterPosition(priestEndPos, priests_end.Count - <span class="number">1</span>);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (boat[bside].tag == <span class="string">"Devil"</span>)</div><div class="line">                &#123;</div><div class="line">                    devils_end.Add(boat[bside]);</div><div class="line">                    target = getCharacterPosition(devilEndPos, devils_end.Count - <span class="number">1</span>);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            ActionManager.GetInstance().ApplyMoveToYZAction(boat[bside], target, speed);</div><div class="line">            boat[bside] = null;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">priestStartOnBoat</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (priests_start.Count != <span class="number">0</span> &amp;&amp; boatCapacity() != <span class="number">0</span> &amp;&amp; side == <span class="number">1</span>)</div><div class="line">        &#123;</div><div class="line">            getOnTheBoat(priests_start[priests_start.Count - <span class="number">1</span>]);</div><div class="line">            priests_start.RemoveAt(priests_start.Count - <span class="number">1</span>);</div><div class="line">        &#125;   </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">priestEndOnBoat</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (priests_end.Count != <span class="number">0</span> &amp;&amp; boatCapacity() != <span class="number">0</span> &amp;&amp; side == <span class="number">2</span>)</div><div class="line">        &#123;</div><div class="line">            getOnTheBoat(priests_end[priests_end.Count<span class="number">-1</span>]);</div><div class="line">            priests_end.RemoveAt(priests_end.Count - <span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line">            </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">devilStartOnBoat</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (devils_start.Count != <span class="number">0</span> &amp;&amp; boatCapacity() != <span class="number">0</span> &amp;&amp; side == <span class="number">1</span>)</div><div class="line">        &#123;</div><div class="line">            getOnTheBoat(devils_start[devils_start.Count<span class="number">-1</span>]);</div><div class="line">            devils_start.RemoveAt(devils_start.Count - <span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line">            </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">devilEndOnBoat</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (devils_end.Count != <span class="number">0</span> &amp;&amp; boatCapacity() != <span class="number">0</span> &amp;&amp; side == <span class="number">2</span>)</div><div class="line">        &#123;</div><div class="line">            getOnTheBoat(devils_end[devils_end.Count<span class="number">-1</span>]);</div><div class="line">            devils_end.RemoveAt(devils_end.Count - <span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line">            </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function">Vector3 <span class="title">getCharacterPosition</span><span class="params">(Vector3 pos, <span class="keyword">int</span> index)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Vector3(pos.x, pos.y, pos.z + gap * index);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">check</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        GameSceneController scene = GameSceneController.GetInstance();</div><div class="line">        <span class="keyword">int</span> pOnb = <span class="number">0</span>, dOnb = <span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> priests_s = <span class="number">0</span>, devils_s = <span class="number">0</span>, priests_e = <span class="number">0</span>, devils_e = <span class="number">0</span>;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (priests_end.Count == <span class="number">3</span> &amp;&amp; devils_end.Count == <span class="number">3</span>)</div><div class="line">        &#123;</div><div class="line">            scene.setMessage(<span class="string">"Win!"</span>);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; ++i)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (boat[i] != null &amp;&amp; boat[i].tag == <span class="string">"Priest"</span>) pOnb++;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (boat[i] != null &amp;&amp; boat[i].tag == <span class="string">"Devil"</span>) dOnb++;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (side == <span class="number">1</span>)</div><div class="line">        &#123;</div><div class="line">            priests_s = priests_start.Count + pOnb;</div><div class="line">            devils_s = devils_start.Count + dOnb;</div><div class="line">            priests_e = priests_end.Count;</div><div class="line">            devils_e = devils_end.Count;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (side == <span class="number">2</span>)</div><div class="line">        &#123;</div><div class="line">            priests_s = priests_start.Count;</div><div class="line">            devils_s = devils_start.Count;</div><div class="line">            priests_e = priests_end.Count + pOnb;</div><div class="line">            devils_e = devils_end.Count + dOnb;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> ((priests_s != <span class="number">0</span> &amp;&amp; priests_s &lt; devils_s) || (priests_e != <span class="number">0</span> &amp;&amp; priests_e &lt; devils_e))</div><div class="line">        &#123;</div><div class="line">            scene.setMessage(<span class="string">"Lose!"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        check();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="UserInterface-cs"><a href="#UserInterface-cs" class="headerlink" title="UserInterface.cs"></a><strong>UserInterface.cs</strong></h3><p><img src="e.png" alt=""></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> Com.Mygame;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> UserInterface : MonoBehaviour</div><div class="line">&#123;</div><div class="line"></div><div class="line">    GameSceneController scene;</div><div class="line">    IQueryGameStatus state;</div><div class="line">    IUserActions action;</div><div class="line"></div><div class="line">    <span class="keyword">float</span> width, height;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">float</span> <span class="title">castw</span><span class="params">(<span class="keyword">float</span> scale)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> (Screen.width - width) / scale;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">float</span> <span class="title">casth</span><span class="params">(<span class="keyword">float</span> scale)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> (Screen.height - height) / scale;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        scene = GameSceneController.GetInstance();</div><div class="line">        state = GameSceneController.GetInstance() as IQueryGameStatus;</div><div class="line">        action = GameSceneController.GetInstance() as IUserActions;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnGUI</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        width = Screen.width / <span class="number">12</span>;</div><div class="line">        height = Screen.height / <span class="number">12</span>;</div><div class="line"></div><div class="line">        <span class="built_in">string</span> message = state.isMessage();</div><div class="line">        <span class="keyword">if</span> (message != <span class="string">""</span>)   <span class="comment">// 有 输赢 提示时重新开始</span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (GUI.Button(<span class="keyword">new</span> Rect(castw(<span class="number">2f</span>), casth(<span class="number">6f</span>), width, height), message))</div><div class="line">            &#123;</div><div class="line">                action.restart();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">if</span> (GUI.RepeatButton(<span class="keyword">new</span> Rect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">120</span>, <span class="number">20</span>), scene.getBaseCode().gameName))</div><div class="line">            &#123;</div><div class="line">                GUI.TextArea(<span class="keyword">new</span> Rect(<span class="number">10</span>, <span class="number">40</span>, Screen.width - <span class="number">20</span>, Screen.height / <span class="number">2</span>), scene.getBaseCode().gameRule);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (!state.isMoving())   <span class="comment">// 船没移动才显示按钮</span></div><div class="line">            &#123;</div><div class="line">                <span class="keyword">if</span> (GUI.Button(<span class="keyword">new</span> Rect(castw(<span class="number">2f</span>), casth(<span class="number">6f</span>), width, height), <span class="string">"Go"</span>))</div><div class="line">                &#123;</div><div class="line">                    action.moveBoat();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (GUI.Button(<span class="keyword">new</span> Rect(castw(<span class="number">10.5f</span>), casth(<span class="number">1.25f</span>), width, height), <span class="string">"DevilOn"</span>))</div><div class="line">                &#123;</div><div class="line">                    action.devilSOnB();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (GUI.Button(<span class="keyword">new</span> Rect(castw(<span class="number">4.3f</span>), casth(<span class="number">1.25f</span>), width, height), <span class="string">"PriestOn"</span>))</div><div class="line">                &#123;</div><div class="line">                    action.priestSOnB();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (GUI.Button(<span class="keyword">new</span> Rect(castw(<span class="number">1.1f</span>), casth(<span class="number">1.25f</span>), width, height), <span class="string">"DevilOn"</span>))</div><div class="line">                &#123;</div><div class="line">                    action.devilEOnB();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (GUI.Button(<span class="keyword">new</span> Rect(castw(<span class="number">1.3f</span>), casth(<span class="number">1.25f</span>), width, height), <span class="string">"PriestOn"</span>))</div><div class="line">                &#123;</div><div class="line">                    action.priestEOnB();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (GUI.Button(<span class="keyword">new</span> Rect(castw(<span class="number">2.5f</span>), casth(<span class="number">6f</span>), width, height), <span class="string">"LeftOff"</span>))</div><div class="line">                &#123;</div><div class="line">                    action.offBoatL();</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (GUI.Button(<span class="keyword">new</span> Rect(castw(<span class="number">1.65f</span>), casth(<span class="number">6f</span>), width, height), <span class="string">"RightOff"</span>))</div><div class="line">                &#123;</div><div class="line">                    action.offBoatR();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/3D游戏开发/打飞碟/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          打飞碟
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/3D游戏开发/牧师和魔鬼/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">牧师和魔鬼</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="牧师与魔鬼改进" data-title="牧师与魔鬼改进" data-url="https://duzwl.github.io/3D游戏开发/牧师与魔鬼改进/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>

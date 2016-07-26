@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>进程创建及共享内存 | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="操作系统（Operating System）分配资源的基本单位是进程，而线程是指令执行额基本单位。一个进程可以包含多个子进程，亦可以包含多个线程。下面简单了解一下关于进程的创建以及进程间的共享内存。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程创建及共享内存">
+<meta property="og:url" content="https://duzwl.github.io/Operating-System/C-C/进程/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="操作系统（Operating System）分配资源的基本单位是进程，而线程是指令执行额基本单位。一个进程可以包含多个子进程，亦可以包含多个线程。下面简单了解一下关于进程的创建以及进程间的共享内存。">
+<meta property="og:image" content="https://duzwl.github.io/1.png">
+<meta property="og:image" content="https://duzwl.github.io/2.png">
+<meta property="og:updated_time" content="2016-07-21T09:42:08.667Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进程创建及共享内存">
+<meta name="twitter:description" content="操作系统（Operating System）分配资源的基本单位是进程，而线程是指令执行额基本单位。一个进程可以包含多个子进程，亦可以包含多个线程。下面简单了解一下关于进程的创建以及进程间的共享内存。">
+<meta name="twitter:image" content="https://duzwl.github.io/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Something that I have learned</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">作为一个零基础的菜鸡程序猿，目标是迅速成长为攻城狮。大山中学14级本科生。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Something that I have learned</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-进程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/Operating-System/C-C/进程/" class="article-date">
+  	<time datetime="2016-07-19T09:44:05.000Z" itemprop="datePublished">2016-07-19</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      进程创建及共享内存
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/procedure/">procedure</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Operating-System/">Operating System</a><a class="article-category-link" href="/categories/Operating-System/C-C/">C/C++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>操作系统（Operating System）分配资源的基本单位是进程，而线程是指令执行额基本单位。一个进程可以包含多个子进程，亦可以包含多个线程。下面简单了解一下关于进程的创建以及进程间的共享内存。<br><a id="more"></a></p>
+<h2 id="进程创建"><a href="#进程创建" class="headerlink" title="进程创建"></a><strong>进程创建</strong></h2><p>系统调用fork()在不同进程中会返回不同的值：在子进程中返回值为0；父进程中返回值为子进程的ID。所有进程都会执行fork()之后的指令，相应的父进程中的所有数据会复制到子进程中。看看例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span>  </span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span>  </span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> pid1 = fork();</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"**1**%d**%d**%d\n"</span>, getpid(), getppid(), pid1);</div><div class="line">    <span class="keyword">int</span> pid2 = fork();</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"**2**%d**%d**%d\n"</span>, getpid(), getppid(), pid2);</div><div class="line">    <span class="keyword">if</span> (pid1 == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">int</span> pid3 = fork();</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"**3**%d**%d**%d\n"</span>, getpid(), getppid(), pid3);</div><div class="line">          &#125;</div><div class="line">    <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">"**4**%d**%d\n"</span>, getpid(), getppid());</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="1.png" alt=""></p>
+<p>下面解释一下运行结果：<br>如上图所示，父进程ID2774，子进程有2775,2776, 2775的子进程有2777,2778,2777的子进程有2779。</p>
+<p>首先，父进程执行所有代码，则输出**1**2774**2192**2775 **2**2774**2192**2776  **4**2774**2192，同时创建子进程2775,2776。</p>
+<p>子进程2775执行第七行到最后的代码，子进程2776执行第九行到最后的代码，两个子进程同步执行，先后顺序不一定。2775输出**1**2775**2774**0，接着在第八行创建子进程2777，输出**2**2775**1**2777，2777执行第九行到最后的代码。到第九行，2776输出**2**2776**2774**0，到第10行，2775需要进入if语句，此时2776不需要创建子进程，执行较快，输出**4**2776**2774。2775进入if后，创建新进程2778，输出**3**2775**1**2778，2778执行第11行到最后的代码，到此，父进程2774的两个子进程2775,2776执行完毕。</p>
+<p>接着2775的子进程2777,2778同步执行，由于pid1为0，两个都执行if语句，2778输出**3**2778**2775**0，2777进入if创建2779子进程，2779执行12行到最后的代码，所以会输出**2**2777**2775**0，创建2779后输出**3**2777**1**2779  **3**2779**2777**0。</p>
+<h2 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a><strong>共享内存</strong></h2><p>编写代码创建子进程，使用fork(), 产生的子程序生成对应的裴波那契数, 利用进程间共享内存的方法, 将每个子进程的数字添加到共享内存中, 最后, 在父进程中将数列输出。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a><strong>思路</strong></h3><p>注意父进程与子进程的同步问题，链式创建子进程，而且每个父进程都必须wait()子进程完成才能继续执行，每个进程存有整型fib0, fib1, result,分别代表前两个裴波纳契数和当前的裴波那契数,每个进程将result存储到共享内存中。最后父进程输出时，输出完毕，父进程删除共享空间。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a><strong>代码</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;errno.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/ipc.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/shm.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/wait.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> PERM S_IRUSR|S_IWUSR</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_SEQUENCE 10</span></div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</div><div class="line">    <span class="keyword">long</span> fib[MAX_SEQUENCE];</div><div class="line">    <span class="keyword">int</span> size;</div><div class="line">&#125; shared_data;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span> </span>&#123;</div><div class="line">    <span class="keyword">key_t</span> shmid;</div><div class="line">    <span class="keyword">pid_t</span> pid;</div><div class="line">    <span class="keyword">bool</span> parent = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">int</span> n;</div><div class="line">    shared_data* block;</div><div class="line">    <span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"error: the number of argements must be 1"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> ((shmid = shmget(IPC_PRIVATE, <span class="keyword">sizeof</span>(shared_data), PERM)) == <span class="number">-1</span>) &#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Create shared memory error"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">sscanf</span>(argv[<span class="number">1</span>], <span class="string">"%d"</span>, &amp;n);</div><div class="line">    <span class="keyword">int</span> fib0 = <span class="number">0</span>, fib1 = <span class="number">1</span>, result = <span class="number">1</span>;</div><div class="line">    block = (shared_data*)shmat(shmid, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    block-&gt;size = <span class="number">0</span>;</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (n &gt; <span class="number">0</span>) block-&gt;fib[block-&gt;size++] = <span class="number">0</span>;</div><div class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>) block-&gt;fib[block-&gt;size++] = <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span> (n &gt; <span class="number">2</span>) &#123;</div><div class="line">        block-&gt;fib[block-&gt;size++] = <span class="number">1</span>;</div><div class="line">        n -= <span class="number">3</span>;</div><div class="line">        <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123;</div><div class="line">            n--;</div><div class="line">            pid = fork();</div><div class="line">            <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123;</div><div class="line">                parent = <span class="literal">false</span>;</div><div class="line">                fib0 = fib1;</div><div class="line">                fib1 = result;</div><div class="line">                result = fib0 + fib1;</div><div class="line">                block-&gt;fib[block-&gt;size++] = result;</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">break</span>;       </div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (pid != <span class="number">0</span>) &#123;</div><div class="line">        wait(<span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (parent) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; block-&gt;size; i++)</div><div class="line">            <span class="built_in">cout</span> &lt;&lt; block-&gt;fib[i] &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">    shmdt(block);</div><div class="line">    <span class="keyword">if</span> (parent)</div><div class="line">        shmctl(shmid, IPC_RMID, <span class="literal">NULL</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a><strong>结果</strong></h3><p><img src="2.png" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/Operating-System/C-C/线程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          线程创建-Fibonacci数列和矩阵乘法
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/计算机组成原理/缓存/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">缓存--直接相连映射</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="进程" data-title="进程创建及共享内存" data-url="https://duzwl.github.io/Operating-System/C-C/进程/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>

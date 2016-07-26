@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>打飞碟改进 | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="上次写的飞碟游戏确实很丑陋，这次改进一下。游戏分多个回合，每个回合有N个飞碟，玩家按空格后，321倒数3秒，飞碟飞出，点击鼠标，子弹飞出。飞碟落地或被击中，则准备下一次射击。每回合飞碟的大小、颜色、发射位置、发射角度、每次发射的数量可以变化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="打飞碟改进">
+<meta property="og:url" content="https://duzwl.github.io/3D游戏开发/打飞碟改进/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="上次写的飞碟游戏确实很丑陋，这次改进一下。游戏分多个回合，每个回合有N个飞碟，玩家按空格后，321倒数3秒，飞碟飞出，点击鼠标，子弹飞出。飞碟落地或被击中，则准备下一次射击。每回合飞碟的大小、颜色、发射位置、发射角度、每次发射的数量可以变化。">
+<meta property="og:image" content="https://duzwl.github.io/df.png">
+<meta property="og:image" content="https://duzwl.github.io/ui.png">
+<meta property="og:image" content="https://duzwl.github.io/bc.png">
+<meta property="og:image" content="https://duzwl.github.io/j.png">
+<meta property="og:image" content="https://duzwl.github.io/gm.png">
+<meta property="og:image" content="https://duzwl.github.io/all.png">
+<meta property="og:image" content="https://duzwl.github.io/sxj.png">
+<meta property="og:image" content="https://duzwl.github.io/zd.png">
+<meta property="og:image" content="https://duzwl.github.io/fd.png">
+<meta property="og:updated_time" content="2016-07-22T12:03:33.340Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="打飞碟改进">
+<meta name="twitter:description" content="上次写的飞碟游戏确实很丑陋，这次改进一下。游戏分多个回合，每个回合有N个飞碟，玩家按空格后，321倒数3秒，飞碟飞出，点击鼠标，子弹飞出。飞碟落地或被击中，则准备下一次射击。每回合飞碟的大小、颜色、发射位置、发射角度、每次发射的数量可以变化。">
+<meta name="twitter:image" content="https://duzwl.github.io/df.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Something that I have learned</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">作为一个零基础的菜鸡程序猿，目标是迅速成长为攻城狮。大山中学14级本科生。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Something that I have learned</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-打飞碟改进" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/3D游戏开发/打飞碟改进/" class="article-date">
+  	<time datetime="2016-07-22T11:12:32.000Z" itemprop="datePublished">2016-07-22</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      打飞碟改进
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity3d/">unity3d</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工厂模式/">工厂模式</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/3D游戏开发/">3D游戏开发</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上次写的飞碟游戏确实很丑陋，这次改进一下。游戏分多个回合，每个回合有N个飞碟，玩家按空格后，321倒数3秒，飞碟飞出，点击鼠标，子弹飞出。飞碟落地或被击中，则准备下一次射击。每回合飞碟的大小、颜色、发射位置、发射角度、每次发射的数量可以变化。<br><a id="more"></a></p>
+<h2 id="DFactory-cs"><a href="#DFactory-cs" class="headerlink" title="DFactory.cs"></a><strong>DFactory.cs</strong></h2><p><img src="df.png" alt=""><br>DFactory和SceneController以及BaseCode都定义在自己的命名空间Com.Mygame中。代码中当且仅当请求队列里的所有对象都在被使用（飞碟在场景中活跃）时，才会发生实例化，此时队列会变长；getDisk返回的是可用飞碟在队列里的index，方便移除；free通过index找到飞碟在队列中的位置，并将飞碟设置为不活跃的。由于飞碟使用了刚体组件，回收时需要把速度重置，并且大小可能会被改变，也应该重置。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> System.Collections.Generic;</div><div class="line"><span class="keyword">using</span> Com.Mygame;</div><div class="line"></div><div class="line"><span class="keyword">namespace</span> Com.Mygame</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> DiskFactory : System.Object</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> DiskFactory <span class="number">_</span>instance;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> List&lt;GameObject&gt; diskList;</div><div class="line">        <span class="keyword">public</span> GameObject <span class="keyword">template</span>;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DiskFactory <span class="title">getInstance</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (<span class="number">_</span>instance == null)</div><div class="line">            &#123;</div><div class="line">                <span class="number">_</span>instance = <span class="keyword">new</span> DiskFactory();</div><div class="line">                diskList = <span class="keyword">new</span> List&lt;GameObject&gt;();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="number">_</span>instance;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getDisk</span><span class="params">()</span>       <span class="comment">// 获取可用飞碟id</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; diskList.Count; ++i)</div><div class="line">            &#123;</div><div class="line">                <span class="keyword">if</span> (!diskList[i].activeInHierarchy)</div><div class="line">                &#123;</div><div class="line">                    <span class="keyword">return</span> i;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            diskList.Add(GameObject.Instantiate(<span class="keyword">template</span>) as GameObject);  <span class="comment">// 无空闲飞碟，则实例新的飞碟预设</span></div><div class="line">            <span class="keyword">return</span> diskList.Count - <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> GameObject <span class="title">getDiskObject</span><span class="params">(<span class="keyword">int</span> id)</span>  <span class="comment">// 获取飞碟对象</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (id &gt; <span class="number">-1</span> &amp;&amp; id &lt; diskList.Count)</div><div class="line">            &#123;</div><div class="line">                <span class="keyword">return</span> diskList[id];</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> null;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">free</span><span class="params">(<span class="keyword">int</span> id)</span>        <span class="comment">// 回收飞碟，重置飞碟速度和大小</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (id &gt; <span class="number">-1</span> &amp;&amp; id &lt; diskList.Count)</div><div class="line">            &#123;</div><div class="line">                diskList[id].GetComponent&lt;Rigidbody&gt;().velocity = Vector3.zero;</div><div class="line">                diskList[id].transform.localScale = <span class="keyword">template</span>.transform.localScale;</div><div class="line">                diskList[id].SetActive(<span class="literal">false</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> DFactory : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> GameObject disk;   <span class="comment">// 预设</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        DiskFactory.getInstance().<span class="keyword">template</span> = disk;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="UserInterface-cs"><a href="#UserInterface-cs" class="headerlink" title="UserInterface.cs"></a><strong>UserInterface.cs</strong></h2><p><img src="ui.png" alt=""><br>发射飞碟时，通过UI中的emitDisk()到BaseCode中的emitDisk，其调用model中的prepareToEmitDisk从而改变emitEnable的值，使得FixedUpdated判断是否发射飞碟而调用emitDisk。</p>
+<p>子弹射击的思路：当用户点击鼠标时，从摄像机到鼠标创建一条射线，射线的方向即是子弹发射的方向，子弹采用刚体组件，因此发射子弹只需要给子弹施加一个力。子弹对象只有一个，下一次发射子弹时，必须改变子弹的位置（虽然有了刚体组件不建议修改transform，但也没有其它方法改变子弹位置了吧）。为了不让子弹继承上一次发射的速度，必须将子弹的速度归零重置。</p>
+<p>子弹的击中判断：采用射线而不是物理引擎，因为物理引擎在高速物体碰撞时经常不能百分百检测得到。</p>
+<p>显示的思路：得分和回合直接通过查询接口获得。倒计时显示前通过查询接口判断是否正在倒计时，如果是，那么再通过查询接口获得倒计时时间。如果回合发生改变，则显示新的回合，直到用户按下空格。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;                    <span class="comment">// 发射飞碟时，通过UI中的emitDisk()到BaseCode中的emitDisk，其调用model中的prepareToEmitDisk</span></div><div class="line"><span class="keyword">using</span> UnityEngine.UI;                 <span class="comment">// 从而改变emitEnable的值，使FixedUpdated判断是否发射飞碟而调用emitDisk</span></div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> Com.Mygame;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> UserInterface : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> Text mainText;   <span class="comment">// 显示倒计时、新回合</span></div><div class="line">    <span class="keyword">public</span> Text scoreText;</div><div class="line">    <span class="keyword">public</span> Text roundText;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> round;</div><div class="line">    <span class="keyword">public</span> GameObject bullet;</div><div class="line">    <span class="keyword">public</span> ParticleSystem explosion;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">float</span> fireRate = <span class="number">.25</span>f;       <span class="comment">// 开枪间隔</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">float</span> speed = <span class="number">500f</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">float</span> nextFireTime;</div><div class="line">    <span class="keyword">private</span> IUserInterface userInt;     <span class="comment">// 用户接口</span></div><div class="line">    <span class="keyword">private</span> IQueryStatus queryInt;      <span class="comment">// 查询接口</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        bullet = GameObject.Instantiate(bullet) as GameObject;</div><div class="line">        explosion = GameObject.Instantiate(explosion) as ParticleSystem;</div><div class="line">        userInt = SceneController.getInstance() as IUserInterface;</div><div class="line">        queryInt = SceneController.getInstance() as IQueryStatus;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (queryInt.isCounting())      <span class="comment">// 显示倒计时</span></div><div class="line">        &#123;</div><div class="line">            mainText.text = ((<span class="keyword">int</span>)queryInt.getEmitTime()).ToString();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">if</span> (Input.GetKeyDown(<span class="string">"space"</span>))</div><div class="line">            &#123;</div><div class="line">                userInt.emitDisk();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (queryInt.isShooting())     <span class="comment">// 射击开始，隐藏主提示</span></div><div class="line">            &#123;</div><div class="line">                mainText.text = <span class="string">""</span>;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (queryInt.isShooting() &amp;&amp; Input.GetMouseButtonDown(<span class="number">0</span>) &amp;&amp; Time.time &gt; nextFireTime) <span class="comment">// 发射子弹</span></div><div class="line">            &#123;</div><div class="line">                nextFireTime = Time.time + fireRate;</div><div class="line">                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);</div><div class="line">                bullet.GetComponent&lt;Rigidbody&gt;().velocity = Vector3.zero;       <span class="comment">// 子弹刚体速度重置</span></div><div class="line">                bullet.transform.position = transform.position;                 <span class="comment">// 子弹从摄像机位置射出</span></div><div class="line">                bullet.GetComponent&lt;Rigidbody&gt;().AddForce(ray.direction * speed, ForceMode.Impulse);</div><div class="line"></div><div class="line">                RaycastHit hit;</div><div class="line">                <span class="keyword">if</span> (Physics.Raycast(ray, out hit) &amp;&amp; hit.collider.gameObject.tag == <span class="string">"Disk"</span>)</div><div class="line">                &#123;</div><div class="line">                    explosion.transform.position = hit.collider.gameObject.transform.position;</div><div class="line">                    explosion.GetComponent&lt;Renderer&gt;().material.color = hit.collider.gameObject.GetComponent&lt;Renderer&gt;().material.color;</div><div class="line">                    explosion.Play();</div><div class="line"></div><div class="line">                    hit.collider.gameObject.SetActive(<span class="literal">false</span>); <span class="comment">// 击中飞碟设置为不活跃，自动调用GameModel中update中的freedisk()回收</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        roundText.text = <span class="string">"Round: "</span> + queryInt.getRound().ToString();</div><div class="line">        scoreText.text = <span class="string">"Score: "</span> + queryInt.getPoint().ToString();</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (round != queryInt.getRound())        <span class="comment">// 如果回合更新，主提示显示新回合</span></div><div class="line">        &#123;</div><div class="line">            round = queryInt.getRound();</div><div class="line">            mainText.text = <span class="string">"Round "</span> + round.ToString() + <span class="string">" !"</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="BaseCode-cs"><a href="#BaseCode-cs" class="headerlink" title="BaseCode.cs"></a><strong>BaseCode.cs</strong></h2><p><img src="bc.png" alt=""><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> Com.Mygame;</div><div class="line"></div><div class="line"><span class="keyword">namespace</span> Com.Mygame</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> interface IUserInterface &#123; <span class="function"><span class="keyword">void</span> <span class="title">emitDisk</span><span class="params">()</span></span>; &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> interface IQueryStatus</div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">isCounting</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">isShooting</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">int</span> <span class="title">getRound</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">int</span> <span class="title">getPoint</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">int</span> <span class="title">getEmitTime</span><span class="params">()</span></span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> interface IJudgeEvent</div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">nextRound</span><span class="params">()</span></span>;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">setPoint</span><span class="params">(<span class="keyword">int</span> point)</span></span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> SceneController : System.Object, IQueryStatus, IUserInterface, IJudgeEvent</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> SceneController <span class="number">_</span>instance;</div><div class="line">        <span class="keyword">private</span> BaseCode <span class="number">_b</span>aseCode;</div><div class="line">        <span class="keyword">private</span> GameModel <span class="number">_</span>gameModel;</div><div class="line">        <span class="keyword">private</span> Judge <span class="number">_</span>judge;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">int</span> <span class="number">_</span>round = <span class="number">0</span>;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">int</span> <span class="number">_</span>point;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SceneController <span class="title">getInstance</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (<span class="number">_</span>instance == null)</div><div class="line">            &#123;</div><div class="line">                <span class="number">_</span>instance = <span class="keyword">new</span> SceneController();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="number">_</span>instance;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">emitDisk</span><span class="params">()</span> </span>&#123; <span class="number">_</span>gameModel.prepareToEmitDisk(); &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setGameModel</span><span class="params">(GameModel obj)</span> </span>&#123; <span class="number">_</span>gameModel = obj; &#125;</div><div class="line">        <span class="function">internal GameModel <span class="title">getGameModel</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">_</span>gameModel; &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setJudge</span><span class="params">(Judge obj)</span> </span>&#123; <span class="number">_</span>judge = obj; &#125;</div><div class="line">        <span class="function">internal Judge <span class="title">getJudge</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">_</span>judge; &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBaseCode</span><span class="params">(BaseCode obj)</span> </span>&#123; <span class="number">_b</span>aseCode = obj; &#125;</div><div class="line">        <span class="function">internal BaseCode <span class="title">getBaseCode</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">_b</span>aseCode; &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">isCounting</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">_</span>gameModel.isCounting(); &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">isShooting</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">_</span>gameModel.isShooting(); &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getRound</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">_</span>round; &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPoint</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">_</span>point; &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getEmitTime</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> (<span class="keyword">int</span>)<span class="number">_</span>gameModel.timeToEmit + <span class="number">1</span>; &#125; <span class="comment">// 用于显示倒计时</span></div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPoint</span><span class="params">(<span class="keyword">int</span> point)</span> </span>&#123; <span class="number">_</span>point = point; &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">nextRound</span><span class="params">()</span> </span>&#123; <span class="number">_</span>point = <span class="number">0</span>; <span class="number">_b</span>aseCode.loadRoundData(++<span class="number">_</span>round); &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> BaseCode : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    <span class="keyword">private</span> Color color;</div><div class="line">    <span class="keyword">private</span> Vector3 emitPos;</div><div class="line">    <span class="keyword">private</span> Vector3 emitDir;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">float</span> speed;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        SceneController.getInstance().setBaseCode(<span class="keyword">this</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadRoundData</span><span class="params">(<span class="keyword">int</span> round)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">switch</span> (round)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">                color = Color.green;</div><div class="line">                emitPos = <span class="keyword">new</span> Vector3(<span class="number">2.5f</span>, <span class="number">0.2f</span>, <span class="number">-5</span>f);</div><div class="line">                emitDir = <span class="keyword">new</span> Vector3(<span class="number">-24.5</span>f, <span class="number">35.0f</span>, <span class="number">67f</span>);</div><div class="line">                speed = <span class="number">4</span>;</div><div class="line">                SceneController.getInstance().getGameModel().setting(<span class="number">1</span>, color, emitPos, emitDir.normalized, speed, <span class="number">1</span>);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="number">2</span>:</div><div class="line">                color = Color.red;</div><div class="line">                emitPos = <span class="keyword">new</span> Vector3(<span class="number">-2.5</span>f, <span class="number">0.2f</span>, <span class="number">-5</span>f);</div><div class="line">                emitDir = <span class="keyword">new</span> Vector3(<span class="number">24.5f</span>, <span class="number">40.0f</span>, <span class="number">67f</span>);</div><div class="line">                speed = <span class="number">4</span>;</div><div class="line">                SceneController.getInstance().getGameModel().setting(<span class="number">1</span>, color, emitPos, emitDir.normalized, speed, <span class="number">2</span>);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="number">3</span>:</div><div class="line">                color = Color.blue;</div><div class="line">                emitPos = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0.2f</span>, <span class="number">-5</span>f);</div><div class="line">                emitDir = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">30</span>, <span class="number">67</span>);</div><div class="line">                speed = <span class="number">6</span>;</div><div class="line">                SceneController.getInstance().getGameModel().setting(<span class="number">2</span>, color, emitPos, emitDir.normalized, speed, <span class="number">3</span>);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="Judge-cs"><a href="#Judge-cs" class="headerlink" title="Judge.cs"></a><strong>Judge.cs</strong></h2><p><img src="j.png" alt=""><br>游戏规则单独作为一个类，有利于日后修改。这里需要处理的规则无非就两个，得分和失分。另外，得分需要判断是否能晋级下一关。能就调用接口函数nextRound()。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> Com.Mygame;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> Judge : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> score = <span class="number">5</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> lose = <span class="number">5</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> winNum = <span class="number">2</span>;</div><div class="line">    <span class="keyword">private</span> SceneController scene;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        scene = SceneController.getInstance();</div><div class="line">        scene.setJudge(<span class="keyword">this</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        scene.nextRound();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scoreADisk</span><span class="params">()</span>    <span class="comment">// 击中飞碟得分</span></span></div><div class="line">    &#123;</div><div class="line">        scene.setPoint(scene.getPoint() + score);</div><div class="line">        <span class="keyword">if</span> (scene.getPoint() == winNum*score)</div><div class="line">        &#123;</div><div class="line">            scene.nextRound();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">failADisk</span><span class="params">()</span>    <span class="comment">// 掉落飞碟失分</span></span></div><div class="line">    &#123;</div><div class="line">        scene.setPoint(scene.getPoint() - lose);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="GameModel-cs"><a href="#GameModel-cs" class="headerlink" title="GameModel.cs"></a><strong>GameModel.cs</strong></h2><p><img src="gm.png" alt=""><br>核心类，主要负责飞碟动作的处理。首先需要倒计时功能，可以通过几个整型变量和布尔变量完成。另外需要飞碟发射功能，通过setting函数保存好飞碟的发射信息，每次倒计时完成后，通过emitDisks获取飞碟对象，并通过发射信息初始化飞碟，再给飞碟一个力就可以发射了。而飞碟的回收在Update里完成，一种是飞碟被击中（飞碟不在场景中）了，需要调用Judge获得分数。另一种是飞碟在场景中，但是掉在地上了，需要调用Judge丢失分数。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> System.Collections.Generic;</div><div class="line"><span class="keyword">using</span> Com.Mygame;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> GameModel : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">float</span> countDown = <span class="number">3f</span>;    <span class="comment">// 发射倒计时</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">float</span> timeToEmit;        <span class="comment">// 倒计时剩余时间</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> counting;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> shooting;</div><div class="line">    <span class="keyword">private</span> List&lt;GameObject&gt; disks = <span class="keyword">new</span> List&lt;GameObject&gt;();    <span class="comment">// 发射的飞碟对象列表</span></div><div class="line">    <span class="keyword">private</span> List&lt;<span class="keyword">int</span>&gt; diskIds = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;();                <span class="comment">// 发射的飞碟id列表</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> diskScale;</div><div class="line">    <span class="keyword">private</span> Color diskColor;</div><div class="line">    <span class="keyword">private</span> Vector3 emitPosition;</div><div class="line">    <span class="keyword">private</span> Vector3 emitDirection;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">float</span> emitSpeed;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> emitNumber;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> emitEnable;  <span class="comment">// 允许新的发射事件</span></div><div class="line">    <span class="keyword">private</span> SceneController scene;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">isCounting</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> counting; &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">isShooting</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> shooting; &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        scene = SceneController.getInstance();</div><div class="line">        scene.setGameModel(<span class="keyword">this</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setting</span><span class="params">(<span class="keyword">int</span> scale, Color color, Vector3 emitPos, Vector3 emitDir, <span class="keyword">float</span> speed, <span class="keyword">int</span> num)</span></span></div><div class="line">    &#123;</div><div class="line">        diskScale = scale;</div><div class="line">        diskColor = color;</div><div class="line">        emitPosition = emitPos;</div><div class="line">        emitDirection = emitDir;</div><div class="line">        emitSpeed = speed;</div><div class="line">        emitNumber = num;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">prepareToEmitDisk</span><span class="params">()</span>    <span class="comment">// 准备下一次发射</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (!counting &amp;&amp; !shooting)</div><div class="line">        &#123;</div><div class="line">            timeToEmit = countDown;</div><div class="line">            emitEnable = <span class="literal">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">emitDisks</span><span class="params">()</span>    <span class="comment">// 发射飞碟</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; emitNumber; ++i)</div><div class="line">        &#123;</div><div class="line">            diskIds.Add(DiskFactory.getInstance().getDisk());</div><div class="line">            disks.Add(DiskFactory.getInstance().getDiskObject(diskIds[i]));</div><div class="line">            disks[i].transform.localScale *= diskScale;</div><div class="line">            disks[i].GetComponent&lt;Renderer&gt;().material.color = diskColor;</div><div class="line">            disks[i].transform.position = <span class="keyword">new</span> Vector3(emitPosition.x, emitPosition.y + i, emitPosition.z);</div><div class="line">            disks[i].SetActive(<span class="literal">true</span>);</div><div class="line">            disks[i].GetComponent&lt;Rigidbody&gt;().AddForce(emitDirection * Random.Range(emitSpeed*<span class="number">5</span>, emitSpeed*<span class="number">10</span>)/<span class="number">10</span>, ForceMode.Impulse);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">freeADisk</span><span class="params">(<span class="keyword">int</span> i)</span>     <span class="comment">// 回收飞碟</span></span></div><div class="line">    &#123;</div><div class="line">        DiskFactory.getInstance().<span class="built_in">free</span>(diskIds[i]);</div><div class="line">        disks.RemoveAt(i);</div><div class="line">        diskIds.RemoveAt(i);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">FixedUpdate</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (timeToEmit &gt; <span class="number">0</span>)</div><div class="line">        &#123;</div><div class="line">            counting = <span class="literal">true</span>;</div><div class="line">            timeToEmit -= Time.deltaTime;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            counting = <span class="literal">false</span>;</div><div class="line">            <span class="keyword">if</span> (emitEnable)</div><div class="line">            &#123;</div><div class="line">                emitDisks();</div><div class="line">                emitEnable = <span class="literal">false</span>;</div><div class="line">                shooting = <span class="literal">true</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; disks.Count; ++i)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (!disks[i].activeInHierarchy)   <span class="comment">// 飞碟不在场景中</span></div><div class="line">            &#123;</div><div class="line">                scene.getJudge().scoreADisk();  <span class="comment">// 得分</span></div><div class="line">                freeADisk(i);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (disks[i].transform.position.y &lt; <span class="number">0</span>)   <span class="comment">// 飞碟落地</span></div><div class="line">            &#123;</div><div class="line">                scene.getJudge().failADisk();   <span class="comment">// 失分</span></div><div class="line">                freeADisk(i);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (disks.Count == <span class="number">0</span>)</div><div class="line">        &#123;</div><div class="line">            shooting = <span class="literal">false</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="其他设置"><a href="#其他设置" class="headerlink" title="其他设置"></a><strong>其他设置</strong></h2><p><img src="all.png" alt=""><br>摄像机参数：<br><img src="sxj.png" alt=""><br>子弹和飞碟预设：<br><img src="zd.png" alt="">  <img src="fd.png" alt=""></p>
+<p>最后，将5个脚本挂载在组摄像机上，将预设拖入相应的脚本中即可。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/3D游戏开发/粒子系统/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          粒子系统
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/3D游戏开发/garen/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Garen击球游戏</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="打飞碟改进" data-title="打飞碟改进" data-url="https://duzwl.github.io/3D游戏开发/打飞碟改进/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>

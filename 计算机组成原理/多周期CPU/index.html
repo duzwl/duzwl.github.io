@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>MIPS多周期CPU | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在对单周期CPU有一定了解后，现在我们来看看多周期CPU。多周期CPU指的是将整个CPU的执行过程分成几个阶段，每个阶段用一个时钟去完成，然后开始下一条指令的执行，而每种指令执行时所用的时钟数不尽相同，这就是所谓的多周期CPU。需要注意的是，在本设计中，不同指令的操作码跟单周期CPU会有所不同；指令存储器和数据存储器的存储单元是字节宽度，而不是使用32位。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MIPS多周期CPU">
+<meta property="og:url" content="https://duzwl.github.io/计算机组成原理/多周期CPU/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="在对单周期CPU有一定了解后，现在我们来看看多周期CPU。多周期CPU指的是将整个CPU的执行过程分成几个阶段，每个阶段用一个时钟去完成，然后开始下一条指令的执行，而每种指令执行时所用的时钟数不尽相同，这就是所谓的多周期CPU。需要注意的是，在本设计中，不同指令的操作码跟单周期CPU会有所不同；指令存储器和数据存储器的存储单元是字节宽度，而不是使用32位。">
+<meta property="og:image" content="https://duzwl.github.io/suansu.png">
+<meta property="og:image" content="https://duzwl.github.io/luoji.png">
+<meta property="og:image" content="https://duzwl.github.io/yiwei.png">
+<meta property="og:image" content="https://duzwl.github.io/chuansong.png">
+<meta property="og:image" content="https://duzwl.github.io/bijiao.png">
+<meta property="og:image" content="https://duzwl.github.io/duxie.png">
+<meta property="og:image" content="https://duzwl.github.io/fenzhi.png">
+<meta property="og:image" content="https://duzwl.github.io/tiaozhuan.png">
+<meta property="og:image" content="https://duzwl.github.io/zi.png">
+<meta property="og:image" content="https://duzwl.github.io/tingji.png">
+<meta property="og:image" content="https://duzwl.github.io/guoc.png">
+<meta property="og:image" content="https://duzwl.github.io/zhuanyi.png">
+<meta property="og:image" content="https://duzwl.github.io/kongzhi.png">
+<meta property="og:image" content="https://duzwl.github.io/tonglu.png">
+<meta property="og:image" content="https://duzwl.github.io/xinhao1.png">
+<meta property="og:image" content="https://duzwl.github.io/xinhao2.png">
+<meta property="og:image" content="https://duzwl.github.io/alu.png">
+<meta property="og:image" content="https://duzwl.github.io/if.png">
+<meta property="og:image" content="https://duzwl.github.io/id.png">
+<meta property="og:image" content="https://duzwl.github.io/exe.png">
+<meta property="og:image" content="https://duzwl.github.io/mem.png">
+<meta property="og:image" content="https://duzwl.github.io/wb.png">
+<meta property="og:image" content="https://duzwl.github.io/ceshi.png">
+<meta property="og:updated_time" content="2016-07-18T05:00:26.339Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MIPS多周期CPU">
+<meta name="twitter:description" content="在对单周期CPU有一定了解后，现在我们来看看多周期CPU。多周期CPU指的是将整个CPU的执行过程分成几个阶段，每个阶段用一个时钟去完成，然后开始下一条指令的执行，而每种指令执行时所用的时钟数不尽相同，这就是所谓的多周期CPU。需要注意的是，在本设计中，不同指令的操作码跟单周期CPU会有所不同；指令存储器和数据存储器的存储单元是字节宽度，而不是使用32位。">
+<meta name="twitter:image" content="https://duzwl.github.io/suansu.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Something that I have learned</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">作为一个零基础的菜鸡程序猿，目标是迅速成长为攻城狮。大山中学14级本科生。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Something that I have learned</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-多周期CPU" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/计算机组成原理/多周期CPU/" class="article-date">
+  	<time datetime="2016-07-18T03:53:28.000Z" itemprop="datePublished">2016-07-18</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MIPS多周期CPU
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPU/">CPU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MIPS/">MIPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/verilog/">verilog</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/计算机组成原理/">计算机组成原理</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在对单周期CPU有一定了解后，现在我们来看看多周期CPU。多周期CPU指的是将整个CPU的执行过程分成几个阶段，每个阶段用一个时钟去完成，然后开始下一条指令的执行，而每种指令执行时所用的时钟数不尽相同，这就是所谓的多周期CPU。需要注意的是，在本设计中，不同指令的操作码跟单周期CPU会有所不同；指令存储器和数据存储器的存储单元是字节宽度，而不是使用32位。<br><a id="more"></a></p>
+<h2 id="MIPS32指令格式"><a href="#MIPS32指令格式" class="headerlink" title="MIPS32指令格式"></a><strong>MIPS32指令格式</strong></h2><p>同单周期CPU的指令格式，指令有三种类型：R型、J型、I型</p>
+<h2 id="多周期CPU执行的指令"><a href="#多周期CPU执行的指令" class="headerlink" title="多周期CPU执行的指令"></a><strong>多周期CPU执行的指令</strong></h2><h3 id="算术运算指令"><a href="#算术运算指令" class="headerlink" title="算术运算指令"></a><strong>算术运算指令</strong></h3><p><img src="suansu.png" alt=""></p>
+<h3 id="逻辑运算指令"><a href="#逻辑运算指令" class="headerlink" title="逻辑运算指令"></a><strong>逻辑运算指令</strong></h3><p><img src="luoji.png" alt=""></p>
+<h3 id="移位指令"><a href="#移位指令" class="headerlink" title="移位指令"></a><strong>移位指令</strong></h3><p><img src="yiwei.png" alt=""><br>功能：rd&lt;－rs&lt;&lt;(zero-extend)sa，左移sa位 ，(zero-extend)sa</p>
+<h3 id="传送指令"><a href="#传送指令" class="headerlink" title="传送指令"></a><strong>传送指令</strong></h3><p><img src="chuansong.png" alt=""></p>
+<h3 id="比较指令"><a href="#比较指令" class="headerlink" title="比较指令"></a><strong>比较指令</strong></h3><p><img src="bijiao.png" alt=""></p>
+<h3 id="存储器读写指令"><a href="#存储器读写指令" class="headerlink" title="存储器读写指令"></a><strong>存储器读写指令</strong></h3><p><img src="duxie.png" alt=""></p>
+<h3 id="分支指令"><a href="#分支指令" class="headerlink" title="分支指令"></a><strong>分支指令</strong></h3><p><img src="fenzhi.png" alt=""></p>
+<h3 id="跳转指令"><a href="#跳转指令" class="headerlink" title="跳转指令"></a><strong>跳转指令</strong></h3><p><img src="tiaozhuan.png" alt=""></p>
+<h3 id="调用子程序指令"><a href="#调用子程序指令" class="headerlink" title="调用子程序指令"></a><strong>调用子程序指令</strong></h3><p><img src="zi.png" alt=""><br>功能：调用子程序，pc &lt;－ {pc[31..28],addr[27..2],0,0}；$31&lt;－pc+4，返回地址设置；子程序返回，需用指令 jr  $31。</p>
+<h3 id="停机指令"><a href="#停机指令" class="headerlink" title="停机指令"></a><strong>停机指令</strong></h3><p><img src="tingji.png" alt=""></p>
+<h2 id="设计原理"><a href="#设计原理" class="headerlink" title="设计原理"></a><strong>设计原理</strong></h2><h3 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a><strong>处理过程</strong></h3><p>CPU在处理指令时，一般需要经过以下几个阶段：</p>
+<ul>
+<li>取指令(IF)：根据程序计数器pc中的指令地址，从存储器中取出一条指令，同时，pc根据指令字长度自动递增产生下一条指令所需要的指令地址，但遇到“地址转移”指令时，则控制器把“转移地址”送入pc，当然得到的“地址”需要做些变换才送入pc。</li>
+<li>指令译码(ID)：对取指令操作中得到的指令进行分析并译码，确定这条指令需要完成的操作，从而产生相应的操作控制信号，用于驱动执行状态中的各种操作。</li>
+<li>指令执行(EXE)：根据指令译码得到的操作控制信号，具体地执行指令动作，然后转移到结果写回状态。</li>
+<li>存储器访问(MEM)：所有需要访问存储器的操作都将在这个步骤中执行，该步骤给出存储器的数据地址，把数据写入到存储器中数据地址所指定的存储单元或者从存储器中得到数据地址单元中的数据。</li>
+<li><p>结果写回(WB)：指令执行的结果或者访问存储器中得到的数据写回相应的目的寄存器中。<br><img src="guoc.png" alt=""></p>
+<h3 id="状态转移"><a href="#状态转移" class="headerlink" title="状态转移"></a><strong>状态转移</strong></h3><p>状态的转移有的是无条件的，例如从IF状态转移到ID 和 EXE状态就是无条件的；有些是有条件的，例如ID 或 EXE状态之后不止一个状态，到底转向哪个状态由该指令功能，即指令操作码决定。每个状态代表一个时钟周期。<br><img src="zhuanyi.png" alt=""></p>
+<h2 id="数据通路及其控制"><a href="#数据通路及其控制" class="headerlink" title="数据通路及其控制"></a><strong>数据通路及其控制</strong></h2><h3 id="控制部件"><a href="#控制部件" class="headerlink" title="控制部件"></a><strong>控制部件</strong></h3><p>下图是多周期CPU控制部件的电路结构，三个D触发器用于保存当前状态，是时序逻辑电路，RST用于初始化状态“000“，另外两个部分都是组合逻辑电路，一个用于产生下一个阶段的状态，另一个用于产生每个阶段的控制信号。从图上可看出，下个状态取决于指令操作码和当前状态；而每个阶段的控制信号取决于指令操作码、当前状态和反映运算结果的状态zero标志等。<br><img src="kongzhi.png" alt=""></p>
+<h3 id="数据通路"><a href="#数据通路" class="headerlink" title="数据通路"></a><strong>数据通路</strong></h3><p>下图是一个简单的基本上能够在单周期上完成所要求设计的指令功能的数据通路和必要的控制线路图。其中指令和数据各存储在不同存储器中，即有指令存储器和数据存储器。访问存储器时，先给出地址，然后由读/写信号控制（1-写，0-读。当然，也可以由时钟信号控制，但必须在图上画出来）。对于寄存器组，读操作时，给出寄存器地址（编号），输出端就直接输出相应数据；而在写操作时，在 WE使能信号为1时，在时钟边沿触发写入。<br>特别提示，图上增加IR指令寄存器，目的是使指令代码保持稳定，还有pc增加写使能控制信号pcWre，也是确保pc适时修改，原因都是和多周期工作的CPU有关。ADR、BDR、ALUout、ALUM2DR四个寄存器不需要写使能信号，其作用是切分数据通路，将大组合逻辑切分为若干个小组合逻辑，大延时变为多个分段小延时。<br><img src="tonglu.png" alt=""></p>
+<h3 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a><strong>控制信号</strong></h3><p>控制信号和单周期CPU大同小异<br><img src="xinhao1.png" alt=""><br><img src="xinhao2.png" alt=""></p>
+</li>
+<li><p>Instruction Memory：指令存储器，</p>
+<ul>
+<li>Iaddr，指令地址输入端口</li>
+<li>DataIn，存储器数据输入端口</li>
+<li>DataOut，存储器数据输出端口</li>
+<li>RW，指令存储器读写控制信号，为1写，为0读</li>
+</ul>
+</li>
+<li>Data Memory：数据存储器，<ul>
+<li>Daddr，数据地址输入端口</li>
+<li>DataIn，存储器数据输入端口</li>
+<li>DataOut，存储器数据输出端口</li>
+<li>RW，数据存储器读写控制信号，为1写，为0读</li>
+</ul>
+</li>
+<li>Register File：（寄存器组）<ul>
+<li>Read Reg1，rs寄存器地址输入端口</li>
+<li>Read Reg2，rt寄存器地址输入端口</li>
+<li>Write Reg，将数据写入的寄存器，其地址输入端口（rt、rd）</li>
+<li>Write Data，写入寄存器的数据输入端口</li>
+<li>Read Data1，rs寄存器数据输出端口</li>
+<li>Read Data2，rt寄存器数据输出端口</li>
+<li>WE，写使能信号，为1时，在时钟上升沿写入</li>
+</ul>
+</li>
+<li>IR：指令寄存器，用于存放正在执行的指令代码</li>
+</ul>
+<h3 id="ALU运算功能表"><a href="#ALU运算功能表" class="headerlink" title="ALU运算功能表"></a><strong>ALU运算功能表</strong></h3><p>ALU：</p>
+<ul>
+<li>result，ALU运算结果</li>
+<li>zero，运算结果标志，结果为0输出1，否则输出0<br><img src="alu.png" alt=""></li>
+</ul>
+<h2 id="设计方法"><a href="#设计方法" class="headerlink" title="设计方法"></a><strong>设计方法</strong></h2><p>采用模块设计的思想，设计的模块和单周期CPU的模块一样，但添加了IR模块（用于在时钟下降沿到来时将InsMem模块输出的指令传出到registerFile模块，图中用的是上升沿，但上升沿到来时CU的控制信号才发出，信号送达需要时间，因此改为下降沿），所以总共设计了InsMEM模块、ControlUnit模块、registerFile模块（ALUM2DR归入本模块，时钟上升沿到来时才将内存的数据传入本模块）、Extend模块（加入了一个功能：跳转指令执行时计算要改变的PC0的值）、ALU模块（ADR和BDR归入这个模块，时钟上升沿到来时数据才传入）、DataMEM模块（ALUOut归入本模块，时钟上升沿到来时数据才传入）、IR模块，最后设计CPU总模块，需要注意的是，PC没有独立作为一个模块，免去参数传递的麻烦，直接写在总模块中。<br>另外一个思路时，由于CU的控制信号很多，但是很多信号在指令执行的多个阶段中是一样的，因此在取完指令后，ID阶段就改变CU控制信号的值为正确的值，在其他的阶段，需要改变的信号再改变。<br>还有一点是，PC0的改变是在控制信号PCWre为1时改变的，在每条指令执行的最后阶段将控制信号PCWre改为1，这就保证执行下一条指令时，PC0已经正确改变。</p>
+<h3 id="IF阶段控制信号表"><a href="#IF阶段控制信号表" class="headerlink" title="IF阶段控制信号表"></a><strong>IF阶段控制信号表</strong></h3><p><img src="if.png" alt=""></p>
+<h3 id="ID阶段控制信号表"><a href="#ID阶段控制信号表" class="headerlink" title="ID阶段控制信号表"></a><strong>ID阶段控制信号表</strong></h3><p><img src="id.png" alt=""></p>
+<h3 id="EXE阶段控制信号表"><a href="#EXE阶段控制信号表" class="headerlink" title="EXE阶段控制信号表"></a><strong>EXE阶段控制信号表</strong></h3><p><img src="exe.png" alt=""></p>
+<h3 id="MEM阶段控制信号表"><a href="#MEM阶段控制信号表" class="headerlink" title="MEM阶段控制信号表"></a><strong>MEM阶段控制信号表</strong></h3><p><img src="mem.png" alt=""></p>
+<h3 id="WB阶段控制信号表"><a href="#WB阶段控制信号表" class="headerlink" title="WB阶段控制信号表"></a><strong>WB阶段控制信号表</strong></h3><p><img src="wb.png" alt=""><br>此外，jal指令也要设置RegWre = 1</p>
+<h3 id="InsMEM模块"><a href="#InsMEM模块" class="headerlink" title="InsMEM模块"></a><strong>InsMEM模块</strong></h3><p>把将要执行的指令my_test_rom.txt加载到储存指令的内存中。根据PC的值返回相应的指令。注意这里指令是按照字节存储的。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> InsMEM(</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] PC0,</div><div class="line">	<span class="keyword">input</span> InsMemRW,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] instruction</div><div class="line">    );</div><div class="line">    <span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] mem [<span class="number">0</span>:<span class="number">127</span>];</div><div class="line">	 </div><div class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">        <span class="built_in">$readmemb</span>(<span class="string">"my_test_rom.txt"</span>, mem);</div><div class="line">    <span class="keyword">end</span></div><div class="line"></div><div class="line">    <span class="keyword">always</span> @* <span class="keyword">begin</span></div><div class="line">        instruction[<span class="number">31</span>:<span class="number">0</span>] &lt;= &#123;mem[PC0-<span class="number">8'b11111000</span>], mem[PC0-<span class="number">8'b11111000</span>+<span class="number">1</span>], mem[PC0-<span class="number">8'b11111000</span>+<span class="number">2</span>], mem[PC0-<span class="number">8'b11111000</span>+<span class="number">3</span>]&#125;;  <span class="comment">// 初始化为2'hF8</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">	 </div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="ControlUnit模块"><a href="#ControlUnit模块" class="headerlink" title="ControlUnit模块"></a><strong>ControlUnit模块</strong></h3><p>包含两个变量state和next_state，next_state初始化为sif，控制单元根据state的不同，执行不同的操作，注意控制单元在state为ID时，根据指令的不同改变各个控制信号量的值，在其他state时，根据需要改变相应的控制信号的值，以达到正确的控制目的，记得在每个状态中，根据状态机，改变next_state的值。代码可能有点长，然后其实并不难，都是重复的代码。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> ControlUnit(</div><div class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] Opcode,</div><div class="line">    <span class="keyword">input</span> zero,</div><div class="line">	 <span class="keyword">input</span> clk,</div><div class="line">	 </div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> PCWre,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> ALUSrcB,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> ALUM2Reg,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> RegWre,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> InsMemRW,</div><div class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> IRWre,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> DataMemRW,</div><div class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> WrRegData,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] ExtSel,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] PCSrc,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] RegOut,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">2</span>:<span class="number">0</span>] ALUOp,</div><div class="line">	 </div><div class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">2</span>:<span class="number">0</span>] state</div><div class="line">    );</div><div class="line">	 </div><div class="line">	 <span class="keyword">reg</span> [<span class="number">2</span>:<span class="number">0</span>] next_state;</div><div class="line">	 </div><div class="line">	 <span class="keyword">parameter</span> ADD = <span class="number">6'b000000</span>, ADDI = <span class="number">6'b000010</span>, SUB = <span class="number">6'b000001</span>, ORI = <span class="number">6'b010010</span>,</div><div class="line">              AND = <span class="number">6'b010001</span>, OR = <span class="number">6'b010000</span>, MOVE = <span class="number">6'b100000</span>, SW = <span class="number">6'b110000</span>,</div><div class="line">              LW = <span class="number">6'b110001</span>, BEQ = <span class="number">6'b110100</span>, HALT = <span class="number">6'b111111</span>, SLL = <span class="number">6'b011000</span>,</div><div class="line">				  SLT = <span class="number">6'b100111</span>, J = <span class="number">6'b111000</span>, JR = <span class="number">6'b111001</span>, JAL = <span class="number">6'b111010</span>;</div><div class="line">    <span class="keyword">parameter</span> sif = <span class="number">3'b000</span>, sid = <span class="number">3'b001</span>, sexe1 = <span class="number">3'b110</span>, sexe2 = <span class="number">3'b101</span>,</div><div class="line">				  sexe3 = <span class="number">3'b010</span>, smem = <span class="number">3'b011</span>, swb1 = <span class="number">3'b111</span>, swb2 = <span class="number">3'b100</span>;</div><div class="line">	 </div><div class="line">	 <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">	     next_state = sif;</div><div class="line">		  InsMemRW = <span class="number">0</span>;  <span class="comment">// 这个变量在本次实验中没有用处</span></div><div class="line">		  </div><div class="line">		  ALUSrcB = <span class="number">0</span>;   <span class="comment">// 初始化，不初始化也可以但会出现红框</span></div><div class="line">		  ALUM2Reg = <span class="number">1</span>;</div><div class="line">		  WrRegData = <span class="number">0</span>;</div><div class="line">		  ExtSel = <span class="number">0</span>;</div><div class="line">		  PCSrc = <span class="number">0</span>;</div><div class="line">		  RegOut = <span class="number">2'b10</span>;</div><div class="line">		  ALUOp = <span class="number">0</span>;</div><div class="line">		  </div><div class="line">	 <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">always</span> @(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></div><div class="line">	     state &lt;= next_state;</div><div class="line">	 <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">always</span> @(state <span class="keyword">or</span> zero <span class="keyword">or</span> Opcode) <span class="keyword">begin</span></div><div class="line">	     <span class="keyword">case</span>(state)</div><div class="line">		      sif: <span class="keyword">begin</span></div><div class="line">					IRWre = <span class="number">1</span>; PCWre = <span class="number">0</span>;</div><div class="line">					RegWre = <span class="number">0</span>; DataMemRW = <span class="number">0</span>;</div><div class="line">					next_state = sid;</div><div class="line">				<span class="keyword">end</span></div><div class="line">				sid: <span class="keyword">begin</span></div><div class="line">				   <span class="keyword">if</span> (Opcode == ADD || Opcode == SUB || Opcode == ADDI ||</div><div class="line">     					 Opcode == OR || Opcode == AND || Opcode == ORI ||</div><div class="line">						 Opcode == SLL || Opcode == MOVE || Opcode == SLT)</div><div class="line">						 next_state = sexe1;</div><div class="line">					<span class="keyword">else</span> <span class="keyword">if</span> (Opcode == BEQ) next_state = sexe2;</div><div class="line">					<span class="keyword">else</span> <span class="keyword">if</span> (Opcode == SW || Opcode == LW) next_state = sexe3;</div><div class="line">					<span class="keyword">else</span> next_state = sif;</div><div class="line">					</div><div class="line">					WrRegData &lt;= (Opcode == JAL) ? <span class="number">0</span> : <span class="number">1</span>;</div><div class="line">				   ALUM2Reg &lt;= (Opcode == LW) ? <span class="number">1</span> : <span class="number">0</span>;</div><div class="line">				</div><div class="line">					<span class="keyword">case</span>(Opcode)</div><div class="line">					    ADD: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>;</div><div class="line">							  ALUOp = <span class="number">3'b000</span>;</div><div class="line">							  PCSrc = <span class="number">2'b00</span>; RegOut = <span class="number">2'b10</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 SUB: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>;</div><div class="line">							  ALUOp = <span class="number">3'b001</span>;</div><div class="line">							  PCSrc = <span class="number">2'b00</span>; RegOut = <span class="number">2'b10</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 ADDI: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">1</span>; RegOut = <span class="number">2'b01</span>; ALUOp = <span class="number">3'b000</span>;</div><div class="line">						     PCSrc = <span class="number">2'b00</span>; ExtSel  = <span class="number">2'b10</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 OR: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>; RegOut = <span class="number">2'b10</span>; ALUOp = <span class="number">3'b101</span>;</div><div class="line">						     PCSrc = <span class="number">2'b00</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 AND: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>; RegOut = <span class="number">2'b10</span>; ALUOp = <span class="number">3'b110</span>;</div><div class="line">						     PCSrc = <span class="number">2'b00</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 ORI: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">1</span>; RegOut = <span class="number">2'b01</span>; ALUOp = <span class="number">3'b101</span>;</div><div class="line">						     PCSrc = <span class="number">2'b00</span>; ExtSel = <span class="number">2'b01</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 SLL: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">1</span>; RegOut = <span class="number">2'b10</span>; ALUOp = <span class="number">3'b100</span>;</div><div class="line">						     PCSrc = <span class="number">2'b00</span>; ExtSel = <span class="number">2'b00</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 MOVE: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>; RegOut = <span class="number">2'b10</span>; ALUOp = <span class="number">3'b000</span>;</div><div class="line">						     PCSrc = <span class="number">2'b00</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 SLT: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>; RegOut = <span class="number">2'b10</span>; ALUOp = <span class="number">3'b010</span>;</div><div class="line">						     PCSrc = <span class="number">2'b00</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 SW: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">1</span>; ALUOp = <span class="number">3'b000</span>; PCSrc = <span class="number">2'b00</span>;</div><div class="line">						     ExtSel = <span class="number">2'b10</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 LW: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">1</span>; RegOut = <span class="number">2'b01</span>; ALUOp = <span class="number">3'b000</span>;</div><div class="line">						     PCSrc = <span class="number">2'b00</span>; ExtSel = <span class="number">2'b10</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 BEQ: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>; ALUOp = <span class="number">3'b001</span>;</div><div class="line">						     ExtSel = <span class="number">2'b10</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 J: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>; PCSrc = <span class="number">2'b11</span>; PCWre = <span class="number">1</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 JR: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>; PCSrc = <span class="number">2'b10</span>; PCWre = <span class="number">1</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 JAL: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>; RegOut = <span class="number">2'b00</span>; RegWre = <span class="number">1</span>;</div><div class="line">						     PCSrc = <span class="number">2'b11</span>; PCWre = <span class="number">1</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">						 HALT: <span class="keyword">begin</span></div><div class="line">						     ALUSrcB = <span class="number">0</span>;</div><div class="line">						 <span class="keyword">end</span></div><div class="line">					<span class="keyword">endcase</span></div><div class="line">				<span class="keyword">end</span></div><div class="line">			   sexe1: <span class="keyword">begin</span></div><div class="line">					IRWre = <span class="number">0</span>;</div><div class="line">					next_state = swb1;</div><div class="line">				<span class="keyword">end</span></div><div class="line">				sexe2: <span class="keyword">begin</span></div><div class="line">					 PCWre = <span class="number">1</span>; IRWre = <span class="number">0</span>;</div><div class="line">					 PCSrc &lt;= (zero == <span class="number">0</span>) ?  <span class="number">2'b00</span> : <span class="number">2'b01</span>;</div><div class="line">					 next_state = sif;</div><div class="line">				<span class="keyword">end</span></div><div class="line">				sexe3: <span class="keyword">begin</span></div><div class="line">					 IRWre = <span class="number">0</span>;</div><div class="line">					 next_state = smem;</div><div class="line">				<span class="keyword">end</span></div><div class="line">				swb1: <span class="keyword">begin</span></div><div class="line">					 RegWre = <span class="number">1</span>;</div><div class="line">					 PCWre = <span class="number">1</span>;</div><div class="line">					 next_state = sif;</div><div class="line">				<span class="keyword">end</span></div><div class="line">				smem: <span class="keyword">begin</span></div><div class="line">				    <span class="keyword">if</span> (Opcode == SW) <span class="keyword">begin</span></div><div class="line">					     PCWre = <span class="number">1</span>;</div><div class="line">						  DataMemRW = <span class="number">1</span>;</div><div class="line">						  next_state = sif;</div><div class="line">					 <span class="keyword">end</span></div><div class="line">					 <span class="keyword">if</span> (Opcode == LW) <span class="keyword">begin</span></div><div class="line">						  next_state = swb2;</div><div class="line">					 <span class="keyword">end</span></div><div class="line">				<span class="keyword">end</span></div><div class="line">				swb2: <span class="keyword">begin</span></div><div class="line">					 RegWre = <span class="number">1</span>;</div><div class="line">					 PCWre = <span class="number">1</span>;</div><div class="line">					 next_state = sif;</div><div class="line">				<span class="keyword">end</span></div><div class="line">        <span class="keyword">endcase</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">	 </div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="registerFile模块"><a href="#registerFile模块" class="headerlink" title="registerFile模块"></a><strong>registerFile模块</strong></h3><p>申明31个寄存器并初始化为0，0号寄存器一直当做0处理；寄存器的值在这个模块中取出，同时也可以在时钟下降沿到来时向寄存器写值，由CU相应的控制信号控制，这里与图中不同，图中是上升沿，是在下个周期上升沿到来时才将值写入，我是在本周期的下降沿写入值的。还有一点，ALUM2DR归入这个模块，数据存储器的输出值write_data在时钟上升沿到来时才能传入本模块中。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> registerFile(</div><div class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rs, rt, rd,  <span class="comment">// 相应的赋值在主模块实现,write_data是内存输出的数据，write_data是上升沿后的数据</span></div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] write_data, PC4,  <span class="comment">// writedata是本模块的选择的输入</span></div><div class="line">    <span class="keyword">input</span> RegWre, clk, WrRegData,</div><div class="line">	 <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] RegOut,</div><div class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] readData1, readData2</div><div class="line">    );</div><div class="line">    </div><div class="line">	 <span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] write_reg;</div><div class="line">	 <span class="keyword">assign</span> write_reg = (RegOut == <span class="number">0</span>) ? <span class="number">5'b11111</span> : ((RegOut == <span class="number">1</span>) ? rt : rd);</div><div class="line">	 </div><div class="line">	 <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] write_data_1;</div><div class="line">	 <span class="keyword">always</span> @(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></div><div class="line">	     write_data_1 = write_data;</div><div class="line">	 <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] writedata;</div><div class="line">	 <span class="keyword">assign</span> writedata = (WrRegData == <span class="number">0</span>) ? PC4 : write_data_1;</div><div class="line">	 </div><div class="line">	 <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] register [<span class="number">1</span>:<span class="number">31</span>];  <span class="comment">// 声明r1~r31</span></div><div class="line">    <span class="keyword">integer</span> i;</div><div class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i = i + <span class="number">1</span>)</div><div class="line">            register[i] = <span class="number">0</span>;</div><div class="line">    <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="comment">// 0号寄存器值固定为0</span></div><div class="line">    <span class="keyword">assign</span> readData1 = (rs == <span class="number">0</span>)? <span class="number">0</span> : register[rs];</div><div class="line">    <span class="keyword">assign</span> readData2 = (rt == <span class="number">0</span>)? <span class="number">0</span> : register[rt];</div><div class="line">	 </div><div class="line">	 <span class="keyword">always</span> @(<span class="keyword">negedge</span> clk) <span class="keyword">begin</span></div><div class="line">	     <span class="keyword">if</span> ((RegWre == <span class="number">1</span>) &amp;&amp; (write_reg != <span class="number">0</span>)) <span class="keyword">begin</span></div><div class="line">		      register[write_reg] &lt;= writedata;</div><div class="line">		  <span class="keyword">end</span></div><div class="line">	 <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="Extend模块"><a href="#Extend模块" class="headerlink" title="Extend模块"></a><strong>Extend模块</strong></h3><p>本模块比较简单，在单周期的基础上加入了跳转指令需要计算的PC的值；同时，在零拓展时，控制信号ExtSel的值为00时，只取imme_16的[10:6]位，拓展后这个值是供左移右移指令使用的。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> Extend(</div><div class="line">    <span class="keyword">input</span> [<span class="number">15</span>:<span class="number">0</span>] imme_16,</div><div class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] ExtSel,</div><div class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] PC0,</div><div class="line">	 <span class="keyword">input</span> [<span class="number">25</span>:<span class="number">0</span>] imme_26,</div><div class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] imme_32,</div><div class="line">	 <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] PCnew</div><div class="line">    );</div><div class="line">    <span class="comment">// 10为符号拓展，00,01为零拓展, 00只取[10:6]</span></div><div class="line">    <span class="keyword">assign</span> imme_32 = (ExtSel == <span class="number">2'b10</span>) ? &#123;&#123;<span class="number">16</span>&#123;imme_16[<span class="number">15</span>]&#125;&#125;, imme_16[<span class="number">15</span>:<span class="number">0</span>]&#125; : ((ExtSel == <span class="number">2'b00</span>) ? &#123;&#123;<span class="number">27</span>&#123;<span class="number">1'b0</span>&#125;&#125;, imme_16[<span class="number">10</span>:<span class="number">6</span>]&#125; : &#123;&#123;<span class="number">16</span>&#123;<span class="number">1'b0</span>&#125;&#125;, imme_16[<span class="number">15</span>:<span class="number">0</span>]&#125;);</div><div class="line">	 <span class="keyword">assign</span> PCnew = &#123;PC0[<span class="number">31</span>:<span class="number">28</span>], imme_26, <span class="number">2'b00</span>&#125;;</div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="ALU模块"><a href="#ALU模块" class="headerlink" title=" ALU模块"></a><strong> ALU模块</strong></h3><p>根据CU发出的控制信号ALUOp的不同，ALU对传进去的值执行不同的操作。还有就是ADR和BDR归入本模块，在时钟上升沿到来时才将数据传入ALU模块。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> ALU(</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] readData1,</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] readData2,</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] imme_32,</div><div class="line">    <span class="keyword">input</span> ALUSrcB,</div><div class="line">	 <span class="keyword">input</span> clk,</div><div class="line">    <span class="keyword">input</span> [<span class="number">2</span>:<span class="number">0</span>] ALUOp,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">wire</span> zero,</div><div class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] result</div><div class="line">    );</div><div class="line">	 </div><div class="line">	 <span class="comment">/*initial begin</span></div><div class="line">	     result = 0;</div><div class="line">	 end*/</div><div class="line">	 </div><div class="line">	 <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] readData1_1, readData2_1;</div><div class="line">	 <span class="keyword">always</span> @(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></div><div class="line">	     readData1_1 = readData1;</div><div class="line">		  readData2_1 = readData2;</div><div class="line">	 <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] alub;</div><div class="line">    <span class="keyword">assign</span> alub = (ALUSrcB == <span class="number">0</span>) ? readData2_1 : imme_32;</div><div class="line">	 </div><div class="line">	 <span class="keyword">always</span>@(readData1_1 <span class="keyword">or</span> alub <span class="keyword">or</span> ALUOp) <span class="keyword">begin</span></div><div class="line">        <span class="keyword">case</span> (ALUOp)</div><div class="line">            <span class="number">3'b000</span>: result &lt;= readData1_1 + alub;</div><div class="line">            <span class="number">3'b001</span>: result &lt;= readData1_1 - alub;</div><div class="line">            <span class="number">3'b010</span>: <span class="keyword">begin</span></div><div class="line">				    <span class="keyword">if</span> (readData1_1 &lt; alub) result &lt;= <span class="number">1</span>;</div><div class="line">					 <span class="keyword">else</span> result &lt;= <span class="number">0</span>;</div><div class="line">			   <span class="keyword">end</span></div><div class="line">            <span class="number">3'b011</span>: result &lt;= readData1_1 &gt;&gt; alub;</div><div class="line">            <span class="number">3'b100</span>: result &lt;= readData1_1 &lt;&lt; alub;</div><div class="line">            <span class="number">3'b101</span>: result &lt;= readData1_1 | alub;</div><div class="line">            <span class="number">3'b110</span>: result &lt;= readData1_1 &amp; alub;</div><div class="line">            <span class="number">3'b111</span>: result &lt;= (readData1_1 &amp; ~alub) | (~readData1_1 &amp; alub);</div><div class="line">        <span class="keyword">endcase</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">    <span class="keyword">assign</span> zero = (result == <span class="number">0</span>) ? <span class="number">1</span> : <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="DataMEM模块"><a href="#DataMEM模块" class="headerlink" title="DataMEM模块"></a><strong>DataMEM模块</strong></h3><p>数据储存在模块申请的数组当中，并根据控制信号的不同，可以存值也可以取值。BDR和ALUOut归入本模块中，以控制在时钟上升沿到来时才将数据传入。数据储存在本次多周期CPU中是按字节存储的，与单周期不同。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> DataMEM(</div><div class="line">    <span class="keyword">input</span> clk,</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] result,</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] readData2,</div><div class="line">    <span class="keyword">input</span> DataMemRW,</div><div class="line">    <span class="keyword">input</span> ALUM2Reg,</div><div class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] write_data</div><div class="line">    );</div><div class="line"></div><div class="line">    <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] DAddr, DataIn;</div><div class="line">	 <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] DataOut;</div><div class="line">	 </div><div class="line">	 <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">	     DataOut = <span class="number">0</span>;</div><div class="line">	 <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">always</span> @(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></div><div class="line">	     DataIn = readData2;</div><div class="line">		  DAddr = result;</div><div class="line">	 <span class="keyword">end</span></div><div class="line">	 </div><div class="line">    <span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] DataMem [<span class="number">0</span>:<span class="number">511</span>];  <span class="comment">// 声明内存</span></div><div class="line">    <span class="keyword">integer</span> i;</div><div class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">512</span>; i = i + <span class="number">1</span>)</div><div class="line">            DataMem[i] = <span class="number">0</span>;</div><div class="line">    <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">always</span>@(DAddr <span class="keyword">or</span> DataMemRW) <span class="keyword">begin</span></div><div class="line">        <span class="keyword">if</span> (DataMemRW == <span class="number">0</span>)  <span class="comment">// 取字</span></div><div class="line">            DataOut[<span class="number">31</span>:<span class="number">0</span>] = &#123;DataMem[DAddr], DataMem[DAddr+<span class="number">1</span>], DataMem[DAddr+<span class="number">2</span>], DataMem[DAddr+<span class="number">3</span>]&#125;;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">begin</span>  <span class="comment">// 存字</span></div><div class="line">            DataMem[DAddr] = DataIn[<span class="number">31</span>:<span class="number">24</span>];</div><div class="line">				DataMem[DAddr+<span class="number">1</span>] = DataIn[<span class="number">23</span>:<span class="number">16</span>];</div><div class="line">				DataMem[DAddr+<span class="number">2</span>] = DataIn[<span class="number">15</span>:<span class="number">8</span>];</div><div class="line">				DataMem[DAddr+<span class="number">3</span>] = DataIn[<span class="number">7</span>:<span class="number">0</span>];</div><div class="line">		  <span class="keyword">end</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">	 <span class="keyword">assign</span> write_data = (ALUM2Reg == <span class="number">0</span>) ? result : DataOut;</div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="IR模块"><a href="#IR模块" class="headerlink" title=" IR模块"></a><strong> IR模块</strong></h3><p>控制在时钟下降沿到来时才将指令传到registerFile模块中。同时根据控制信号的不同，可以使传出的指令保持不变或者变更为InsMEM中传过来的指令。没有其他作用，至于为什么用下降沿，前文有解释。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> IR(</div><div class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] instruction,</div><div class="line">	 <span class="keyword">input</span> IRWre,</div><div class="line">	 <span class="keyword">input</span> clk,</div><div class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] instruction2</div><div class="line">    );</div><div class="line">    </div><div class="line">	 <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">	     instruction2 = <span class="number">0</span>;</div><div class="line">	 <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">always</span> @(<span class="keyword">negedge</span> clk) <span class="keyword">begin</span></div><div class="line">	     <span class="keyword">case</span>(IRWre)</div><div class="line">				<span class="number">1</span>: instruction2 &lt;= instruction;</div><div class="line">				<span class="comment">// 0: instruction2 &lt;= instruction2;</span></div><div class="line">		  <span class="keyword">endcase</span></div><div class="line">	 <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="CPU总模块"><a href="#CPU总模块" class="headerlink" title="CPU总模块"></a><strong>CPU总模块</strong></h3><p>总模块中将各个模块之间的线连起来，并且将IR输出的指令拆分为几个部分，传入不同的模块；然后实例化各个模块，需要注意的是，实例化模块时，变量名和顺序一定一定要和小模块申明时相同；此外，总模块中根据具体情况改变PC的值。PC值初始化为十六进制F8，假设程序从这里开始执行。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> CPU();</div><div class="line"></div><div class="line">    <span class="comment">// 模块间的连线</span></div><div class="line">    <span class="keyword">wire</span> PCWre;</div><div class="line">    <span class="keyword">wire</span> ALUSrcB;</div><div class="line">    <span class="keyword">wire</span> ALUM2Reg;</div><div class="line">    <span class="keyword">wire</span> RegWre;</div><div class="line">    <span class="keyword">wire</span> InsMemRW;</div><div class="line">	 <span class="keyword">wire</span> IRWre;</div><div class="line">	 <span class="keyword">wire</span> WrRegData;</div><div class="line">    <span class="keyword">wire</span> DataMemRW;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] ExtSel;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] PCSrc;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] RegOut;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">2</span>:<span class="number">0</span>] ALUOp;</div><div class="line">	 </div><div class="line">	 <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] PC0;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] instruction;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] instruction2;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] write_data;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] PC4;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] imme_32;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] PCnew;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] readData1;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] readData2;</div><div class="line">    <span class="keyword">wire</span> zero;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] result;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">2</span>:<span class="number">0</span>] state;</div><div class="line">    </div><div class="line">    <span class="keyword">reg</span> clk;</div><div class="line">	 </div><div class="line">    <span class="comment">// 指令拆分成的变量</span></div><div class="line">    <span class="keyword">wire</span> [<span class="number">5</span>:<span class="number">0</span>] Opcode;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] rs;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] rt;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] rd;</div><div class="line">    <span class="keyword">wire</span> [<span class="number">15</span>:<span class="number">0</span>] imme_16;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">25</span>:<span class="number">0</span>] imme_26;</div><div class="line">	 </div><div class="line">	 <span class="comment">// 给拆分变量赋值</span></div><div class="line">	 <span class="keyword">assign</span> Opcode[<span class="number">5</span>:<span class="number">0</span>] = instruction2[<span class="number">31</span>:<span class="number">26</span>];</div><div class="line">    <span class="keyword">assign</span> rs = instruction2[<span class="number">25</span>:<span class="number">21</span>];</div><div class="line">    <span class="keyword">assign</span> rt = instruction2[<span class="number">20</span>:<span class="number">16</span>];</div><div class="line">    <span class="keyword">assign</span> rd = instruction2[<span class="number">15</span>:<span class="number">11</span>];</div><div class="line">    <span class="keyword">assign</span> imme_16 = instruction2[<span class="number">15</span>:<span class="number">0</span>];</div><div class="line">	 <span class="keyword">assign</span> imme_26 = instruction2[<span class="number">25</span>:<span class="number">0</span>];</div><div class="line">	 </div><div class="line">	 <span class="keyword">assign</span> PC4 = PC0+<span class="number">4</span>;</div><div class="line">	 </div><div class="line">	 <span class="comment">// 初始化PC和时钟，设置时钟周期</span></div><div class="line">	 <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">        PC0 = <span class="number">8'b11111000</span>;</div><div class="line">        clk = <span class="number">1</span>;</div><div class="line">    <span class="keyword">end</span></div><div class="line">	 </div><div class="line">    <span class="keyword">always</span> #<span class="number">500</span></div><div class="line">        clk = ~clk;</div><div class="line">	 </div><div class="line">	 <span class="comment">// 实例化各个模块（变量名不能拼写错误！！！）</span></div><div class="line">	 InsMEM insmem(PC0, InsMemRW, instruction);</div><div class="line">	 ControlUnit controlunit(Opcode, zero, clk, PCWre, ALUSrcB, ALUM2Reg, RegWre, InsMemRW, IRWre, DataMemRW, WrRegData, ExtSel, PCSrc, RegOut, ALUOp, state);</div><div class="line">    registerFile registerfile(rs, rt, rd, write_data, PC4, RegWre, clk, WrRegData, RegOut, readData1, readData2);</div><div class="line">    Extend extend(imme_16, ExtSel, PC0, imme_26, imme_32, PCnew);</div><div class="line">	 ALU alu(readData1, readData2, imme_32, ALUSrcB, clk, ALUOp, zero, result);</div><div class="line">	 DataMEM datamem(clk, result, readData2, DataMemRW, ALUM2Reg, write_data);</div><div class="line">	 IR ir(instruction, IRWre, clk, instruction2);</div><div class="line">	 </div><div class="line">	 <span class="comment">// PC模块</span></div><div class="line">	 <span class="keyword">always</span>@(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></div><div class="line">	     <span class="keyword">if</span> (PCWre == <span class="number">1</span>) <span class="keyword">begin</span></div><div class="line">		      <span class="keyword">if</span> (PCSrc == <span class="number">0</span>) PC0 &lt;= PC4;</div><div class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (PCSrc == <span class="number">1</span>) PC0 &lt;= PC4+imme_32*<span class="number">4</span>;</div><div class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (PCSrc == <span class="number">2</span>) PC0 &lt;= readData1;</div><div class="line">				<span class="keyword">else</span> PC0 &lt;= PCnew;</div><div class="line">		  <span class="keyword">end</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h2 id="验证方法"><a href="#验证方法" class="headerlink" title="验证方法"></a><strong>验证方法</strong></h2><p>以下表格方便大家测试。将指令写到my_test_rom.txt文件，文件放在project的根文件夹，接着仿真验证。注意指令存储是按照字存储的，8位二进制位一行。<br><img src="ceshi.png" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/计算机组成原理/缓存/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          缓存--直接相连映射
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/计算机组成原理/单周期CPU/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MIPS单周期CPU</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="多周期CPU" data-title="MIPS多周期CPU" data-url="https://duzwl.github.io/计算机组成原理/多周期CPU/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>

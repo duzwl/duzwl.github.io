@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>OS同步问题（一） | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="操作系统经典同步问题包括生产者-消费者问题、读者-写者问题、哲学家就餐问题等。下面讲的是生产者-消费者问题以及读者-写者问题。
+需要先弄清楚的是，wait()函数将信号量值-1，若值 大于0，则继续执行接下来的代码，否则等待；signal()函数将信号量+1。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS同步问题（一）">
+<meta property="og:url" content="https://duzwl.github.io/Operating-System/C-C/同步1/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="操作系统经典同步问题包括生产者-消费者问题、读者-写者问题、哲学家就餐问题等。下面讲的是生产者-消费者问题以及读者-写者问题。
+需要先弄清楚的是，wait()函数将信号量值-1，若值 大于0，则继续执行接下来的代码，否则等待；signal()函数将信号量+1。">
+<meta property="og:image" content="https://duzwl.github.io/1.png">
+<meta property="og:image" content="https://duzwl.github.io/2.png">
+<meta property="og:image" content="https://duzwl.github.io/3.png">
+<meta property="og:image" content="https://duzwl.github.io/4.png">
+<meta property="og:image" content="https://duzwl.github.io/5.png">
+<meta property="og:image" content="https://duzwl.github.io/6.png">
+<meta property="og:updated_time" content="2016-07-21T08:00:36.971Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OS同步问题（一）">
+<meta name="twitter:description" content="操作系统经典同步问题包括生产者-消费者问题、读者-写者问题、哲学家就餐问题等。下面讲的是生产者-消费者问题以及读者-写者问题。
+需要先弄清楚的是，wait()函数将信号量值-1，若值 大于0，则继续执行接下来的代码，否则等待；signal()函数将信号量+1。">
+<meta name="twitter:image" content="https://duzwl.github.io/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Something that I have learned</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">作为一个零基础的菜鸡程序猿，目标是迅速成长为攻城狮。大山中学14级本科生。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Something that I have learned</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-同步1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/Operating-System/C-C/同步1/" class="article-date">
+  	<time datetime="2016-07-20T09:15:17.000Z" itemprop="datePublished">2016-07-20</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OS同步问题（一）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/semaphore/">semaphore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/thread/">thread</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Operating-System/">Operating System</a><a class="article-category-link" href="/categories/Operating-System/C-C/">C/C++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>操作系统经典同步问题包括生产者-消费者问题、读者-写者问题、哲学家就餐问题等。下面讲的是生产者-消费者问题以及读者-写者问题。</p>
+<p>需要先弄清楚的是，wait()函数将信号量值-1，若值 大于0，则继续执行接下来的代码，否则等待；signal()函数将信号量+1。<br><a id="more"></a></p>
+<h2 id="生产者-消费者问题"><a href="#生产者-消费者问题" class="headerlink" title="生产者-消费者问题"></a><strong>生产者-消费者问题</strong></h2><p>利用线程同步机制，实现生产者-消费者问题。设计一个程序来解决有限缓冲问题;代码中使用了三个信号量: empty (以记录有多少空位)、full (以记录有多少满位)以及mutex (二进制信号量或互斥信号量，以保护对缓冲插入与删除的操作)。empty与full采用标准计数信号量，而mutex 将采用二进制信号量。生产者与消费者作为独立线程，在empty、full、mutex的同步前提下，对缓冲进行插入与删除。</p>
+<h3 id="semaphore"><a href="#semaphore" class="headerlink" title="semaphore"></a><strong>semaphore</strong></h3><p>使用<semaphore.h>头文件中相应函数实现信号量的创建, 以创建mutex为例：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">sem_t</span> mutex;</div><div class="line">sem_init(&amp;mutex, <span class="number">0</span>, <span class="number">1</span>);</div><div class="line">sem_wait(&amp;mutex);</div><div class="line"><span class="comment">//访问临界区</span></div><div class="line">sem_post(&amp;mutex);</div><div class="line"><span class="comment">//退出临界区</span></div></pre></td></tr></table></figure></semaphore.h></p>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a><strong>完整代码</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;semaphore.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> BUFFER_SIZE 5</span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> buffer_item;</div><div class="line">buffer_item buffer[BUFFER_SIZE];</div><div class="line"><span class="keyword">sem_t</span> full, empty, mutex;  <span class="comment">// mutex保护对缓冲插入删除的互斥 </span></div><div class="line"><span class="keyword">int</span> in, out, count;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">insert_item</span><span class="params">(buffer_item item)</span> </span>&#123;</div><div class="line">    sem_wait(&amp;empty);</div><div class="line">    sem_wait(&amp;mutex);</div><div class="line">    </div><div class="line">    buffer[in] = item;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Produce item "</span> &lt;&lt; item &lt;&lt; <span class="string">" at "</span> &lt;&lt; in &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    out = in;</div><div class="line">    in = (in + <span class="number">1</span>) % BUFFER_SIZE;</div><div class="line">    count++;</div><div class="line">    </div><div class="line">    sem_post(&amp;mutex);</div><div class="line">    sem_post(&amp;full);</div><div class="line">    <span class="keyword">int</span> a = <span class="number">0</span>;</div><div class="line">    <span class="keyword">return</span> a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">remove_item</span><span class="params">(buffer_item *item)</span> </span>&#123;</div><div class="line">    sem_wait(&amp;full);</div><div class="line">    sem_wait(&amp;mutex);</div><div class="line">    </div><div class="line">    *item = buffer[out];</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Consumed "</span> &lt;&lt; *item &lt;&lt; <span class="string">" at "</span> &lt;&lt; out &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    in = (in<span class="number">-1</span>+BUFFER_SIZE)%BUFFER_SIZE;</div><div class="line">    out = (out<span class="number">-1</span>+BUFFER_SIZE)%BUFFER_SIZE;</div><div class="line">    count--;</div><div class="line">    </div><div class="line">    sem_post(&amp;mutex);</div><div class="line">    sem_post(&amp;empty);</div><div class="line">    <span class="keyword">int</span> a = <span class="number">0</span>;</div><div class="line">    <span class="keyword">return</span> a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> *<span class="title">producer</span><span class="params">(<span class="keyword">void</span> *param)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> *id = (<span class="keyword">int</span>*)param;</div><div class="line">    buffer_item ran;</div><div class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">        sleep(rand()%<span class="number">5</span>);</div><div class="line">        ran = rand()%<span class="number">100</span>;</div><div class="line">        <span class="keyword">if</span> (insert_item(ran))</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Producer "</span> &lt;&lt; *id &lt;&lt; <span class="string">" report error condition\n"</span>&lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> *<span class="title">consumer</span><span class="params">(<span class="keyword">void</span> *param)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> *id = (<span class="keyword">int</span>*) param;</div><div class="line">    buffer_item ran;</div><div class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">        sleep(rand()%<span class="number">5</span>);</div><div class="line">        <span class="keyword">if</span> (remove_item(&amp;ran))</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Consumer "</span>&lt;&lt; *id &lt;&lt; <span class="string">" report error condition"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123;</div><div class="line">    in = <span class="number">0</span>, out = <span class="number">0</span>, count = <span class="number">0</span>;</div><div class="line">    sem_init(&amp;mutex, <span class="number">0</span>, <span class="number">1</span>);</div><div class="line">    sem_init(&amp;empty, <span class="number">0</span>, BUFFER_SIZE);</div><div class="line">    sem_init(&amp;full, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    </div><div class="line">    <span class="keyword">int</span> pnum = atoi(argv[<span class="number">2</span>]), cnum = atoi(argv[<span class="number">3</span>]);</div><div class="line">    <span class="keyword">int</span> sl = atoi(argv[<span class="number">1</span>]);</div><div class="line">    </div><div class="line">    <span class="keyword">pthread_t</span> p[pnum], c[cnum];</div><div class="line">    <span class="keyword">pthread_attr_t</span> attr;</div><div class="line">    pthread_attr_init(&amp;attr);</div><div class="line">    </div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pnum; ++i) &#123;</div><div class="line">        <span class="keyword">int</span> *pid = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</div><div class="line">        *pid = i;</div><div class="line">        pthread_create(&amp;p[i], &amp;attr, producer, (<span class="keyword">void</span>*)pid);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cnum; ++i) &#123;</div><div class="line">        <span class="keyword">int</span> *cid = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</div><div class="line">        *cid = i;</div><div class="line">        pthread_create(&amp;c[i], &amp;attr, consumer, (<span class="keyword">void</span>*)cid);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    sleep(sl);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="结果示例"><a href="#结果示例" class="headerlink" title="结果示例"></a><strong>结果示例</strong></h3><p><img src="1.png" alt=""><br><img src="2.png" alt=""></p>
+<h2 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a><strong>读者-写者问题</strong></h2><p>创建一个进程，此进程包含n个线程。用这n个线程来表示n个读者或写者。每个线程按相应测试数据文件(后面有介绍)的要求进行读写操作。用信号量机制分别实现读者优先和写者优先的读者-写者问题。</p>
+<p>读者-写者问题的读写操作限制(仅读者优先或写者优先)：</p>
+<p>1)写-写互斥，即不能有两个写者同时进行写操作。</p>
+<p>2)读-写互斥，即不能同时有一个线程在读，而另一个线程在写。</p>
+<p>3)读-读允许，即可以有一个或多个读者在读。</p>
+<p>读者优先附加限制：如果一个读者申请进行读操作时已有另一个读者正在进行读操作，则该读者可直接开始读操作。</p>
+<p>写者优先的附加限制：如果一个读者申请进行读操作时已有另一写者在等待访问共享资源，则该读者必须等到没有写者处于等待状态后才能开始读操作。</p>
+<h3 id="读者优先"><a href="#读者优先" class="headerlink" title="读者优先"></a><strong>读者优先</strong></h3><p>使用mutex实现对readcount访问的互斥。使用wrt实现对临界区的同步。</p>
+<p>当读者占用临界区时：其他申请临界区的读者无需等待, 直接进入临界区, 执行读的操作；而写者等待, 直到所有读者退出临界区, 即readcount == 0时, 才能开始访问临界区, 执行写的操作。</p>
+<p>当写者占用临界区时：第一个申请的读者等待wrt信号, 其余读者阻塞在mutex信号上, 一直到当前写者退出临界区并获得临界区访问权；其他到来的写者等待, 直到当前写者退出临界区并获得临界区访问权。<br><figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">1 </span>W <span class="number">2</span> <span class="number">5</span></div><div class="line"><span class="symbol">2 </span>R <span class="number">2</span> <span class="number">5</span></div><div class="line"><span class="symbol">3 </span>R <span class="number">3</span> <span class="number">2</span></div><div class="line"><span class="symbol">4 </span>R <span class="number">6</span> <span class="number">5</span></div><div class="line"><span class="symbol">5 </span>W <span class="number">4</span> <span class="number">3</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">1 </span>W <span class="number">2</span> <span class="number">5</span></div><div class="line"><span class="symbol">2 </span>W <span class="number">2</span> <span class="number">5</span></div><div class="line"><span class="symbol">3 </span>W <span class="number">3</span> <span class="number">2</span></div><div class="line"><span class="symbol">4 </span>R <span class="number">5</span> <span class="number">4</span></div></pre></td></tr></table></figure>
+<p>以上为测试数据。每行测试数据包括四个字段，各个字段间用空格分隔。第一字段为一个正整数，表示线程序号。第二字段表示相应线程角色，R表示读者，W表示写者。第三字段为一个正数，表示读写操作的开始时间：线程创建后，延迟相应时间(单位为秒)后发出对共享资源的读写申请。第四字段为一个正数，表示读写操作的持续时间。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div></pre></td><td class="code"><pre><div class="line">#include&lt;cstdlib&gt;</div><div class="line">#include&lt;sstream&gt;</div><div class="line">#include&lt;string&gt;</div><div class="line">#include&lt;unistd.h&gt;</div><div class="line">#include&lt;semaphore.h&gt;</div><div class="line">#include&lt;pthread.h&gt;</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">#include&lt;fstream&gt;</div><div class="line">#include&lt;iostream&gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">struct info &#123;</div><div class="line">    int id;</div><div class="line">    int s_time;</div><div class="line">    int d_time;</div><div class="line">&#125;;</div><div class="line">int readcount;</div><div class="line">sem_t mutex, wrt;  // mutex对readcount实验互斥，wrt对写操作互斥 </div><div class="line"></div><div class="line"></div><div class="line">void *reader(void* param) &#123;</div><div class="line">    struct info *data = (struct info*)param;</div><div class="line">    int id = data-&gt;id, s_time = data-&gt;s_time, d_time = data-&gt;d_time;</div><div class="line">    sleep(s_time);</div><div class="line"></div><div class="line">    sem_wait(&amp;mutex);</div><div class="line">    cout &lt;&lt; "Reader " &lt;&lt; id &lt;&lt; " get." &lt;&lt; endl;</div><div class="line">    readcount++;</div><div class="line">    if (readcount == 1) sem_wait(&amp;wrt);</div><div class="line">    sem_post(&amp;mutex);</div><div class="line"></div><div class="line">    cout &lt;&lt; "Reader " &lt;&lt; id &lt;&lt; " reading." &lt;&lt; endl;</div><div class="line">    sleep(d_time);</div><div class="line"></div><div class="line">    cout &lt;&lt; "Reader " &lt;&lt; id &lt;&lt; " finish." &lt;&lt; endl;</div><div class="line">    sem_wait(&amp;mutex);</div><div class="line">    readcount--;</div><div class="line">    if (readcount == 0) &#123;</div><div class="line">        cout &lt;&lt; "All readers finish." &lt;&lt; endl;</div><div class="line">        sem_post(&amp;wrt);</div><div class="line">    &#125;</div><div class="line">    sem_post(&amp;mutex);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void *writer(void* param) &#123;</div><div class="line">    struct info *data = (struct info*)param;</div><div class="line">    int id = data-&gt;id, s_time = data-&gt;s_time, d_time = data-&gt;d_time;</div><div class="line">    sleep(s_time);</div><div class="line"></div><div class="line">    cout &lt;&lt; "Writer " &lt;&lt; id &lt;&lt; " apply." &lt;&lt; endl;</div><div class="line">    sem_wait(&amp;wrt);</div><div class="line"></div><div class="line">    cout &lt;&lt; "Writer " &lt;&lt; id &lt;&lt; " writing." &lt;&lt; endl;</div><div class="line">    sleep(d_time);</div><div class="line"></div><div class="line">    cout &lt;&lt; "Writer " &lt;&lt; id &lt;&lt; " finish." &lt;&lt; endl;</div><div class="line">    sem_post(&amp;wrt);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void createThread(char *buffer) &#123;</div><div class="line">    string s(buffer);</div><div class="line">    stringstream ss(s), stream;</div><div class="line">    string sss[4];</div><div class="line">    int i = 0;</div><div class="line">    while (getline(ss, sss[i], ' ')) ++i;</div><div class="line">    struct info *data = (struct info*)malloc(sizeof(struct info));</div><div class="line">    stream &lt;&lt; sss[0]; stream &gt;&gt; data-&gt;id; stream.clear();</div><div class="line">    stream &lt;&lt; sss[2]; stream &gt;&gt; data-&gt;s_time; stream.clear();</div><div class="line">    stream &lt;&lt; sss[3]; stream &gt;&gt; data-&gt;d_time; stream.clear();</div><div class="line">    </div><div class="line">    pthread_t *thread = (pthread_t*)malloc(sizeof(pthread_t));</div><div class="line">    pthread_attr_t *attr = (pthread_attr_t*)malloc(sizeof(pthread_attr_t));</div><div class="line">    pthread_attr_init(attr);</div><div class="line">    </div><div class="line">    if (sss[1] == "R") &#123;</div><div class="line">        pthread_create(thread, attr, reader, (void *)data);</div><div class="line">        cout &lt;&lt; "Reader " &lt;&lt; data-&gt;id &lt;&lt; " is created." &lt;&lt; endl;</div><div class="line">    &#125; else &#123;</div><div class="line">        pthread_create(thread, attr, writer, (void *)data);</div><div class="line">        cout &lt;&lt; "Writer " &lt;&lt; data-&gt;id &lt;&lt; " is created." &lt;&lt; endl;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(int argc, char *argv[]) &#123;</div><div class="line">    readcount = 0;</div><div class="line">    sem_init(&amp;mutex, 0, 1);</div><div class="line">    sem_init(&amp;wrt, 0, 1);</div><div class="line">    char buffer[16];</div><div class="line"></div><div class="line">    ifstream in(argv[1]);</div><div class="line">    if (!in.is_open()) &#123;</div><div class="line">        cout &lt;&lt; "Error opening file"&lt;&lt; endl;</div><div class="line">        exit(1);</div><div class="line">    &#125;</div><div class="line">    while (in.peek() != EOF) &#123;</div><div class="line">        in.getline(buffer, 16);</div><div class="line">        createThread(buffer);</div><div class="line">    &#125;</div><div class="line">    sleep(20);</div><div class="line">    </div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="3.png" alt=""><br><img src="4.png" alt=""><br>注意：这里的输出会乱，原因不明，后来在管程的试验中，发现改为printf就不会乱。</p>
+<h3 id="写者优先"><a href="#写者优先" class="headerlink" title="写者优先"></a><strong>写者优先</strong></h3><p>写者优先与读者优先类似。不同之处在于一旦一个写者到来，它应该尽快对文件进行写操作，如果有一个写者在等待，则新到来的读者不允许进行读操作。为此应当添加一个整型变量write_count，用于记录正在等待的写者的数目，当write_count=0时，才可以释放等待的读者线程队列。</p>
+<p>为了对全局变量write_count实现互斥，必须增加一个互斥对象mutex3。</p>
+<p>为了实现写者优先，应当添加一个临界区对象read，当有写者在写文件或等待时，读者必须阻塞在read上。</p>
+<p>读者线程除了要对全局变量read_count实现操作上的互斥外，还必须有一个互斥对象对阻塞read这一过程实现互斥。这两个互斥对象分别命名为mutex1和mutex2。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div></pre></td><td class="code"><pre><div class="line">#include&lt;cstdlib&gt;</div><div class="line">#include&lt;sstream&gt;</div><div class="line">#include&lt;string&gt;</div><div class="line">#include&lt;unistd.h&gt;</div><div class="line">#include&lt;semaphore.h&gt;</div><div class="line">#include&lt;pthread.h&gt;</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">#include&lt;fstream&gt;</div><div class="line">#include&lt;iostream&gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">struct info &#123;</div><div class="line">    int id;</div><div class="line">    int s_time;</div><div class="line">    int d_time;</div><div class="line">&#125;;</div><div class="line">int readcount, writecount;</div><div class="line">sem_t mutex1, mutex2, mutex3, wrt, rea;</div><div class="line">// mutex3实现writecount互斥，mutex1对readcount互斥，mutex2对阻塞rea这一过程实现互斥 </div><div class="line"></div><div class="line">void *reader(void* param) &#123;</div><div class="line">    struct info *data = (struct info*)param;</div><div class="line">    int id = data-&gt;id, s_time = data-&gt;s_time, d_time = data-&gt;d_time;</div><div class="line">    sleep(s_time);</div><div class="line"></div><div class="line">    sem_wait(&amp;mutex2);</div><div class="line">    if (writecount != 0) sem_wait(&amp;rea);</div><div class="line">    sem_post(&amp;mutex2);</div><div class="line">    </div><div class="line">    cout &lt;&lt; "Reader " &lt;&lt; id &lt;&lt; " apply." &lt;&lt; endl;</div><div class="line">    sem_wait(&amp;mutex1);</div><div class="line">    readcount++;</div><div class="line">    if (readcount == 1) sem_wait(&amp;wrt);</div><div class="line">    sem_post(&amp;mutex1);</div><div class="line">    </div><div class="line">    cout &lt;&lt; "Reader " &lt;&lt; id &lt;&lt; " reading." &lt;&lt; endl;</div><div class="line">    sleep(d_time);</div><div class="line">    </div><div class="line">    cout &lt;&lt; "Reader " &lt;&lt; id &lt;&lt; " finish." &lt;&lt; endl;</div><div class="line">    sem_wait(&amp;mutex1);</div><div class="line">    readcount--;</div><div class="line">    if (readcount == 0)</div><div class="line">        sem_post(&amp;wrt);</div><div class="line">    sem_post(&amp;mutex1);</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">void *writer(void* param) &#123;</div><div class="line">    struct info *data = (struct info*)param;</div><div class="line">    int id = data-&gt;id, s_time = data-&gt;s_time, d_time = data-&gt;d_time;</div><div class="line">    sleep(s_time);</div><div class="line">    </div><div class="line">    cout &lt;&lt; "Writer " &lt;&lt; id &lt;&lt; " get." &lt;&lt; endl;</div><div class="line">    sem_wait(&amp;mutex3);</div><div class="line">    writecount++;</div><div class="line">    if (writecount == 1)</div><div class="line">        sem_init(&amp;rea, 0, 0);</div><div class="line">    sem_post(&amp;mutex3);</div><div class="line">    </div><div class="line">    sem_wait(&amp;wrt);</div><div class="line">    cout &lt;&lt; "Writer " &lt;&lt; id &lt;&lt; " writing." &lt;&lt; endl;</div><div class="line">    sleep(data-&gt;d_time);</div><div class="line">    sem_post(&amp;wrt);</div><div class="line">    </div><div class="line">    cout &lt;&lt; "Writer " &lt;&lt; id &lt;&lt; " finish." &lt;&lt; endl;</div><div class="line">    sem_wait(&amp;mutex3);</div><div class="line">    writecount--;</div><div class="line">    if (writecount == 0) sem_post(&amp;rea);</div><div class="line">    sem_post(&amp;mutex3);</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">void createThread(char *buffer) &#123;</div><div class="line">    string s(buffer);</div><div class="line">    stringstream ss(s), stream;</div><div class="line">    string sss[4];</div><div class="line">    int i = 0;</div><div class="line">    while (getline(ss, sss[i], ' ')) ++i;</div><div class="line">    struct info *data = (struct info*)malloc(sizeof(struct info));</div><div class="line">    stream &lt;&lt; sss[0]; stream &gt;&gt; data-&gt;id; stream.clear();</div><div class="line">    stream &lt;&lt; sss[2]; stream &gt;&gt; data-&gt;s_time; stream.clear();</div><div class="line">    stream &lt;&lt; sss[3]; stream &gt;&gt; data-&gt;d_time; stream.clear();</div><div class="line">    </div><div class="line">    pthread_t *thread = (pthread_t*)malloc(sizeof(pthread_t));</div><div class="line">    pthread_attr_t *attr = (pthread_attr_t*)malloc(sizeof(pthread_attr_t));</div><div class="line">    pthread_attr_init(attr);</div><div class="line">    </div><div class="line">    if (sss[1] == "R") &#123;</div><div class="line">        pthread_create(thread, attr, reader, (void *)data);</div><div class="line">        cout &lt;&lt; "Reader " &lt;&lt; data-&gt;id &lt;&lt; " is created." &lt;&lt; endl;</div><div class="line">    &#125; else &#123;</div><div class="line">        pthread_create(thread, attr, writer, (void *)data);</div><div class="line">        cout &lt;&lt; "Writer " &lt;&lt; data-&gt;id &lt;&lt; " is created." &lt;&lt; endl;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(int argc, char *argv[]) &#123;</div><div class="line">    readcount = 0;</div><div class="line">    writecount = 0;</div><div class="line">    sem_init(&amp;mutex1, 0, 1);</div><div class="line">    sem_init(&amp;mutex2, 0, 1);</div><div class="line">    sem_init(&amp;mutex3, 0, 1);</div><div class="line">    sem_init(&amp;wrt, 0, 1);</div><div class="line">    sem_init(&amp;rea, 0, 0);</div><div class="line">    char buffer[16];</div><div class="line"></div><div class="line">    ifstream in(argv[1]);</div><div class="line">    if (!in.is_open()) &#123;</div><div class="line">        cout &lt;&lt; "Error opening file"&lt;&lt; endl;</div><div class="line">        exit(1);</div><div class="line">    &#125;</div><div class="line">    while (in.peek() != EOF) &#123;</div><div class="line">        in.getline(buffer, 16);</div><div class="line">        createThread(buffer);</div><div class="line">    &#125;</div><div class="line">    sleep(20);</div><div class="line">    </div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="5.png" alt=""><br><img src="6.png" alt=""></p>
+<p>这里使用c++的cout，输出也会混乱，没有在代码里面改为printf。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/Operating-System/C-C/同步2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          OS同步问题（二）
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/Operating-System/C-C/线程/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">线程创建-Fibonacci数列和矩阵乘法</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="同步1" data-title="OS同步问题（一）" data-url="https://duzwl.github.io/Operating-System/C-C/同步1/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>

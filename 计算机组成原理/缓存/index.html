@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>缓存--直接相连映射 | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="什么是缓存？说白了，把图书馆比作主存，所有的书都放在图书馆中，而你书桌前的书就相当于缓存数据。CPU从Cache读数据，读到就送CPU，若读不到，还必须考虑先从主存中读取数据，然后再将数据写到Cache中，之后，将数据送往CPU；其次，还要考虑CPU修改Cache和存储器数据的情况。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓存--直接相连映射">
+<meta property="og:url" content="https://duzwl.github.io/计算机组成原理/缓存/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="什么是缓存？说白了，把图书馆比作主存，所有的书都放在图书馆中，而你书桌前的书就相当于缓存数据。CPU从Cache读数据，读到就送CPU，若读不到，还必须考虑先从主存中读取数据，然后再将数据写到Cache中，之后，将数据送往CPU；其次，还要考虑CPU修改Cache和存储器数据的情况。">
+<meta property="og:image" content="https://duzwl.github.io/1.png">
+<meta property="og:image" content="https://duzwl.github.io/2.png">
+<meta property="og:image" content="https://duzwl.github.io/3.png">
+<meta property="og:image" content="https://duzwl.github.io/4.png">
+<meta property="og:image" content="https://duzwl.github.io/1.1.png">
+<meta property="og:image" content="https://duzwl.github.io/1.2.png">
+<meta property="og:image" content="https://duzwl.github.io/2.1.png">
+<meta property="og:image" content="https://duzwl.github.io/2.2.png">
+<meta property="og:image" content="https://duzwl.github.io/3.1.png">
+<meta property="og:image" content="https://duzwl.github.io/3.2.png">
+<meta property="og:updated_time" content="2016-07-19T08:50:31.478Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="缓存--直接相连映射">
+<meta name="twitter:description" content="什么是缓存？说白了，把图书馆比作主存，所有的书都放在图书馆中，而你书桌前的书就相当于缓存数据。CPU从Cache读数据，读到就送CPU，若读不到，还必须考虑先从主存中读取数据，然后再将数据写到Cache中，之后，将数据送往CPU；其次，还要考虑CPU修改Cache和存储器数据的情况。">
+<meta name="twitter:image" content="https://duzwl.github.io/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Something that I have learned</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">作为一个零基础的菜鸡程序猿，目标是迅速成长为攻城狮。大山中学14级本科生。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Something that I have learned</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-缓存" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/计算机组成原理/缓存/" class="article-date">
+  	<time datetime="2016-07-19T08:13:47.000Z" itemprop="datePublished">2016-07-19</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      缓存--直接相连映射
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPU/">CPU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MIPS/">MIPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cache/">cache</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/计算机组成原理/">计算机组成原理</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>什么是缓存？说白了，把图书馆比作主存，所有的书都放在图书馆中，而你书桌前的书就相当于缓存数据。CPU从Cache读数据，读到就送CPU，若读不到，还必须考虑先从主存中读取数据，然后再将数据写到Cache中，之后，将数据送往CPU；其次，还要考虑CPU修改Cache和存储器数据的情况。<br><a id="more"></a><br>在本文中，CLK为系统时钟（用于计数器计数控制等操作），CLR为系统总清零信号（清区表存储器、计数器），WCT(tableWr)为写Cache区表存储器信号，AB31..AB0(Addr)为CPU访问内存的地址（地址总线），RD（为0，读）为Cache的读信号，MWr（为1，写）为Cache和主存的写信号，MRd（为0，读）为主存的读信号，CA17..CA0为Cache地址，MD31..MD0为主存与Cache的数据传送线，D31..D0为Cache和CPU的数据传送线，LA3…LA0为块内地址。</p>
+<h2 id="设计原理"><a href="#设计原理" class="headerlink" title="设计原理"></a><strong>设计原理</strong></h2><h3 id="直接相连映射"><a href="#直接相连映射" class="headerlink" title="直接相连映射"></a><strong>直接相连映射</strong></h3><p>直接相联映象方式简单而直接，硬件实现很简单，访问速度也比较快，但是块的冲突率比较高。其主要原则是：主存中一块只能映象到Cache的一个特定的块中。</p>
+<p>假设主存的块号为B，Cache的块号为b，则它们之间的映象关系可以表示为：</p>
+<p>b = B mod Cb</p>
+<p>其中，Cb是Cache的块容量。设主存的块容量为Mb，区容量为Me，则直接映象方法的关系如下图所示。把主存按Cache的大小分成区，一般主存容量为Cache容量的整数倍，主存每一个分区内的块数与Cache的总块数相等。直接映象方式只能把主存各个区中相对块号相同的那些块映象到Cache中同一块号的那个特定块中。例如，主存的块0只能映象到Cache的块0中，主存的块1只能映象到Cache的块1中，同样，主存区1中的块Cb（在区1中的相对块号是0），也只能映象到Cache的块0中。根据上面给出的地址映象规则，整个Cache地址与主存地址的低位部分是完全相同的。<br><img src="1.png" alt=""></p>
+<h3 id="地址变换过程"><a href="#地址变换过程" class="headerlink" title="地址变换过程"></a><strong>地址变换过程</strong></h3><p>主存地址分为三个部分：区号E、块号B和块内地址W；Cache地址分为两部分：块号b和块内地址w。主存地址中的块号B与Cache地址中的块号b是完全相同的。同样，主存地址中的块内地址W与Cache地址中的块内地址w也是完全相同的，主存地址比Cache地址长出来的部分称为区号E。<br><img src="2.png" alt=""></p>
+<p>在程序执行过程中，当要访问Cache时，为了实现主存块号到Cache块号的变换，需要有一个存放主存区号的小容量存储器（称为区表存储器），这个存储器的容量与Cache的块数相等，字长为主存地址中区号E的长度。</p>
+<p>从主存地址到Cache地址的变换过程中，首先用主存地址中的块号B去访问区表存储器（用块号B作为区表存储器的地址，访问它），然后，将读出来的区号与主存地址中的区号E进行比较，比较结果相等，则Cache命中，表示要访问的那一块已经装入到Cache中了，可以直接用块号及块内地址组成的缓冲地址到缓存Cache中取数，把读出来的数据送往CPU；如果比较结果不相等，表示要访问的那个块还没有装入到Cache中，这时，要用主存地址去访问主存储器，先把该地址所在的块读到Cache中，然后再读取Cache中该地址的数据送CPU。</p>
+<h3 id="Cache、CPU、存储器"><a href="#Cache、CPU、存储器" class="headerlink" title="Cache、CPU、存储器"></a><strong>Cache、CPU、存储器</strong></h3><p><img src="3.png" alt=""><br>32位主存地址为AB31..AB0（地址总线），RD（为0，读）为Cache的读信号，CMWr（为1，写）为Cache和主存的写信号，MRd（为0，读）为主存的读信号，D31..D0为CPU与Cache的数据传送线，MD31..MD0为存储器RAM与Cache的数据传送线。<br><img src="4.png" alt=""><br>如上图，区号E取14位，块号B为14位，块内地址为4位，这样Cache地址就是18位了，其中Cache块号b为14位，块内地址w为4位，所以Cache容量为256KB(2^18)个单元，块号b取14位，那么Cache分为16KB(2^14)块，块内地址w取4位，则每块为16个单元（每个单元一个字节）。</p>
+<p>实现Cache的存储体的方法是先实现一个8位的存储单元，然后用这个8位的存储单元来构成一个256Kb X 8位的Cache（地址18位）。</p>
+<p>再实现一个14位的存储单元，然后，用这个14位的存储单元来构成一个16k X 14位的区表存储器（地址14位与块号B相同），用来存放区号（14位）。在这个部分中，还要实现一个区号E比较器，也就是如果主存地址的区号E和区表存储器中按块号B为地址取出的相应单元中的区号E相等，则Cache命中，否则Cache失效。</p>
+<p>当Cache命中时，就将Cache存储体中相应单元的数据送往CPU，这个过程比较简单。当Cache失效时，就将主存中相应块中的数据读出写入Cache中，这样Cache控制器就要产生主存储器的读信号MRd（为0，读），由于每个Cache块占十六个单元，按32 位（4个字节）为访问存储器单位，那么需要连续访问4次主存，读取存储器中该块的数据，即16个字节，然后写入Cache相应块中，最后再修改区表存储器。至于访问主存的方法，要用到计数器。写数据时，如果Cache中有该地址数据，则修改，然后修改存储器该地址内容（MWr为1，写，为主存的写信号）；如果Cache中无该地址数据，就直接修改存储器该地址单元内容。读/写存储器时，要注意互锁情况。</p>
+<h2 id="设计方法"><a href="#设计方法" class="headerlink" title="设计方法"></a><strong>设计方法</strong></h2><h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a><strong>信号量</strong></h3><p>代码中包含多个信号量，下面先了解信号量的意义：<br>RAM中：</p>
+<ul>
+<li>counterFromCache：块内偏移地址</li>
+<li>signalToCache：在本设计中，当连续读取的相邻数据相同时没有办法触发cache中的写操作（将RAM读到的数据写入缓存），因此添加此变量实现触发</li>
+<li>MRd：值为0时，读主存</li>
+<li>CMWr：值为1，写主存；当缓存中命中时也写缓存</li>
+<li>DataWithCache：读取并传到缓存的数据</li>
+</ul>
+<p>MyCache中：</p>
+<ul>
+<li>RD：值为0时读缓存</li>
+<li>counterToRAM：同RAM中的counterFromCache</li>
+<li>signalFromRAM：同RAM中的signalToCache</li>
+<li>DataToCPU：传送数据到CPU</li>
+<li>cacheData：缓存储存</li>
+<li>blockTable：区表存储器</li>
+<li>DataWithRAM：同RAM中的DataWithCache</li>
+<li>Counter：初始化为0，当要读取数据时：若值为0，如果数据在缓存中，直接读取，结束，如果不在缓存中，更改counter值为1，counterToRAM设为0，在代码中counter值1会进入主存读取数据，读取四次即一整块后，再写区表存储器</li>
+</ul>
+<h3 id="注意要点"><a href="#注意要点" class="headerlink" title="注意要点"></a><strong>注意要点</strong></h3><p>counter变量用来计数，一开始设为2-bit变量。由于具体实现的原因，临界条件设为counter为4，结果会一直出错，事实上counter值为3的时候再加1又变为0了，所以把counter设为3-bit。</p>
+<p>MyCache模块根据RAM传进来的数据DataWithRAM的改变来将数据写到缓存中，但是连续读取的数据可能相同，于是添加signalFromRAM信号表明数据有读取，缓存一个在读相同数据时也要写入。</p>
+<h3 id="模块设计"><a href="#模块设计" class="headerlink" title="模块设计"></a><strong>模块设计</strong></h3><h4 id="cache主模块"><a href="#cache主模块" class="headerlink" title="cache主模块"></a><strong>cache主模块</strong></h4><p>将MyCache模块和RAM模块链接起来并实例MyCache和RAM。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> Cache(rd, cmwr, from_cpu, to_cpu, address, mrd, datawithram</div><div class="line">    );</div><div class="line">    <span class="keyword">input</span> rd, cmwr;</div><div class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] address, from_cpu;</div><div class="line">	 <span class="keyword">output</span> mrd;</div><div class="line">	 <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] to_cpu, datawithram;</div><div class="line">	 </div><div class="line">	 <span class="keyword">wire</span> rd, cmwr, mrd;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] signal;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">2</span>:<span class="number">0</span>] counter;</div><div class="line">	 <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] to_cpu, from_cpu, address, datawithram;</div><div class="line">	 </div><div class="line">	 <span class="comment">// 实例化</span></div><div class="line">    myCache MYCACHE(<span class="variable">.RD</span>(rd), <span class="variable">.CMWr</span>(cmwr), <span class="variable">.MRd</span>(mrd), <span class="variable">.DataToCPU</span>(to_cpu),</div><div class="line">                <span class="variable">.DataFromCPU</span>(from_cpu), <span class="variable">.Address</span>(address), <span class="variable">.DataWithRAM</span>(datawithram),</div><div class="line">					 <span class="variable">.counterToRAM</span>(counter), <span class="variable">.signalFromRAM</span>(signal));</div><div class="line">    RAM myram(<span class="variable">.CMWr</span>(cmwr), <span class="variable">.MRd</span>(mrd), <span class="variable">.counterFromCache</span>(counter), <span class="variable">.Address</span>(address),</div><div class="line">                <span class="variable">.DataWithCache</span>(datawithram), <span class="variable">.DataFromCPU</span>(from_cpu), <span class="variable">.signalToCache</span>(signal));</div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h4 id="RAM模块"><a href="#RAM模块" class="headerlink" title="RAM模块"></a><strong>RAM模块</strong></h4><p>RAM模块主要是申明内存空间还有存储数据或取出数据：当MRd信号值为0时，需要读取内存中的某位置的数据到ram_data中，然后再写入cache中；而不管什么时候，只要CMWr信号为1，RAM都需要写入CPU送过来的数据。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> RAM(CMWr, MRd, counterFromCache, Address, DataWithCache, DataFromCPU, signalToCache</div><div class="line">    );</div><div class="line"></div><div class="line">    <span class="keyword">input</span> CMWr, MRd;</div><div class="line">	 <span class="keyword">input</span> [<span class="number">2</span>:<span class="number">0</span>] counterFromCache;</div><div class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] Address, DataFromCPU;</div><div class="line">	 </div><div class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] signalToCache;</div><div class="line">	 <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] DataWithCache;</div><div class="line">	 </div><div class="line">	 <span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] register [<span class="number">0</span>:<span class="number">20'hfffff</span>];  <span class="comment">// 主存中的存数据数组</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] signalToCache;</div><div class="line">	 <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] DataWithCache, wordNum;</div><div class="line">	 </div><div class="line">	 <span class="keyword">integer</span> i;</div><div class="line">	 </div><div class="line">	 <span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">	   signalToCache = <span class="number">0</span>;</div><div class="line">		<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt;= <span class="number">20'hfffff</span>; i= i+<span class="number">1</span>)</div><div class="line">		    register[i] = <span class="number">8'b00001111</span>;</div><div class="line">		register[<span class="number">32'h00040000</span>] = <span class="number">0</span>;</div><div class="line">		register[<span class="number">32'h00040001</span>] = <span class="number">1</span>;</div><div class="line">		register[<span class="number">32'h00040002</span>] = <span class="number">2</span>;</div><div class="line">		register[<span class="number">32'h00040003</span>] = <span class="number">3</span>;</div><div class="line">		register[<span class="number">32'h00040004</span>] = <span class="number">4</span>;</div><div class="line">		register[<span class="number">32'h00040005</span>] = <span class="number">5</span>;</div><div class="line">		register[<span class="number">32'h00040006</span>] = <span class="number">6</span>;</div><div class="line">		register[<span class="number">32'h00040007</span>] = <span class="number">7</span>;</div><div class="line">		register[<span class="number">32'h00040008</span>] = <span class="number">8</span>;</div><div class="line">		register[<span class="number">32'h00040009</span>] = <span class="number">9</span>;</div><div class="line">		register[<span class="number">32'h0004000A</span>] = <span class="number">10</span>;</div><div class="line">		register[<span class="number">32'h0004000B</span>] = <span class="number">11</span>;</div><div class="line">		register[<span class="number">32'h0004000C</span>] = <span class="number">12</span>;</div><div class="line">		register[<span class="number">32'h0004000D</span>] = <span class="number">13</span>;</div><div class="line">		register[<span class="number">32'h0004000E</span>] = <span class="number">14</span>;</div><div class="line">		register[<span class="number">32'h0004000F</span>] = <span class="number">15</span>;</div><div class="line">	 <span class="keyword">end</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">always</span> @(CMWr <span class="keyword">or</span> MRd <span class="keyword">or</span> counterFromCache) <span class="keyword">begin</span></div><div class="line">	     <span class="keyword">if</span> (MRd == <span class="number">0</span>) <span class="keyword">begin</span>  <span class="comment">// 读主存</span></div><div class="line">		      wordNum = Address[<span class="number">31</span>:<span class="number">4</span>]*<span class="number">16</span>+counterFromCache*<span class="number">4</span>;</div><div class="line">		      DataWithCache[<span class="number">31</span>:<span class="number">24</span>] = register[wordNum];</div><div class="line">				DataWithCache[<span class="number">23</span>:<span class="number">16</span>] = register[wordNum+<span class="number">1</span>];</div><div class="line">				DataWithCache[<span class="number">15</span>:<span class="number">8</span>] = register[wordNum+<span class="number">2</span>];</div><div class="line">				DataWithCache[<span class="number">7</span>:<span class="number">0</span>] = register[wordNum+<span class="number">3</span>];</div><div class="line">				signalToCache = signalToCache+<span class="number">1</span>;</div><div class="line">		  <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">if</span>(CMWr == <span class="number">1</span>) <span class="keyword">begin</span>  <span class="comment">// 写主存</span></div><div class="line">				register[Address] = DataFromCPU[<span class="number">31</span>:<span class="number">24</span>];</div><div class="line">				register[Address+<span class="number">1</span>] = DataFromCPU[<span class="number">23</span>:<span class="number">16</span>];</div><div class="line">				register[Address+<span class="number">2</span>] = DataFromCPU[<span class="number">15</span>:<span class="number">8</span>];</div><div class="line">				register[Address+<span class="number">3</span>] = DataFromCPU[<span class="number">7</span>:<span class="number">0</span>];</div><div class="line">		  <span class="keyword">end</span></div><div class="line">	  <span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h4 id="MyCache模块"><a href="#MyCache模块" class="headerlink" title="MyCache模块"></a><strong>MyCache模块</strong></h4><p>读取数据时，若数据在缓存中则直接读取，结束；如果不在，则更改counter的值然后进入主存读取，连续读取一整块后写区表存储器并将数据送到CPU；<br>写数据时若命中，主存需要写，缓存也需要写。<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> myCache(RD, CMWr, MRd, DataToCPU, DataFromCPU, Address, DataWithRAM, counterToRAM, signalFromRAM</div><div class="line">    );</div><div class="line">	 <span class="keyword">input</span> RD, CMWr;</div><div class="line">	 <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] signalFromRAM;</div><div class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] DataFromCPU, DataWithRAM, Address;</div><div class="line">	 <span class="keyword">output</span> MRd;</div><div class="line">	 <span class="keyword">output</span> [<span class="number">2</span>:<span class="number">0</span>] counterToRAM;</div><div class="line">	 <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] DataToCPU;</div><div class="line">	 </div><div class="line">	 <span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] cacheData [<span class="number">0</span>:<span class="number">18'h3ffff</span>];   <span class="comment">// 缓存中存数据的数组</span></div><div class="line">    <span class="keyword">reg</span> [<span class="number">14</span>:<span class="number">0</span>] blockTable [<span class="number">0</span>:<span class="number">14'h3fff</span>];  <span class="comment">// 区表存储器</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">reg</span> MRd;</div><div class="line">	 <span class="keyword">reg</span> [<span class="number">2</span>:<span class="number">0</span>] counter, counterToRAM;</div><div class="line">	 <span class="keyword">reg</span> [<span class="number">13</span>:<span class="number">0</span>] blockNum;</div><div class="line">	 <span class="keyword">reg</span> [<span class="number">13</span>:<span class="number">0</span>] partNum;</div><div class="line">	 <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] cacheAddress, DataToCPU;</div><div class="line">	 </div><div class="line">	 <span class="keyword">integer</span> i;</div><div class="line">	 </div><div class="line">	 <span class="keyword">initial</span> <span class="keyword">begin</span>  <span class="comment">// 初始化区表存储器</span></div><div class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt;= <span class="number">14'h3fff</span>; i=i+<span class="number">1</span>)</div><div class="line">		      blockTable[i][<span class="number">14</span>] = <span class="number">0</span>;</div><div class="line">		  MRd = <span class="number">1</span>;</div><div class="line">		  counter = <span class="number">0</span>;</div><div class="line">	 <span class="keyword">end</span></div><div class="line"> </div><div class="line">     <span class="keyword">always</span> @(RD <span class="keyword">or</span> CMWr  <span class="keyword">or</span> Address <span class="keyword">or</span> DataFromCPU <span class="keyword">or</span> DataWithRAM <span class="keyword">or</span> signalFromRAM) <span class="keyword">begin</span></div><div class="line">	      blockNum = Address[<span class="number">17</span>:<span class="number">4</span>];</div><div class="line">			partNum = Address[<span class="number">31</span>:<span class="number">18</span>];</div><div class="line">	      <span class="keyword">if</span> (RD == <span class="number">0</span> &amp;&amp; counter == <span class="number">0</span>) <span class="keyword">begin</span>  <span class="comment">// 读数据</span></div><div class="line">			        <span class="keyword">if</span> (partNum == blockTable[blockNum][<span class="number">13</span>:<span class="number">0</span>] &amp;&amp; blockTable[blockNum][<span class="number">14</span>] == <span class="number">1</span>) <span class="keyword">begin</span>  <span class="comment">// 数据在缓存中</span></div><div class="line">					      cacheAddress = <span class="number">16</span>*blockNum+Address[<span class="number">3</span>:<span class="number">0</span>];</div><div class="line">					      DataToCPU[<span class="number">31</span>:<span class="number">24</span>] = cacheData[cacheAddress];</div><div class="line">							DataToCPU[<span class="number">23</span>:<span class="number">16</span>] = cacheData[cacheAddress+<span class="number">1</span>];</div><div class="line">							DataToCPU[<span class="number">15</span>:<span class="number">8</span>] = cacheData[cacheAddress+<span class="number">2</span>];</div><div class="line">							DataToCPU[<span class="number">7</span>:<span class="number">0</span>] = cacheData[cacheAddress+<span class="number">3</span>];</div><div class="line">			        <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span>   <span class="comment">// 数据不在缓存中，更改counter进入主存读出来</span></div><div class="line">					      MRd = <span class="number">0</span>;</div><div class="line">							counter = <span class="number">1</span>;</div><div class="line">		               counterToRAM = <span class="number">0</span>;</div><div class="line">					  <span class="keyword">end</span></div><div class="line">			<span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">if</span>(RD == <span class="number">0</span> &amp;&amp; counter &gt;= <span class="number">1</span>) <span class="keyword">begin</span>  <span class="comment">// 读数据，在主存中，需要读一整块，四次</span></div><div class="line">			    cacheAddress = <span class="number">16</span>*blockNum+<span class="number">4</span>*(counter-<span class="number">1</span>);</div><div class="line">				 cacheData[cacheAddress] = DataWithRAM[<span class="number">31</span>:<span class="number">24</span>];</div><div class="line">				 cacheData[cacheAddress+<span class="number">1</span>] = DataWithRAM[<span class="number">23</span>:<span class="number">16</span>];</div><div class="line">				 cacheData[cacheAddress+<span class="number">2</span>] = DataWithRAM[<span class="number">15</span>:<span class="number">8</span>];</div><div class="line">				 cacheData[cacheAddress+<span class="number">3</span>] = DataWithRAM[<span class="number">7</span>:<span class="number">0</span>];</div><div class="line">			    <span class="keyword">if</span> (counter == <span class="number">4</span>) <span class="keyword">begin</span>  <span class="comment">// 读取完毕，写区表存储器并将数据传到CPU</span></div><div class="line">				     MRd = <span class="number">1</span>;</div><div class="line">					  cacheAddress = <span class="number">16</span>*blockNum+Address[<span class="number">3</span>:<span class="number">0</span>];</div><div class="line">					  DataToCPU[<span class="number">31</span>:<span class="number">24</span>] = cacheData[cacheAddress];</div><div class="line">					  DataToCPU[<span class="number">23</span>:<span class="number">16</span>] = cacheData[cacheAddress+<span class="number">1</span>];</div><div class="line">					  DataToCPU[<span class="number">15</span>:<span class="number">8</span>] = cacheData[cacheAddress+<span class="number">2</span>];</div><div class="line">					  DataToCPU[<span class="number">7</span>:<span class="number">0</span>] = cacheData[cacheAddress+<span class="number">3</span>];</div><div class="line">					  blockTable[blockNum][<span class="number">13</span>:<span class="number">0</span>] = partNum;</div><div class="line">					  blockTable[blockNum][<span class="number">14</span>] = <span class="number">1</span>;</div><div class="line">					  counter = <span class="number">0</span>;</div><div class="line">				 <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span>   <span class="comment">// 每10ns读一次</span></div><div class="line">					  #<span class="number">10</span></div><div class="line">					  counter = counter+<span class="number">1</span>;</div><div class="line">					  counterToRAM = counter-<span class="number">1</span>;</div><div class="line">				 <span class="keyword">end</span></div><div class="line">			<span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">if</span>(CMWr == <span class="number">1</span>) <span class="keyword">begin</span>  <span class="comment">// 需要写数据，区号匹配，将CPU中数据写入缓存</span></div><div class="line">			    <span class="keyword">if</span> (partNum == blockTable[blockNum][<span class="number">13</span>:<span class="number">0</span>] &amp;&amp; blockTable[blockNum][<span class="number">14</span>] == <span class="number">1</span>) <span class="keyword">begin</span></div><div class="line">				     cacheAddress = <span class="number">16</span>*blockNum+Address[<span class="number">3</span>:<span class="number">0</span>];</div><div class="line">				     cacheData[cacheAddress] = DataFromCPU[<span class="number">31</span>:<span class="number">24</span>];</div><div class="line">					  cacheData[cacheAddress+<span class="number">1</span>] = DataFromCPU[<span class="number">23</span>:<span class="number">16</span>];</div><div class="line">					  cacheData[cacheAddress+<span class="number">2</span>] = DataFromCPU[<span class="number">15</span>:<span class="number">8</span>];</div><div class="line">					  cacheData[cacheAddress+<span class="number">3</span>] = DataFromCPU[<span class="number">7</span>:<span class="number">0</span>];</div><div class="line">				 <span class="keyword">end</span></div><div class="line">			<span class="keyword">end</span></div><div class="line">	  <span class="keyword">end</span></div><div class="line">	 </div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h3 id="测试文件"><a href="#测试文件" class="headerlink" title="测试文件"></a><strong>测试文件</strong></h3><h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a><strong>测试代码</strong></h4><p>一下文件方便测试，代码不唯一：<br><figure class="highlight verilog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span> test_tf;</div><div class="line"></div><div class="line">	<span class="comment">// Inputs</span></div><div class="line">	<span class="keyword">reg</span> rd;</div><div class="line">	<span class="keyword">reg</span> cmwr;</div><div class="line">	<span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] from_cpu;</div><div class="line">	<span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] address;</div><div class="line"></div><div class="line">	<span class="comment">// Outputs</span></div><div class="line">	<span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] to_cpu;</div><div class="line">	<span class="keyword">wire</span> mrd;</div><div class="line">	<span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] datawithram;</div><div class="line"></div><div class="line">	<span class="comment">// Instantiate the Unit Under Test (UUT)</span></div><div class="line">	Cache uut (</div><div class="line">		<span class="variable">.rd</span>(rd), </div><div class="line">		<span class="variable">.cmwr</span>(cmwr), </div><div class="line">		<span class="variable">.from_cpu</span>(from_cpu), </div><div class="line">		<span class="variable">.to_cpu</span>(to_cpu), </div><div class="line">		<span class="variable">.address</span>(address), </div><div class="line">		<span class="variable">.mrd</span>(mrd), </div><div class="line">		<span class="variable">.datawithram</span>(datawithram)</div><div class="line">	);</div><div class="line"></div><div class="line">	<span class="keyword">initial</span> <span class="keyword">begin</span></div><div class="line">		<span class="comment">// Initialize Inputs</span></div><div class="line">		rd = <span class="number">1</span>;</div><div class="line">		cmwr = <span class="number">0</span>;</div><div class="line">		from_cpu = <span class="number">0</span>;</div><div class="line">		address = <span class="number">0</span>;</div><div class="line">		<span class="comment">// Wait 100 ns for global reset to finish</span></div><div class="line">		#<span class="number">100</span></div><div class="line">		</div><div class="line">		<span class="comment">// 块0，区号0  数据不在缓存中，从主存读</span></div><div class="line">      address = <span class="number">32'h00000002</span>;</div><div class="line">		rd = <span class="number">0</span>;</div><div class="line">		cmwr = <span class="number">0</span>;</div><div class="line">      #<span class="number">100</span></div><div class="line">		</div><div class="line">		<span class="comment">// 块0，区号1  数据不在缓存中，从主存读，初始化为不同值</span></div><div class="line">		address = <span class="number">32'h00040002</span>;</div><div class="line">		rd = <span class="number">0</span>;</div><div class="line">		cmwr = <span class="number">0</span>;</div><div class="line">		#<span class="number">100</span></div><div class="line">		</div><div class="line">		<span class="comment">// 块0，区号1  数据在缓存中，读</span></div><div class="line">		address = <span class="number">32'h00040003</span>;</div><div class="line">		rd = <span class="number">0</span>;</div><div class="line">		cmwr = <span class="number">0</span>;</div><div class="line">		#<span class="number">100</span></div><div class="line">		</div><div class="line">		<span class="comment">// 块0，区号1  数据在缓存中，写缓存和主存</span></div><div class="line">		address = <span class="number">32'h00040007</span>;</div><div class="line">		from_cpu = <span class="number">32'haabbccdd</span>;</div><div class="line">		rd = <span class="number">1</span>;</div><div class="line">		cmwr = <span class="number">1</span>;</div><div class="line">		#<span class="number">100</span></div><div class="line">		</div><div class="line">		<span class="comment">// 块0，区号1  从偏移量5开始检测</span></div><div class="line">		address = <span class="number">32'h00040005</span>;</div><div class="line">		rd = <span class="number">0</span>;</div><div class="line">		cmwr = <span class="number">0</span>;</div><div class="line">		#<span class="number">100</span></div><div class="line">		</div><div class="line">		<span class="comment">// 块0，区号0  数据不在缓存中命中，只改主存</span></div><div class="line">		address = <span class="number">32'h00000002</span>;</div><div class="line">		from_cpu = <span class="number">32'h11223344</span>;</div><div class="line">		rd = <span class="number">1</span>;</div><div class="line">		cmwr = <span class="number">1</span>;</div><div class="line">		#<span class="number">100</span></div><div class="line">		</div><div class="line">		<span class="comment">// 块0，区号0   先读到缓存再送到CPU，检测是否正确</span></div><div class="line">		address = <span class="number">32'h00000002</span>;</div><div class="line">		rd = <span class="number">0</span>;</div><div class="line">		cmwr = <span class="number">0</span>;</div><div class="line">	<span class="keyword">end</span></div><div class="line">      </div><div class="line"><span class="keyword">endmodule</span></div></pre></td></tr></table></figure></p>
+<h4 id="测试过程分析"><a href="#测试过程分析" class="headerlink" title="测试过程分析"></a><strong>测试过程分析</strong></h4><p>由于测试过程复杂而且大同小异，这里不一一说明，主要是看波形图和变量值是否符合预期。</p>
+<h5 id="测试1"><a href="#测试1" class="headerlink" title="测试1"></a><strong>测试1</strong></h5><p><img src="1.1.png" alt=""></p>
+<p><img src="1.2.png" alt=""></p>
+<p>可以看到波形图中在100ns之后mdr有一小段时间变为0，这就是从主存拿数据的阶段</p>
+<h5 id="测试2"><a href="#测试2" class="headerlink" title="测试2"></a><strong>测试2</strong></h5><p><img src="2.1.png" alt=""></p>
+<p><img src="2.2.png" alt=""></p>
+<p>读取的地址在内存中每个字节的初值不同，所以可以观察到datawithram值有改变</p>
+<h5 id="测试3"><a href="#测试3" class="headerlink" title="测试3"></a><strong>测试3</strong></h5><p><img src="3.1.png" alt=""></p>
+<p><img src="3.2.png" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/Operating-System/C-C/进程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          进程创建及共享内存
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/计算机组成原理/多周期CPU/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MIPS多周期CPU</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="缓存" data-title="缓存--直接相连映射" data-url="https://duzwl.github.io/计算机组成原理/缓存/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>打飞碟 | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="下面编写简单打飞碟游戏。游戏分多个回合，每个回合有N个飞碟，选择游戏回合后，飞碟飞出，点击鼠标，子弹飞出。飞碟落地或被击中，则准备下一次射击。每回合飞碟的大小、颜色、发射位置、发射角度、每次发射的数量以及速度等等可以变化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="打飞碟">
+<meta property="og:url" content="https://duzwl.github.io/3D游戏开发/打飞碟/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="下面编写简单打飞碟游戏。游戏分多个回合，每个回合有N个飞碟，选择游戏回合后，飞碟飞出，点击鼠标，子弹飞出。飞碟落地或被击中，则准备下一次射击。每回合飞碟的大小、颜色、发射位置、发射角度、每次发射的数量以及速度等等可以变化。">
+<meta property="og:image" content="https://duzwl.github.io/aa.png">
+<meta property="og:image" content="https://duzwl.github.io/f1.png">
+<meta property="og:image" content="https://duzwl.github.io/f2.png">
+<meta property="og:image" content="https://duzwl.github.io/f3.png">
+<meta property="og:image" content="https://duzwl.github.io/f4.png">
+<meta property="og:image" content="https://duzwl.github.io/f5.png">
+<meta property="og:image" content="https://duzwl.github.io/f6.png">
+<meta property="og:image" content="https://duzwl.github.io/f7.png">
+<meta property="og:image" content="https://duzwl.github.io/d.png">
+<meta property="og:image" content="https://duzwl.github.io/a1.png">
+<meta property="og:image" content="https://duzwl.github.io/g1.png">
+<meta property="og:image" content="https://duzwl.github.io/u1.png">
+<meta property="og:image" content="https://duzwl.github.io/u2.png">
+<meta property="og:image" content="https://duzwl.github.io/all.png">
+<meta property="og:updated_time" content="2016-07-22T09:05:29.218Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="打飞碟">
+<meta name="twitter:description" content="下面编写简单打飞碟游戏。游戏分多个回合，每个回合有N个飞碟，选择游戏回合后，飞碟飞出，点击鼠标，子弹飞出。飞碟落地或被击中，则准备下一次射击。每回合飞碟的大小、颜色、发射位置、发射角度、每次发射的数量以及速度等等可以变化。">
+<meta name="twitter:image" content="https://duzwl.github.io/aa.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Something that I have learned</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">作为一个零基础的菜鸡程序猿，目标是迅速成长为攻城狮。大山中学14级本科生。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Something that I have learned</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzw1" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-打飞碟" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/3D游戏开发/打飞碟/" class="article-date">
+  	<time datetime="2016-07-22T08:30:02.000Z" itemprop="datePublished">2016-07-22</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      打飞碟
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity3d/">unity3d</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工厂模式/">工厂模式</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/3D游戏开发/">3D游戏开发</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>下面编写简单打飞碟游戏。游戏分多个回合，每个回合有N个飞碟，选择游戏回合后，飞碟飞出，点击鼠标，子弹飞出。飞碟落地或被击中，则准备下一次射击。每回合飞碟的大小、颜色、发射位置、发射角度、每次发射的数量以及速度等等可以变化。<br><a id="more"></a></p>
+<h2 id="初始准备"><a href="#初始准备" class="headerlink" title="初始准备"></a><strong>初始准备</strong></h2><p>创建Terrian；创建Cylinder并设置其大小(10, 0.1, 10)，将其拉到Assert/Resources/Prefabs下，设置标签为Finish, 往后的代码需要用到这个标签，删除层次块中的Cylinder。调整摄像机（0， 175， 0）、Terrain（0， 15， 0），大小为（29， 1， 30）。</p>
+<h2 id="BaseCode-cs"><a href="#BaseCode-cs" class="headerlink" title="BaseCode.cs"></a><strong>BaseCode.cs</strong></h2><p><img src="aa.png" alt=""><br>其命名空间Mygame中包含Factory类工厂，工厂能控制飞碟的移动，让飞碟消失，即回收飞碟；包含disappear组件，飞碟加载这个组件后自动消失；包含autodisappear组件，当飞碟到达某位置后自动消失，位置可自由设置。</p>
+<h3 id="Factory类"><a href="#Factory类" class="headerlink" title="Factory类"></a><strong>Factory类</strong></h3><p>变量的用途，根据变量名即可知道；简单的获取实例的函数。<br><img src="f1.png" alt=""><br><img src="f2.png" alt=""><br>通过添加组件控制飞盘的消失：<br><img src="f3.png" alt=""><br>接下来是工厂的核心类：ApplyUFO（int）。当未使用的飞盘队列还储存有飞盘时，取出来，根据游戏的关卡，给飞盘不同的属性和动作。每个飞盘都需要AutoDisappear组件和Rigibody组件。<br><img src="f4.png" alt=""><br> 第一关：速度较小，黄色的飞盘，向下抛。<br><img src="f5.png" alt=""><br>第二关：速度较大，蓝色，飞盘抛出方向随机。<br><img src="f6.png" alt=""><br> 第三关：速度大而且随机，抛出位置有两个，抛出方向随机，黑色。<br><img src="f7.png" alt=""></p>
+<h3 id="Disappear类"><a href="#Disappear类" class="headerlink" title="Disappear类"></a><strong>Disappear类</strong></h3><p>对两个list进行适当操作，去除要消失的飞盘的相关组件。<br><img src="d.png" alt=""></p>
+<h3 id="AutoDisappear类"><a href="#AutoDisappear类" class="headerlink" title="AutoDisappear类"></a><strong>AutoDisappear类</strong></h3><p>同Disappear类似，但加上消失的条件。<br><img src="a1.png" alt=""></p>
+<h2 id="GenGameObject类"><a href="#GenGameObject类" class="headerlink" title="GenGameObject类"></a><strong>GenGameObject类</strong></h2><p>用于生成n个飞碟并放在unused list里面，以供使用。注意当代码挂载到相机上后，要将Prefabs中的飞盘挂载到相机的GenGameObject组件的UFO上，这样才能Instantiate。同时记得设置N的大小，即每次存到队列中的飞盘个数.<br><img src="g1.png" alt=""></p>
+<h2 id="UserInterface类"><a href="#UserInterface类" class="headerlink" title="UserInterface类"></a><strong>UserInterface类</strong></h2><p>在界面布置相关按钮，并检测鼠标点击，当鼠标点击到飞盘时，飞盘消失，分数增加；并控制一定时间间隔后才能抛出一个飞盘。<br><img src="u1.png" alt=""><br>点击时用射线检测，射线从摄像机发射，射到鼠标点击的屏幕位置在3d中的坐标，碰<br>撞到物体的具体信息存储在hit中，并检测碰撞到的是不是飞盘，是的话，添加相关动<br>作。此处用到上面的Finish标签。<br><img src="u2.png" alt=""></p>
+<p>至此，代码基本完成以下是游戏界面图：<br><img src="all.png" alt=""></p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a><strong>完整代码</strong></h2><h3 id="BaseCode-cs-1"><a href="#BaseCode-cs-1" class="headerlink" title="BaseCode.cs"></a><strong>BaseCode.cs</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> Mygame;</div><div class="line"><span class="keyword">using</span> System.Collections.Generic;</div><div class="line"></div><div class="line"><span class="keyword">namespace</span> Mygame</div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> Factory : MonoBehaviour</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Factory instance;</div><div class="line">        <span class="keyword">public</span> <span class="keyword">static</span> List&lt;GameObject&gt; used = <span class="keyword">new</span> List&lt;GameObject&gt;();</div><div class="line">        <span class="keyword">public</span> <span class="keyword">static</span> List&lt;GameObject&gt; unused = <span class="keyword">new</span> List&lt;GameObject&gt;();</div><div class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> round;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Factory <span class="title">Getinstance</span><span class="params">()</span>  <span class="comment">// 获取实例</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (instance == null)</div><div class="line">            &#123;</div><div class="line">                instance = <span class="keyword">new</span> Factory();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> instance;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(GameObject x)</span>       <span class="comment">// 在GenGameObject中生成飞碟到unused中</span></span></div><div class="line">        &#123;</div><div class="line">            unused.Add(x);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> GameObject <span class="title">ApplyUFO</span><span class="params">(<span class="keyword">int</span> r)</span>   <span class="comment">// 游戏有三个关卡，每个关卡飞碟属性不同，给飞碟添加力</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (unused.Count != <span class="number">0</span>)          <span class="comment">// 数目不超过GenGameObject中的n时才给飞碟添加力</span></div><div class="line">            &#123;</div><div class="line">                GameObject t = unused[<span class="number">0</span>];</div><div class="line">                unused.Remove(t);</div><div class="line">                used.Add(t);</div><div class="line">                t.AddComponent&lt;Rigidbody&gt;();  <span class="comment">// 刚体，添加力，移动</span></div><div class="line">                t.AddComponent&lt;AutoDisappear&gt;();</div><div class="line"></div><div class="line">                <span class="keyword">if</span> (r == <span class="number">1</span>)                <span class="comment">// 第一关</span></div><div class="line">                &#123;</div><div class="line">                    <span class="keyword">float</span> x = Random.Range(<span class="number">-40</span>, <span class="number">40</span>);</div><div class="line">                    t.transform.position = <span class="keyword">new</span> Vector3(x, <span class="number">20</span>, <span class="number">50</span>);</div><div class="line">                    Vector3 v = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">-1</span>);</div><div class="line">                    t.GetComponent&lt;Renderer&gt;().material.color = <span class="keyword">new</span> Color(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>);</div><div class="line">                    t.GetComponent&lt;Rigidbody&gt;().AddForce(<span class="number">3000</span> * v);</div><div class="line">                    Debug.Log(<span class="string">"111111"</span>);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (r == <span class="number">2</span>)           <span class="comment">// 第二关</span></div><div class="line">                &#123;</div><div class="line">                    <span class="keyword">float</span> x = Random.Range(<span class="number">-40</span>, <span class="number">40</span>);</div><div class="line">                    t.transform.position = <span class="keyword">new</span> Vector3(x, <span class="number">20</span>, <span class="number">50</span>);</div><div class="line">                    t.GetComponent&lt;Renderer&gt;().material.color = <span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>);</div><div class="line">                    t.GetComponent&lt;Transform&gt;().localScale = <span class="keyword">new</span> Vector3(<span class="number">7</span>, <span class="number">0.1f</span>, <span class="number">7</span>);</div><div class="line">                    <span class="keyword">float</span> xx = Random.Range(<span class="number">-1</span>, <span class="number">1</span>);</div><div class="line">                    <span class="keyword">float</span> z = Random.Range(<span class="number">-1</span>, <span class="number">-0.5</span>f);</div><div class="line">                    Vector3 v = <span class="keyword">new</span> Vector3(xx, <span class="number">0</span>, z);</div><div class="line">                    t.GetComponent&lt;Rigidbody&gt;().AddForce(<span class="number">3000</span> * v);</div><div class="line">                    Debug.Log(<span class="string">"2222222"</span>);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span>                      <span class="comment">// 第三关</span></div><div class="line">                &#123;</div><div class="line">                    <span class="keyword">float</span> q = Random.Range(<span class="number">-1</span>, <span class="number">1</span>);</div><div class="line">                    <span class="keyword">if</span> (q &gt;= <span class="number">0</span>) q = <span class="number">20</span>;</div><div class="line">                    <span class="keyword">else</span> q = <span class="number">-20</span>;</div><div class="line">                    t.transform.position = <span class="keyword">new</span> Vector3(q, <span class="number">20</span>, <span class="number">50</span>);</div><div class="line">                    t.GetComponent&lt;Renderer&gt;().material.color = <span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">                    <span class="keyword">float</span> px = Random.Range(<span class="number">-1</span>, <span class="number">1</span>);</div><div class="line">                    <span class="keyword">float</span> z = Random.Range(<span class="number">-1</span>, <span class="number">-0.5</span>f);</div><div class="line">                    <span class="keyword">float</span> power = Random.Range(<span class="number">3000</span>, <span class="number">4500</span>);</div><div class="line">                    Vector3 v = <span class="keyword">new</span> Vector3(px, <span class="number">0</span>, z);</div><div class="line">                    t.GetComponent&lt;Rigidbody&gt;().AddForce(power * v);</div><div class="line">                    Debug.Log(<span class="string">"3333333"</span>);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">return</span> t;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> null;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDisappear</span><span class="params">(GameObject x)</span></span></div><div class="line">        &#123;</div><div class="line">            x.AddComponent&lt;Disappear&gt;();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> Disappear : Factory</div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Start</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            used.Remove(gameObject);</div><div class="line">            unused.Add(gameObject);</div><div class="line">            Destroy(GetComponent&lt;Rigidbody&gt;());</div><div class="line">            Destroy(GetComponent&lt;AutoDisappear&gt;());</div><div class="line">            Destroy(<span class="keyword">this</span>);</div><div class="line">            gameObject.transform.position = <span class="keyword">new</span> Vector3(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> AutoDisappear : Factory</div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Update</span><span class="params">()</span></span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (gameObject.transform.position.z &lt; <span class="number">-40</span>)</div><div class="line">            &#123;</div><div class="line">                used.Remove(gameObject);</div><div class="line">                unused.Add(gameObject);</div><div class="line">                Destroy(GetComponent&lt;Rigidbody&gt;());</div><div class="line">                Destroy(<span class="keyword">this</span>);</div><div class="line">                gameObject.transform.position = <span class="keyword">new</span> Vector3(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> BaseCode : MonoBehaviour &#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Start</span> <span class="params">()</span> </span>&#123;</div><div class="line">	</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Update</span> <span class="params">()</span> </span>&#123;</div><div class="line">	</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="GenGameObject-cs"><a href="#GenGameObject-cs" class="headerlink" title="GenGameObject.cs"></a><strong>GenGameObject.cs</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> Mygame;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> GenGameObject : MonoBehaviour &#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> n;  <span class="comment">// 游戏面板可以设置</span></div><div class="line">    <span class="keyword">public</span> GameObject UFO;  <span class="comment">// 游戏面板拖入</span></div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Start</span> <span class="params">()</span> </span>&#123;</div><div class="line">	    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</div><div class="line">        &#123;</div><div class="line">            GameObject temp = Instantiate(UFO);</div><div class="line">            temp.transform.position = <span class="keyword">new</span> Vector3(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>);</div><div class="line">            Factory.Getinstance().add(temp);</div><div class="line">        &#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="UserInterface-cs"><a href="#UserInterface-cs" class="headerlink" title="UserInterface.cs"></a><strong>UserInterface.cs</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">using</span> UnityEngine;</div><div class="line"><span class="keyword">using</span> System.Collections;</div><div class="line"><span class="keyword">using</span> Mygame;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> UserInterface : MonoBehaviour &#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> round = <span class="number">0</span>;       <span class="comment">// 关卡</span></div><div class="line">    <span class="keyword">float</span> time = <span class="number">1</span>;             <span class="comment">// 产生飞碟时间间隔</span></div><div class="line">    <span class="keyword">private</span> GameObject cam;</div><div class="line">    <span class="keyword">int</span> score = <span class="number">0</span>;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Start</span> <span class="params">()</span> </span>&#123;</div><div class="line">        cam = GameObject.Find(<span class="string">"Main Camera"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Update</span> <span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (Input.GetMouseButtonDown(<span class="number">0</span>))</div><div class="line">        &#123;</div><div class="line">            Ray ray = cam.GetComponent&lt;Camera&gt;().ScreenPointToRay(Input.mousePosition);</div><div class="line">            RaycastHit hit;</div><div class="line">            <span class="keyword">if</span> (Physics.Raycast(ray, out hit))</div><div class="line">            &#123;</div><div class="line">                <span class="keyword">if</span> (hit.collider.gameObject.tag.Contains(<span class="string">"Finish"</span>))</div><div class="line">                &#123;</div><div class="line">                    Factory.Getinstance().setDisappear(hit.collider.gameObject);</div><div class="line">                    score += round;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        time -= Time.deltaTime;</div><div class="line">        <span class="keyword">if</span> (time &lt;= <span class="number">0</span>)</div><div class="line">        &#123;</div><div class="line">            time = <span class="number">1</span>;</div><div class="line">            <span class="keyword">if</span> (round == <span class="number">1</span>)</div><div class="line">                Factory.Getinstance().ApplyUFO(<span class="number">1</span>);</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (round == <span class="number">2</span>)</div><div class="line">                Factory.Getinstance().ApplyUFO(<span class="number">2</span>);</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (round == <span class="number">3</span>)</div><div class="line">                Factory.Getinstance().ApplyUFO(<span class="number">3</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnGUI</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (GUILayout.Button(<span class="string">"level1"</span>))</div><div class="line">        &#123;</div><div class="line">            round = <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (GUILayout.Button(<span class="string">"level2"</span>))</div><div class="line">        &#123;</div><div class="line">            round = <span class="number">2</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (GUILayout.Button(<span class="string">"level3"</span>))</div><div class="line">        &#123;</div><div class="line">            round = <span class="number">3</span>;</div><div class="line">        &#125;</div><div class="line">        GUILayout.Label(<span class="string">"SCORE: "</span> + score);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/3D游戏开发/garen/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Garen击球游戏
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/3D游戏开发/牧师与魔鬼改进/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">牧师与魔鬼改进</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="打飞碟" data-title="打飞碟" data-url="https://duzwl.github.io/3D游戏开发/打飞碟/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>
