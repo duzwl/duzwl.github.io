@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://duzwl.github.io/C-C/agenda/index.html">
 <meta property="og:site_name" content="duzw|博客">
 <meta property="og:description" content="使用C++实现一个简单的会议管理系统，支持登陆、注册，创建会议、查询会议等等功能。">
-<meta property="og:updated_time" content="2016-07-27T09:44:32.411Z">
+<meta property="og:updated_time" content="2016-07-27T09:47:27.918Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Agenda--会议管理系统">
 <meta name="twitter:description" content="使用C++实现一个简单的会议管理系统，支持登陆、注册，创建会议、查询会议等等功能。">
@@ -279,7 +279,7 @@
 <h4 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a><strong>Controller</strong></h4><p>控制器控制程序的逻辑，处理数据输入，若输入的数据满足所需要的逻辑，则调用model中数据处理类来处理数据，因而数据处理类需要注入到控制器中（在控制器中有model的一个私有实例即可注入）。Agenda中，控制器为AgendaService，其中有Storage实例，相关操作如创建会议等，若满足逻辑则通过Storage实例处理并写入数据。</p>
 <h4 id="View"><a href="#View" class="headerlink" title="View"></a><strong>View</strong></h4><p>视觉类，显示相关界面，提示用户可以进行的操作等等。用户选择相关操作后，显示与操作相关的界面，然后调用controller控制并处理用户请求。在view这里读取的数据，通过controller传送到model中。</p>
 <p>在agenda系统中，界面包含三部分：用户登录、用户注册、退出系统。用户注册和退出系统比较简单，而用户登录，登录后，用户可以进行一系列操作，因而将这些操作写在一个死循环中，由用户选择并显示相关页面。</p>
-<p>这是完整<a href="">代码</a></p>
+<p>这是完整<a href="https://github.com/duzwl/duzwl.github.io/tree/master/C-C/agenda/Agenda" target="_blank" rel="external">代码</a></p>
 
       
     </div>
