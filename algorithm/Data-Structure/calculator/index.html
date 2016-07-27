@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://duzwl.github.io/algorithm/Data-Structure/calculator/index.html">
 <meta property="og:site_name" content="duzw|博客">
 <meta property="og:description" content="栈、队列、链表是学习数据结构必须掌握的知识点，初学者必须学会自己实现它们并完善相关的操作函数。下面利用栈的相关知识，实现计算器的功能。计算器能进行+-*/以及包含多重()在内的运算，但必须保证输入的字符串有相应的输出结果。">
-<meta property="og:updated_time" content="2016-07-26T08:22:11.167Z">
+<meta property="og:updated_time" content="2016-07-27T07:27:26.925Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Simple Calculator">
 <meta name="twitter:description" content="栈、队列、链表是学习数据结构必须掌握的知识点，初学者必须学会自己实现它们并完善相关的操作函数。下面利用栈的相关知识，实现计算器的功能。计算器能进行+-*/以及包含多重()在内的运算，但必须保证输入的字符串有相应的输出结果。">
@@ -245,7 +245,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>栈、队列、链表是学习数据结构必须掌握的知识点，初学者必须学会自己实现它们并完善相关的操作函数。下面利用栈的相关知识，实现计算器的功能。计算器能进行+-*/以及包含多重()在内的运算，但必须保证输入的字符串有相应的输出结果。<br><a id="more"></a></p>
-<h2 id="原理剖析"><a href="#原理剖析" class="headerlink" title="原理剖析"></a><strong>原理剖析</strong></h2><p>使用两个栈stack<string\>，一个num储存数字，一个chra储存运算符+-*/以及()；读取一整个字符串后需要剔除字符串中的空格；然后由于输入过程中，输入+9和-9都是合法的，因而需要在符号前面添加0。</string\></p>
+<h2 id="原理剖析"><a href="#原理剖析" class="headerlink" title="原理剖析"></a><strong>原理剖析</strong></h2><p>使用两个栈stack&lt;string&gt;，一个num储存数字，一个chra储存运算符+-*/以及()；读取一整个字符串后需要剔除字符串中的空格；然后由于输入过程中，输入+9和-9都是合法的，因而需要在符号前面添加0。</p>
 <p>本代码采取边解析字符串边运算边储存到栈中的方法，解析完毕后再对栈中的字符串进行运算，返回运算结果，保留小数点后三位小数并实现四舍五入。</p>
 <ul>
 <li>读取到‘)’时，可以对num和chra中的数字和字符进行计算，直到chra顶为’)’</li>
