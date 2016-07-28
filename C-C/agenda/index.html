@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://duzwl.github.io/C-C/agenda/index.html">
 <meta property="og:site_name" content="duzw|博客">
 <meta property="og:description" content="使用C++实现一个简单的会议管理系统，支持登陆、注册，创建会议、查询会议等等功能。">
-<meta property="og:updated_time" content="2016-07-27T09:47:27.918Z">
+<meta property="og:updated_time" content="2016-07-28T07:47:50.153Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Agenda--会议管理系统">
 <meta name="twitter:description" content="使用C++实现一个简单的会议管理系统，支持登陆、注册，创建会议、查询会议等等功能。">
@@ -272,6 +272,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">std</span>::function&lt;<span class="keyword">int</span>()&gt; lambda = [] () -&gt; <span class="keyword">int</span> &#123; <span class="keyword">return</span> val * <span class="number">100</span>; &#125;;</div></pre></td></tr></table></figure>
 <p>简单来说，std::function<int()>就是一个可调用对象模板类，代表一个可调用对象，接受 0 个参数，返回值是int。所以，当我们需要一个接受一个double作为参数，返回int的对象时，就可以写作：std::function&lt;int(double)&gt;。</int()></p>
 <p>另外有一点需要注意。对于[=]或[&amp;]的形式，lambda 表达式可以直接使用 this 指针。但是，对于[]的形式，如果要使用 this 指针，必须显式传入：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">this</span>]() &#123; <span class="keyword">this</span>-&gt;someFunc(); &#125;();</div></pre></td></tr></table></figure></p>
+<p>在Agenda中之所以使用lambda表达式是因为，使用lambda表达式后能大幅度提高代码的重复使用率。比如queryUser和queryMeeting，在不同情况下我们查询时需要传入不同数量的参数，使用不同的判断逻辑，但这两个方法中除去参数以及比较逻辑的外90%以上的代码都是相同的，若拆成多个类似的函数，不仅阅读性，而且代码冗长。而使用lambda表达式，直接使用filter即可搞定。</p>
 <h2 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a><strong>Makefile</strong></h2><p>网上makefile教程很多，这里不意义说明，值给出本程序的makefile:<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">obj=Meeting.o User.o Date.o Storage.o AgendaService.o AgendaUI.o</div><div class="line"></div><div class="line">th:$(obj) Agenda.cpp</div><div class="line">	g++ -std=c++0x -o th <span class="variable">$(obj)</span> Agenda.cpp</div><div class="line">AgendaUI.o:AgendaUI.h AgendaUI.cpp</div><div class="line">	g++ -std=c++0x -c AgendaUI.cpp</div><div class="line">AgendaService.o:AgendaService.h AgendaService.cpp</div><div class="line">	g++ -std=c++0x -c AgendaService.cpp</div><div class="line">Meeting.o:Meeting.cpp Meeting.h</div><div class="line">	g++ -std=c++0x -c Meeting.cpp</div><div class="line">Date.o:Date.cpp Date.h</div><div class="line">	g++ -std=c++0x -c Date.cpp</div><div class="line">User.o:User.h User.cpp</div><div class="line">	g++ -std=c++0x -c User.cpp</div><div class="line">Storage.o:Storage.h Storage.cpp</div><div class="line">	g++ -std=c++0x -c  Storage.cpp</div><div class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>:clean</span></div><div class="line"><span class="section">clean:</span></div><div class="line">	-rm <span class="variable">$(obj)</span> th</div></pre></td></tr></table></figure></p>
 <p>切记g++前面是一个TAB键！</p>
 <h2 id="MVC设计模式"><a href="#MVC设计模式" class="headerlink" title="MVC设计模式"></a><strong>MVC设计模式</strong></h2><h4 id="Model"><a href="#Model" class="headerlink" title="Model"></a><strong>Model</strong></h4><p>模型是最简单最基础的结构，它除了各种数据。在Agenda系统中，模型包括Meeting、Date、User，他们包含各种基本的操作，如获取会议的sponsor、获取用户email、会议时间是否合法等等，模型在实现这些操作时不需要考虑实际中千变万化的各种情况，只需实现即可。</p>
@@ -288,6 +289,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/Data-Structure/stack-queue/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          栈和队列
+        
+      </div>
+    </a>
   
 
 

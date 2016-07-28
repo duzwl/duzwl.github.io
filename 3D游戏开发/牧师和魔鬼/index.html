@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://duzwl.github.io/4.png">
 <meta property="og:image" content="https://duzwl.github.io/5.png">
 <meta property="og:image" content="https://duzwl.github.io/2.png">
-<meta property="og:updated_time" content="2016-07-21T10:47:43.895Z">
+<meta property="og:updated_time" content="2016-07-28T07:58:10.201Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="牧师和魔鬼">
 <meta name="twitter:description" content="使用C#和unity3d实现大一导论课程涉及到的牧师与魔鬼小游戏。游戏规则：船可以搭载两个人，而且必须有一人掌船。无论何时，只要河一边的魔鬼数量多于牧师的数量，游戏就会以失败结束。">
@@ -253,13 +253,13 @@
       
         <p>使用C#和unity3d实现大一导论课程涉及到的牧师与魔鬼小游戏。游戏规则：船可以搭载两个人，而且必须有一人掌船。无论何时，只要河一边的魔鬼数量多于牧师的数量，游戏就会以失败结束。<br><a id="more"></a></p>
 <h2 id="基本架构"><a href="#基本架构" class="headerlink" title="基本架构"></a><strong>基本架构</strong></h2><ul>
-<li><p>UserInterface：用来创建GUI对象接受玩家动作，处理GUI事件，使用 IUserActions 接口控制游戏。</p>
+<li><p>UserInterface：用来创建GUI对象接受玩家动作，处理GUI事件，使用 IUserActions 接口控制游戏。属于MVC中的view，触发的时候调用controller，而controller调用model，完成游戏的运行工程。</p>
 </li>
-<li><p>SceneController：单实例对象，用来处理对象间通信和实现 IUserActions 接口。</p>
+<li><p>SceneController：单实例对象，用来处理对象间通信和实现 IUserActions 接口。很明显，属于MVC中的controller。</p>
 </li>
 <li><p>BaseCode用来保存游戏名称和游戏简介，它注册在 SceneController 中。</p>
 </li>
-<li><p>GenGameObject：用来创建游戏对象和处理对象运动，它也注册在 SceneController 中。IUserActions 接口通过与 GenGameObject 互动完成游戏逻辑。</p>
+<li><p>GenGameObject：用来创建游戏对象和处理对象运动，它也注册在 SceneController 中。IUserActions 接口通过与 GenGameObject 互动完成游戏逻辑。属于MVC中的model，实现基础的上船等动作。</p>
 </li>
 </ul>
 <p><img src="1.png" alt=""><br><img src="2.png" alt=""></p>
