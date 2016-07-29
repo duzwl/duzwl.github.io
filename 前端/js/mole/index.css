@@ -1,0 +1,95 @@
+h1, #h1p {
+	text-align: center;
+}
+body {
+	font-family: Century Gothic;
+}
+#all {
+	width: 285px;
+	height: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid white;
+}
+#start-stop {
+	float: left;
+	background-color: white;
+	border: solid 1px rgb(222, 222, 222);
+	cursor: pointer;
+}
+#state {
+	border: solid 1px rgb(222, 222, 222);
+	width: 108px;
+	position: relative;
+	top: 10px;
+	padding: 0 5px;
+}
+#time {
+	position: relative;
+	top: -57px;
+	left: 198px;
+}
+#timenum {
+	width: 33px;
+	position: relative;
+	top: -21px;
+	left: 48px;
+	border: solid 1px rgb(222, 222, 222);
+	padding-left: 3px;
+}
+#scorenum {
+	width: 33px;
+	position: relative;
+	top: -21px;
+	left: 57px;
+	border: solid 1px rgb(222, 222, 222);
+    padding-left: 3px;
+}
+#score {
+	position: relative;
+	top: -74px;
+	left: 189px;
+}
+#ins {
+	font-weight: bold;
+}
+#moles {
+	width: 240px;
+	height: 167px;
+	margin-left: auto;
+	margin-right: auto;
+	
+	display: flex;
+	flex-wrap: wrap;
+	border-top: 2px solid rgb(168, 168, 168);
+	border-bottom: 2px solid rgb(168, 168, 168);
+	position: relative;
+	top: 40px;
+}
+#bi {
+	position: relative;
+	top: 80px;
+	width: 675px;
+	margin-left: auto;
+	margin-right: auto;
+
+}
+.newdiv {
+	width: 12px;
+	height: 12px;
+	margin: 4px;
+	border-radius: 50px;
+	border: solid 2px rgb(222, 222, 222);
+	cursor: pointer;
+}
+.active {
+	width: 12px;
+	height: 12px;
+	margin: 4px;
+	border-radius: 50px;
+	border: solid 2px rgb(68, 154, 250);
+	box-shadow: 0px 0px 1px 4px rgb(68, 154, 250) inset;
+}
+.newdiv:hover {
+	border-color: rgb(156, 191, 226);
+}

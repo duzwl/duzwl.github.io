@@ -4,6 +4,1198 @@
   
     
     <entry>
+      <title></title>
+      <url>https://duzwl.github.io/uncategorized/js/puzzle/js/index/</url>
+      <content type="html"><![CDATA[var curPosition = 15;
+var str = false;   // 开始按钮
+var anotherbg = false;    // 记录换背景图
+var m = 1;     // 记录选择的难度
+var t = 9999;   // 剩余时间
+var clock;
+
+window.onload = function() {
+    start();
+    won();
+    reset();
+    onClick();
+    changebg();
+    choosemode();
+}
+
+function start() {  // 开始游戏，打乱拼图
+    var bt = document.getElementById("bt1");
+    bt.onclick = function() {
+        if (!str) {
+            clock = setInterval(time, 1000);
+            str = true;
+            var t = parseInt(Math.random()*16);
+            var tempf = "";   // 临时id
+            var tempt = "";
+            var classf;    // 临时id对应的对象
+            var classt;
+            var temp;
+            for (var i = 0; i < 600; ++i) {
+                while (1) {
+                	t = parseInt(Math.random()*16);
+                	if (curPosition == 3 && (t == 2 || t == 7)) break;
+                	if (curPosition == 4 && (t == 0 || t == 5 || t == 8)) break;
+                	if (curPosition == 7 && (t == 6 || t == 3 || t == 11)) break;
+                	if (curPosition == 8 && (t == 9 || t == 4 || t == 12)) break;
+                	if (curPosition == 11 && (t == 10 || t == 15 || t == 7)) break;
+                	if (curPosition == 12 && (t == 13 || t == 8)) break;
+                	if (curPosition == 0 && (t == 1 || t == 4)) break;
+                	if (curPosition == 1 && (t == 0 || t == 2 || t == 5)) break;
+                	if (curPosition == 2 && (t == 1 || t == 3 || t == 6)) break;
+                	if (curPosition == 5 && (t == 4 || t == 6 || t == 1 || t == 9)) break;
+                	if (curPosition == 6 && (t == 5 || t == 7 || t == 2 || t == 10)) break;
+                	if (curPosition == 9 && (t == 8 || t == 10 || t == 5 || t == 13)) break;
+                	if (curPosition == 10 && (t == 9 || t == 11 || t == 6 || t == 14)) break;
+                	if (curPosition == 13 && (t == 12 || t == 14 || t == 9)) break;
+                	if (curPosition == 14 && (t == 13 || t == 15 || t == 10)) break;
+                	if (curPosition == 15 && (t == 14 || t == 11)) break;
+                }
+                tempt = "d"+curPosition.toString();
+                tempf = "d"+t.toString();
+                classf = document.getElementById(tempf);
+                classt = document.getElementById(tempt);
+                temp = classf.className;
+                classf.className = classt.className;
+                classt.className = temp;
+                curPosition = t;
+            }
+        }
+    }
+}
+
+function won() {   // 当d0与c0...相对应时即获胜
+    if (str == true) {
+        var all = document.getElementById("all");
+        var w = true;
+        var s = "";
+        for (var i = 0; i < all.length; ++i) {
+            s = "c"+i.toString();
+            if (all[i].className != s) {
+                w = false;
+                break;
+            }
+        }
+
+        if (w == true) {
+            alert("You won!");
+            str = false;
+            curPosition = 15;
+            var all = document.getElementsByTagName("div");
+            for (var i = 1; i < 17; ++i) {
+                if (anotherbg == true) all[i].className = "c"+(i-1).toString()+"c";
+                else all[i].className = "c"+(i-1).toString();
+            }
+            if (m == 1) t = 9999;
+            else if (m == 2) t = 360;
+            else t = 180;
+            document.getElementById("leftt").innerHTML = t;
+            clearInterval(clock);
+        }
+    } 
+}
+
+function onClick() {    // 图片被点击
+    var all = document.getElementsByTagName("div");
+    var s = "";
+    var tempf = "";   // 临时id
+    var tempt = "";
+    var classf;     // 临时id对应的类
+    var classt;
+    for (var i = 1; i < all.length; ++i) {
+        all[i].onclick = function() {
+            if (str) {
+                s = this.id.substring(1);
+                if (s == (curPosition-1).toString() || s == (curPosition+1).toString()
+                || s == (curPosition+4).toString() || s == (curPosition-4).toString()) {
+                    tempt = "d"+curPosition.toString();
+                    tempf = "d"+s.toString();
+                    classf = document.getElementById(tempf);
+                    classt = document.getElementById(tempt);
+                    temp = classf.className;
+                    classf.className = classt.className;
+                    classt.className = temp;
+                    curPosition = parseInt(s);
+                }
+            } 
+        }
+    }
+}
+
+function reset() {    // 重新开始游戏
+    var bt2 = document.getElementById("bt2");
+    bt2.onclick = function() {
+        if (str) {
+            str = false;
+            curPosition = 15;
+            var all = document.getElementsByTagName("div");
+            for (var i = 1; i < 17; ++i) {
+                if (anotherbg == true) all[i].className = "c"+(i-1).toString()+"c";
+                else all[i].className = "c"+(i-1).toString();
+            }
+            if (m == 1) t = 9999;
+            else if (m == 2) t = 360;
+            else t = 180;
+            document.getElementById("leftt").innerHTML = t;
+            clearInterval(clock);
+        }
+    }
+}
+
+function changebg() {
+    var bg1 = document.getElementById("bg1");
+    bg1.onclick = function() {
+        if (!str) {
+            if (anotherbg == false) {
+                anotherbg = true;
+                bg1.className = "bg11";
+            } else {
+                anotherbg = false;
+                bg1.className = "bg1c";
+            }
+
+            if (anotherbg == true) {
+                var all = document.getElementsByTagName("div");
+                for (var i = 1; i < 17; ++i) {
+                    all[i].className += "c";
+                }
+            } else {
+                var all = document.getElementsByTagName("div");
+                for (var i = 1; i < 17; ++i) {
+                    all[i].className = "c"+(i-1).toString();
+                }
+            }
+        }
+    }
+}
+
+function choosemode() {
+    var mode1 = document.getElementById("mode1");
+    mode1.onclick = function() {
+        if (!str) {
+            if (m == 2) document.getElementById("mode2").className = "bg1c";
+            if (m == 3) document.getElementById("mode3").className = "bg1c";
+            m = 1;
+            this.className = "bg11";
+            t = 9999;
+            document.getElementById("leftt").innerHTML = t;
+        }
+    }
+
+    var mode2 = document.getElementById("mode2");
+    mode2.onclick = function() {
+        if (!str) {
+            if (m == 1) document.getElementById("mode1").className = "bg1c";
+            if (m == 3) document.getElementById("mode3").className = "bg1c";
+            m = 2;
+            this.className = "bg11";
+            t = 360;
+            document.getElementById("leftt").innerHTML = t;
+        }
+    }
+
+    var mode3 = document.getElementById("mode3");
+    mode3.onclick = function() {
+        if (!str) {
+            if (m == 2) document.getElementById("mode2").className = "bg1c";
+            if (m == 1) document.getElementById("mode1").className = "bg1c";
+            m = 3;
+            this.className = "bg11";
+            t = 180;
+            document.getElementById("leftt").innerHTML = t;
+        }
+    }
+}
+
+function time() {
+    if (str) {
+        t--;
+        document.getElementById("leftt").innerHTML = t;
+
+        if (t ]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://duzwl.github.io/uncategorized/js/puzzle/css/index/</url>
+      <content type="html"><![CDATA[body {
+    background-color: rgb(252, 214, 143);
+}
+
+h1 {
+    text-align:center;
+    padding-top: 10px;
+}
+
+#all {
+    width: 360px;
+    height: 360px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    margin-top: 34px;
+}
+
+.c0, .c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8, .c9, .c10, .c11, .c12, .c13, .c14 {
+    width: 88px;
+    height: 88px;
+    border: 1px solid rgb(222, 222, 222);
+}
+
+/* 带c后缀的，比如c0c表示换图片后使用的相对应的类 */
+.c0c, .c1c, .c2c, .c3c, .c4c, .c5c, .c6c, .c7c, .c8c, .c9c, .c10c, .c11c, .c12c, .c13c, .c14c {
+    width: 88px;
+    height: 88px;
+    border: 1px solid rgb(222, 222, 222);
+}
+
+.c0 {
+    background-image: url(../images/one.jpg);
+}
+.c0c {
+    background-image: url(../images/two.jpg);
+}
+#d0 {
+    border-radius: 15px 7px 7px 7px;
+}
+
+.c1 {
+    background-position: -88px 0px;
+    background-image: url(../images/one.jpg);
+}
+.c1c {
+    background-position: -88px 0px;
+    background-image: url(../images/two.jpg);
+}
+#d1 {
+    position: relative;
+    top: -90px;
+    left: 90px;
+    border-radius: 7px;
+}
+
+.c2 {
+    background-position: -176px 0px;
+    background-image: url(../images/one.jpg);
+}
+.c2c {
+    background-position: -176px 0px;
+    background-image: url(../images/two.jpg);
+}
+#d2 {
+    position: relative;
+    top: -180px;
+    left: 180px;
+    border-radius: 7px;
+}
+
+.c3 {
+    background-position: -264px 0px;
+    background-image: url(../images/one.jpg);
+}  
+.c3c {
+    background-position: -264px 0px;
+    background-image: url(../images/two.jpg);
+} 
+#d3 {
+    position: relative;
+    top: -270px;
+    left: 270px;
+    border-radius: 7px 15px 7px 7px;
+}
+
+.c4 {
+    background-position: 0px -88px;
+    background-image: url(../images/one.jpg);
+} 
+.c4c {
+    background-position: 0px -88px;
+    background-image: url(../images/two.jpg);
+} 
+#d4 {
+    position: relative;
+    top: -270px;
+    left: 0px;
+    border-radius: 7px;
+}
+
+.c5 {
+    background-position: -88px -88px;
+    background-image: url(../images/one.jpg);
+}
+.c5c {
+    background-position: -88px -88px;
+    background-image: url(../images/two.jpg);
+}
+#d5 {
+    position: relative;
+    top: -360px;
+    left: 90px;
+    border-radius: 7px;
+}
+
+.c6 {
+    background-position: -176px -88px;
+    background-image: url(../images/one.jpg);
+}
+.c6c {
+    background-position: -176px -88px;
+    background-image: url(../images/two.jpg);
+}
+#d6 {
+    position: relative;
+    top: -450px;
+    left: 180px;
+    border-radius: 7px;
+}
+
+.c7 {
+    background-position: -264px -88px;
+    background-image: url(../images/one.jpg);
+}
+.c7c {
+    background-position: -264px -88px;
+    background-image: url(../images/two.jpg);
+}
+#d7 {
+    position: relative;
+    top: -540px;
+    left: 270px;
+    border-radius: 7px;
+}
+
+.c8 {
+    background-position: 0px -176px;
+    background-image: url(../images/one.jpg);
+}
+.c8c {
+    background-position: 0px -176px;
+    background-image: url(../images/two.jpg);
+}
+#d8 {
+    position: relative;
+    top: -540px;
+    left: 0px;
+    border-radius: 7px;
+}
+
+.c9 {
+    background-position: -88px -176px;
+    background-image: url(../images/one.jpg);
+}
+.c9c {
+    background-position: -88px -176px;
+    background-image: url(../images/two.jpg);
+}
+#d9 {
+    position: relative;
+    top: -630px;
+    left: 90px;
+    border-radius: 7px;
+}
+
+.c10 {
+    background-position: -176px -176px;
+    background-image: url(../images/one.jpg);
+}
+.c10c {
+    background-position: -176px -176px;
+    background-image: url(../images/two.jpg);
+}
+#d10 {
+    position: relative;
+    top: -720px;
+    left: 180px;
+    border-radius: 7px;
+}
+
+.c11 {
+    background-position: -264px -176px;
+    background-image: url(../images/one.jpg);
+}
+.c11c {
+    background-position: -264px -176px;
+    background-image: url(../images/two.jpg);
+}
+#d11 {
+    position: relative;
+    top: -810px;
+    left: 270px;
+    border-radius: 7px;
+}
+
+.c12 {
+    background-position: 0px -264px;
+    background-image: url(../images/one.jpg);
+}
+.c12c {
+    background-position: 0px -264px;
+    background-image: url(../images/two.jpg);
+}
+#d12 {
+    position: relative;
+    top: -810px;
+    left: 0px;
+    border-radius: 7px 7px 7px 15px;
+}
+
+.c13 {
+    background-position: -88px -264px;
+    background-image: url(../images/one.jpg);
+}
+.c13c {
+    background-position: -88px -264px;
+    background-image: url(../images/two.jpg);
+}
+#d13 {
+    position: relative;
+    top: -900px;
+    left: 90px;
+    border-radius: 7px;
+}
+
+.c14 {
+    background-position: -176px -264px;
+    background-image: url(../images/one.jpg);
+}
+.c14c {
+    background-position: -176px -264px;
+    background-image: url(../images/two.jpg);
+}
+#d14 {
+    position: relative;
+    top: -990px;
+    left: 180px;
+    border-radius: 7px;
+}
+
+.c15, .c15c {
+    width: 88px;
+    height: 88px;
+    border: 1px solid rgb(252, 214, 143);
+    background-image: none;
+}
+#d15 {
+    position: relative;
+    top: -1080px;
+    left: 270px;
+    border-radius: 7px 7px 15px 7px;
+}
+
+button {
+    background-color: rgb(74, 132, 240);
+    color: white;
+    border: 1px solid rgb(252, 214, 143);
+    cursor: pointer;
+    border-radius: 7px;
+}
+
+#bt {
+    width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#bt1 {
+    position: relative;
+    top: 20px;
+    left: 18px;
+}
+#bt2 {
+    position: relative;
+    top: 20px;
+    left: 39px;
+}
+
+#bg {
+    position: relative;
+    top: 44px;
+    width: 270px;
+    height: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 18px;
+}
+#bg1, #mode1, #mode2, #mode3 {
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid rgb(74, 132, 240);
+}
+.bg1c {      /* 选择按钮未被选择应用的样式*/
+    border: 1px solid rgb(74, 132, 240);
+}
+.bg11 {      /* 选择按钮被选择后应用的样式 */
+    border: 1px solid rgb(74, 132, 240);
+    box-shadow: 0px 0px 1px 4px rgb(68, 154, 250) inset;
+}
+
+#text {
+    position: relative;
+    top: -18px;
+    left: 22px;
+    width: 300px;
+    height: 30px;
+}
+
+#result {
+    position: relative;
+    left: 50px;
+    top: 60px;
+    font-size: 18px;
+    width: 200px;
+    height: 20px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#time {
+    position: relative;
+    left: -22px;
+}
+#leftt {
+    position: relative;
+    left: 53px;
+    top: -22px;
+    width: 50px;
+    height: 20px;
+    border: 1px solid rgb(74, 132, 240);
+    text-align: left;
+    border-radius: 3px;
+}
+
+#mode {
+    font-size: 18px;
+    width: 310px;
+    height: 25px;
+    position: relative;
+    top: 50px;
+    margin-right: auto;
+    margin-left: auto;
+}
+#mode1 {
+    position: relative;
+    top: 5px;
+    cursor: pointer;
+}
+#mode2 {
+    position: relative;
+    top: -30px;
+    left: 122px;
+    cursor: pointer;
+}
+#mode3 {
+    position: relative;
+    top: -65px;
+    left: 200px;
+    cursor: pointer;
+}
+
+#text1 {
+    text-align: left;
+    width: 87px;
+    position: relative;
+    top: -13px;
+    left: 18px;
+}
+#text2 {
+    text-align: left;
+    width: 50px;
+    position: relative;
+    top: -47px;
+    left: 141px;
+}
+#text3 {
+    text-align: left;
+    width: 60px;
+    position: relative;
+    top: -82px;
+    left: 220px;
+}
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://duzwl.github.io/uncategorized/js/puzzle/index/</url>
+      <content type="html"><![CDATA[<!DOCTYPE html>
+<html>
+<head>
+    <!-- 1. CSS太长了。可以通过定义4个横坐标4个纵坐标一共8个类实现定位的top和left。
+            同时可以定义公共的类用于声明背景图片、border等所有拼图块的共同样式。
+         2. innerHTML不要用。
+         3. 全局变量略多。-->
+    <title>Fifteen Puzzle</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+    <h1>Puzzles</h1>
+    <div id="all">
+        <div id="d0" class="c0"></div>
+        <div id="d1" class="c1"></div>
+        <div id="d2" class="c2"></div>
+        <div id="d3" class="c3"></div>
+        <div id="d4" class="c4"></div>
+        <div id="d5" class="c5"></div>
+        <div id="d6" class="c6"></div>
+        <div id="d7" class="c7"></div>
+        <div id="d8" class="c8"></div>
+        <div id="d9" class="c9"></div>
+        <div id="d10" class="c10"></div>
+        <div id="d11" class="c11"></div>
+        <div id="d12" class="c12"></div>
+        <div id="d13" class="c13"></div>
+        <div id="d14" class="c14"></div>
+        <div id="d15" class="c15"></div>
+    </div>
+    <div id="bt">
+        <button id="bt1">Start</button>
+        <button id="bt2">Reset</button>
+    </div>
+    <div id="bg">
+        <div id="bg1" class="bg1c"></div>
+        <div id="text">Change background picture.</div>
+    </div>
+    <div id="mode">
+        <div id="mode1" class="bg11"></div><div id="text1">Very Easy</div>
+        <div id="mode2" class="bg1c"></div><div id="text2">Easy</div>
+        <div id="mode3" class="bg1c"></div><div id="text3">Difficult</div>
+    </div>
+    <div id="result">
+        <div id="time">Time(s):</div>
+        <div id="leftt">120</div>
+    </div>
+    <script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://duzwl.github.io/uncategorized/js/mole/index/</url>
+      <content type="html"><![CDATA[var score = 0;
+var start = false;
+var Score;
+var moles;
+var time;
+var index;
+
+window.onload = function() {
+	creatmoles();
+	beclicked();
+	startt();
+}
+
+function creatmoles() {   // 创建地鼠
+	moles = document.getElementById("moles");
+	var oFragment = document.createDocumentFragment();
+	for(var i = 0; i < 60; i++) {
+	 	var r = document.createElement("div");
+	 	r.className = "newdiv";
+	 	oFragment.appendChild(r);
+	}
+	moles.appendChild(oFragment);
+}
+
+function startt() {   // 开始游戏
+	Score = document.getElementById("scorenum");
+	moles = document.getElementById("moles");
+	var start_stop = document.getElementById("start-stop");
+
+	start_stop.onclick= function() {
+		
+		if (start == false) {  // 最开始时按下button
+			start = true;
+			score = 0, Score.innerHTML = score;
+			document.getElementById("timenum").innerHTML = 30;
+			document.getElementById("state").innerHTML = "Playing";
+			time = setInterval(go, 1000);
+			index = Math.floor(Math.random()*60);
+			moles.childNodes[index].className = "active";
+		} else {             // 结束游戏
+			clearInterval(time);
+			var text = "Game Over.\nYour score is: ";
+		    text += score;
+		    alert(text);
+		    start = false, score = 0;
+		    Score.innerHTML = score;
+			document.getElementById("timenum").innerHTML = 0;
+			document.getElementById("state").innerHTML = "Game Over";
+			moles.childNodes[index].className = "newdiv";
+		}
+	}
+}
+function go() {
+	Score = document.getElementById("scorenum");
+	moles = document.getElementById("moles");
+	var tmp = document.getElementById("timenum").innerHTML;
+	tmp--;
+	document.getElementById("timenum").innerHTML = tmp;
+
+	if (start && tmp == 0) {   // 剩余时间为0，结束游戏
+		clearInterval(time);
+		var text = "Game Over.\nYour score is: ";
+		text += score;
+		alert(text);
+		document.getElementById("state").innerHTML = "Game Over";
+		start = false;
+		moles.childNodes[index].className = "newdiv";
+	}
+
+}
+
+function beclicked() {   // 地鼠被敲击
+	Score = document.getElementById("scorenum");
+	moles = document.getElementById("moles");
+	var m = moles.childNodes;
+
+    for (var i = 0; i < m.length; ++i) {
+    	m[i].onclick = function() {
+    		if (start) {
+    			var classname = this.className;
+	 			if (classname == "active") {
+	 				score++;
+	 				this.className = "newdiv";
+	 			    index = Math.floor(Math.random()*60);
+				    moles.childNodes[index].className = "active";
+	 			} else {
+	 				score--;
+	 				moles.childNodes[index].className = "newdiv";
+	 				index = Math.floor(Math.random()*60);
+				    moles.childNodes[index].className = "active";
+	 			}
+	 			Score.innerHTML = score;
+    		}
+    	}
+    }
+    
+}
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://duzwl.github.io/uncategorized/js/mole/index/</url>
+      <content type="html"><![CDATA[<!DOCTYPE html>
+<html>
+<head>
+	<title>Whac-a-mole</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+	<h1>Whac-a-mole</h1>
+	<p id="h1p">Test your skill.How many boxes(moles) can you check(hit) in 30 seconds?</p>
+	<div id="all">
+		<button id="start-stop"> Start Game | Stop Game </button>
+		<p id="state">Game over</p>
+		<div id="time">
+		    Time:<div id="timenum">0</div>
+		</div>
+		<div id="score">
+		    Score:<div id="scorenum">0</div>
+		</div>
+	</div>	
+    <div id="moles"></div>
+    <div id="bi">
+    	<p id="ins">Instructions:</p>
+    	<ol>
+    		<li>Click on the radio button(moles) as they are selected randomly by the computer.</li>
+    		<li>1 point per hit, minus 1 point per miss.</li>
+    	</ol>
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+</html>]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://duzwl.github.io/uncategorized/js/mole/index/</url>
+      <content type="html"><![CDATA[h1, #h1p {
+	text-align: center;
+}
+body {
+	font-family: Century Gothic;
+}
+#all {
+	width: 285px;
+	height: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid white;
+}
+#start-stop {
+	float: left;
+	background-color: white;
+	border: solid 1px rgb(222, 222, 222);
+	cursor: pointer;
+}
+#state {
+	border: solid 1px rgb(222, 222, 222);
+	width: 108px;
+	position: relative;
+	top: 10px;
+	padding: 0 5px;
+}
+#time {
+	position: relative;
+	top: -57px;
+	left: 198px;
+}
+#timenum {
+	width: 33px;
+	position: relative;
+	top: -21px;
+	left: 48px;
+	border: solid 1px rgb(222, 222, 222);
+	padding-left: 3px;
+}
+#scorenum {
+	width: 33px;
+	position: relative;
+	top: -21px;
+	left: 57px;
+	border: solid 1px rgb(222, 222, 222);
+    padding-left: 3px;
+}
+#score {
+	position: relative;
+	top: -74px;
+	left: 189px;
+}
+#ins {
+	font-weight: bold;
+}
+#moles {
+	width: 240px;
+	height: 167px;
+	margin-left: auto;
+	margin-right: auto;
+	
+	display: flex;
+	flex-wrap: wrap;
+	border-top: 2px solid rgb(168, 168, 168);
+	border-bottom: 2px solid rgb(168, 168, 168);
+	position: relative;
+	top: 40px;
+}
+#bi {
+	position: relative;
+	top: 80px;
+	width: 675px;
+	margin-left: auto;
+	margin-right: auto;
+
+}
+.newdiv {
+	width: 12px;
+	height: 12px;
+	margin: 4px;
+	border-radius: 50px;
+	border: solid 2px rgb(222, 222, 222);
+	cursor: pointer;
+}
+.active {
+	width: 12px;
+	height: 12px;
+	margin: 4px;
+	border-radius: 50px;
+	border: solid 2px rgb(68, 154, 250);
+	box-shadow: 0px 0px 1px 4px rgb(68, 154, 250) inset;
+}
+.newdiv:hover {
+	border-color: rgb(156, 191, 226);
+}]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://duzwl.github.io/uncategorized/js/maze/index/</url>
+      <content type="html"><![CDATA[var star = false, end = false;
+var zuo = false, you = false;
+
+window.onload = Maze;
+function Maze() {
+    var s = document.getElementById("s");
+    s.onmouseover = function() {
+    	result.innerHTML = "Start!";
+        star = true;
+    }
+
+    var e = document.getElementById("e");
+	var result = document.getElementById("result");
+
+	e.onmouseover = function() {
+		end = true;
+		if (star == true) {
+			if (end == true && zuo == true && you == false) {
+				result.innerHTML = "You Won!";
+			} else if (end == true && you == true && zuo == false) {
+				result.innerHTML = "Don't cheat, you should start from the 'S' and move to the 'E' inside the maze!";
+			}
+		}
+		if (star == false && end == true)
+			result.innerHTML = "Don't cheat, you should start from the 'S' and move to the 'E' inside the maze!";
+	}
+	
+	e.onmouseout = function() {
+		star = false, end = false;
+        zuo = false, you = false;
+	}
+
+	var l = document.getElementsByClassName("loose");
+	for (var i = 0; i < l.length; ++i) {  // 碰到墙
+        l[i].onmouseover = function() {
+        	if (star) {
+        		this.className = "changed";
+        	    result.innerHTML = "You Lose!";
+        	}
+        }
+        l[i].onmouseout = function() {
+        	if (star) {
+        		this.className = "loose";
+        	    star = false, end = false;
+                zuo = false, you = false;
+        	}
+        }
+	}
+
+	var z = document.getElementById("zuo"); // E左右各有一个div用来判断是否作弊
+	z.onmouseover = function() {
+		if (star) zuo = true;
+	}
+
+    var y = document.getElementById("you");
+	y.onmouseover = function() {
+		if (star) you = true;
+	}
+}
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://duzwl.github.io/uncategorized/js/maze/index/</url>
+      <content type="html"><![CDATA[body {
+	font-family: Century Gothic;
+}
+h1, h2 {
+	text-align: center;
+}
+h2, h1 {
+	font-weight: lighter;
+}
+#result {
+	height: 50px;
+	text-align: center;
+	font-size: 1.4em;
+}
+#all {
+	position: relative;
+	top: -55px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+	height: 300px;
+	cursor: pointer;
+}
+#topleft {
+	position: relative;
+	top: 54px;
+	float: left;
+	width: 150px;
+	height: 52px;
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	cursor: auto;
+}
+#topright {
+    position: relative;
+    left: 349px;
+    top: 0px;
+	width: 150px;
+	height: 52px;
+	border-top: 1px solid black;
+	border-right: 1px solid black;
+	cursor: auto;
+}
+#top {
+	position: relative;
+	left: 151px;
+	top: 54px;
+	width: 198px;
+	height: 52px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#left {
+	width: 150px;
+	height: 150px;
+	float: left;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#right {
+	float: right;
+	width: 150px;
+	height: 150px;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#middle {
+	position: relative;
+	top: 50px;
+	width: 99px;
+	height: 150px;
+	margin-left: auto;
+	margin-right: auto;
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	cursor: auto;
+}
+#buttleft {
+	position: relative;
+	top: 49px;
+	width: 200px;
+	height: 51px;
+	border-left: 1px solid black;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#butt {
+	position: relative;
+	left: 201px;
+	top: -3px;
+	width: 99px;
+	height: 51px;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#buttright {
+	position: relative;
+	left: 300px;
+    top: -56px;
+	width: 199px;
+	height: 51px;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	border-top: 1px solid black;
+	cursor: auto;
+}
+.loose {
+	background-color: rgb(238, 238, 238);
+}
+#s {
+	position: relative;
+	top: -155px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 2em;
+	width: 41px;
+	height: 41px;
+	background-color: rgb(131, 255, 131);
+	border: 1px solid black;
+}
+#e {
+	position: relative;
+	top: -198px;
+	left: 457px;
+	text-align: center;
+	width: 41px;
+	height: 41px;
+	font-weight: bold;
+	font-size: 2em;
+	background-color: rgb(133, 133, 255);
+	border: 1px solid black;
+}
+#zuo {
+	position: relative;
+	left: 447px;
+	top: -244px;
+	height: 50px;
+	width: 10px;
+}
+#you {
+	position: relative;
+    left: 500px;
+    top: -294px;
+	height: 50px;
+	width: 10px;
+}
+#guide {
+	width: 575px;
+	margin-left: auto;
+	margin-right:auto;
+}
+#wall {
+	margin-left: auto;
+	margin-right:auto;
+	width: 101px;
+	height: 26px;
+	background-color: rgb(238, 238, 238);
+	border: 1px solid black;
+}
+.changed {
+	background-color: red;
+}]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://duzwl.github.io/uncategorized/js/maze/index/</url>
+      <content type="html"><![CDATA[<!DOCTYPE html>
+<html>
+<head>
+	<title>The Mouse Maze</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+    <h1>The Amazing Mouse Maze!</h1>
+    <h2>Move your mouse over the "S" to begin.</h2>
+    <div id="result"></div>
+    <div id="all">
+    	<div id="topleft" class="loose"></div><div id="top" class="loose"></div><div class="loose" id="topright"></div>
+    	<div id="left" class="loose"></div>
+    	<div id="right" class="loose"></div>
+    	<div id="middle" class="loose"></div>
+    	<div id="buttleft" class="loose"></div><div id="butt" class="loose"></div><div id="buttright" class="loose"></div>
+    	<div id="s">S</div>
+    	<div id="e">E</div>
+    	<div id="zuo"></div><div id="you"></div>
+    </div>
+    <div id="guide">
+        <p>The object of this game is to guide the mouse cursor throuh the start area and get to the end area. Be sure to avoid the walls:</p>
+        <div id="wall"></div>
+        <p>Good luck!</p>
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+</html>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[初识Javascript]]></title>
+      <url>https://duzwl.github.io/%E5%89%8D%E7%AB%AF/js/</url>
+      <content type="html"><![CDATA[<p>以下是我刚开始接触js和jQuery时的学习收获，虽然简陋，但毕竟是开始的开始。<br><a id="more"></a></p>
+<h2 id="脑残迷宫游戏"><a href="#脑残迷宫游戏" class="headerlink" title="脑残迷宫游戏"></a><strong>脑残迷宫游戏</strong></h2><p>鼠标hover上start图标游戏开始，通过迷宫到达end图标取得胜利。实现过程比较简单，另外在end左右两端有两个隐藏的div，用于判断是否作弊。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[高精度加减法]]></title>
       <url>https://duzwl.github.io/Data-Structure/algorithm/plus-minus/</url>
       <content type="html"><![CDATA[<p>计算机能完成数字比较“小”的加减法运算，然而，如果进行加减运算的两个数比较大，比如，两个100位的数相加，恐怕没有一个数据类型能容纳这么大的数吧？因而我们需要使用高精度加法。</p>

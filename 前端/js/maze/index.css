@@ -1,0 +1,169 @@
+body {
+	font-family: Century Gothic;
+}
+h1, h2 {
+	text-align: center;
+}
+h2, h1 {
+	font-weight: lighter;
+}
+#result {
+	height: 50px;
+	text-align: center;
+	font-size: 1.4em;
+}
+#all {
+	position: relative;
+	top: -55px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+	height: 300px;
+	cursor: pointer;
+}
+#topleft {
+	position: relative;
+	top: 54px;
+	float: left;
+	width: 150px;
+	height: 52px;
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	cursor: auto;
+}
+#topright {
+    position: relative;
+    left: 349px;
+    top: 0px;
+	width: 150px;
+	height: 52px;
+	border-top: 1px solid black;
+	border-right: 1px solid black;
+	cursor: auto;
+}
+#top {
+	position: relative;
+	left: 151px;
+	top: 54px;
+	width: 198px;
+	height: 52px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#left {
+	width: 150px;
+	height: 150px;
+	float: left;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#right {
+	float: right;
+	width: 150px;
+	height: 150px;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#middle {
+	position: relative;
+	top: 50px;
+	width: 99px;
+	height: 150px;
+	margin-left: auto;
+	margin-right: auto;
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	cursor: auto;
+}
+#buttleft {
+	position: relative;
+	top: 49px;
+	width: 200px;
+	height: 51px;
+	border-left: 1px solid black;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#butt {
+	position: relative;
+	left: 201px;
+	top: -3px;
+	width: 99px;
+	height: 51px;
+	border-bottom: 1px solid black;
+	cursor: auto;
+}
+#buttright {
+	position: relative;
+	left: 300px;
+    top: -56px;
+	width: 199px;
+	height: 51px;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	border-top: 1px solid black;
+	cursor: auto;
+}
+.loose {
+	background-color: rgb(238, 238, 238);
+}
+#s {
+	position: relative;
+	top: -155px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 2em;
+	width: 41px;
+	height: 41px;
+	background-color: rgb(131, 255, 131);
+	border: 1px solid black;
+}
+#e {
+	position: relative;
+	top: -198px;
+	left: 457px;
+	text-align: center;
+	width: 41px;
+	height: 41px;
+	font-weight: bold;
+	font-size: 2em;
+	background-color: rgb(133, 133, 255);
+	border: 1px solid black;
+}
+#zuo {
+	position: relative;
+	left: 447px;
+	top: -244px;
+	height: 50px;
+	width: 10px;
+}
+#you {
+	position: relative;
+    left: 500px;
+    top: -294px;
+	height: 50px;
+	width: 10px;
+}
+#guide {
+	width: 575px;
+	margin-left: auto;
+	margin-right:auto;
+}
+#wall {
+	margin-left: auto;
+	margin-right:auto;
+	width: 101px;
+	height: 26px;
+	background-color: rgb(238, 238, 238);
+	border: 1px solid black;
+}
+.changed {
+	background-color: red;
+}

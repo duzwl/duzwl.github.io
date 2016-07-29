@@ -44,7 +44,7 @@
 		</hgroup>
 
 		
-		<p class="header-subtitle">Something that I have learned</p>
+		<p class="header-subtitle">Neither joy in material things or sorrow for personnal losses</p>
 		
 
 		
@@ -119,7 +119,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 16.67px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 15px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 15px;">递归</a>
 					</div>
 				</section>
 				
@@ -170,7 +170,7 @@
 			  <h1 class="header-author">笑看</h1>
 			</hgroup>
 			
-			<p class="header-subtitle">Something that I have learned</p>
+			<p class="header-subtitle">Neither joy in material things or sorrow for personnal losses</p>
 			
 			<nav class="header-menu">
 				<ul>
@@ -201,11 +201,86 @@
 
       <div class="body-wrap">
   
-    <article id="post-排序2" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-js/maze/index" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/algorithm/Data-Structure/排序2/" class="article-date">
-  	<time datetime="2016-07-24T14:13:29.000Z" itemprop="datePublished">2016-07-24</time>
+      <a href="/uncategorized/js/maze/index/" class="article-date">
+  	<time datetime="2016-07-29T09:32:22.476Z" itemprop="datePublished">2016-07-29</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!DOCTYPE html>
+<html>
+<head>
+	<title>The Mouse Maze</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+    <h1>The Amazing Mouse Maze!</h1>
+    <h2>Move your mouse over the "S" to begin.</h2>
+    <div id="result"></div>
+    <div id="all">
+    	<div id="topleft" class="loose"></div><div id="top" class="loose"></div><div class="loose" id="topright"></div>
+    	<div id="left" class="loose"></div>
+    	<div id="right" class="loose"></div>
+    	<div id="middle" class="loose"></div>
+    	<div id="buttleft" class="loose"></div><div id="butt" class="loose"></div><div id="buttright" class="loose"></div>
+    	<div id="s">S</div>
+    	<div id="e">E</div>
+    	<div id="zuo"></div><div id="you"></div>
+    </div>
+    <div id="guide">
+        <p>The object of this game is to guide the mouse cursor throuh the start area and get to the end area. Be sure to avoid the walls:</p>
+        <div id="wall"></div>
+        <p>Good luck!</p>
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+</html>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-js" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/前端/js/" class="article-date">
+  	<time datetime="2016-07-29T07:40:57.000Z" itemprop="datePublished">2016-07-29</time>
 </a>
     </div>
   
@@ -221,7 +296,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/algorithm/Data-Structure/排序2/">排序算法(二)</a>
+      <a class="article-title" href="/前端/js/">初识Javascript</a>
     </h1>
   
 
@@ -230,7 +305,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>下面是关于排序算法实现比较难的两个：堆排序和基排序；另外还介绍一种特殊的排序算法。<br>
+        <p>以下是我刚开始接触js和jQuery时的学习收获，虽然简陋，但毕竟是开始的开始。<br>
       
     </div>
     
@@ -238,18 +313,18 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/排序/">排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/algorithm/">algorithm</a><a class="article-category-link" href="/categories/algorithm/Data-Structure/">Data Structure</a>
+	<a class="article-category-link" href="/categories/前端/">前端</a>
 	</div>
 
 
       
         <p class="article-more-link">
-          <a  href="/algorithm/Data-Structure/排序2/#more">more >></a>
+          <a  href="/前端/js/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -271,11 +346,11 @@
 
 
   
-    <article id="post-排序1" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-plus-minus" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/algorithm/Data-Structure/排序1/" class="article-date">
-  	<time datetime="2016-07-24T10:53:03.000Z" itemprop="datePublished">2016-07-24</time>
+      <a href="/Data-Structure/algorithm/plus-minus/" class="article-date">
+  	<time datetime="2016-07-28T09:11:06.000Z" itemprop="datePublished">2016-07-28</time>
 </a>
     </div>
   
@@ -291,7 +366,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/algorithm/Data-Structure/排序1/">排序算法(一)</a>
+      <a class="article-title" href="/Data-Structure/algorithm/plus-minus/">高精度加减法</a>
     </h1>
   
 
@@ -300,7 +375,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>下面介绍经典排序算法中的五种：选择排序、插入排序、二分查找、快速排序、归并排序。<br>
+        <p>计算机能完成数字比较“小”的加减法运算，然而，如果进行加减运算的两个数比较大，比如，两个100位的数相加，恐怕没有一个数据类型能容纳这么大的数吧？因而我们需要使用高精度加法。</p>
       
     </div>
     
@@ -308,18 +383,18 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/排序/">排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/algorithm/">algorithm</a><a class="article-category-link" href="/categories/algorithm/Data-Structure/">Data Structure</a>
+	<a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><a class="article-category-link" href="/categories/Data-Structure/algorithm/">algorithm</a>
 	</div>
 
 
       
         <p class="article-more-link">
-          <a  href="/algorithm/Data-Structure/排序1/#more">more >></a>
+          <a  href="/Data-Structure/algorithm/plus-minus/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -341,11 +416,11 @@
 
 
   
-    <article id="post-BSTree" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-stack-queue" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/algorithm/Data-Structure/BSTree/" class="article-date">
-  	<time datetime="2016-07-23T09:39:25.000Z" itemprop="datePublished">2016-07-23</time>
+      <a href="/Data-Structure/stack-queue/" class="article-date">
+  	<time datetime="2016-07-28T08:54:58.000Z" itemprop="datePublished">2016-07-28</time>
 </a>
     </div>
   
@@ -361,7 +436,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/algorithm/Data-Structure/BSTree/">BSTree</a>
+      <a class="article-title" href="/Data-Structure/stack-queue/">栈和队列</a>
     </h1>
   
 
@@ -370,7 +445,147 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>BSTree即二叉搜索树，对于每个节点，其值不比它左子树的任意元素小，而且不比它的右子树的任意元素大。下面简单介绍BSTree的搜索，插入，删除。<br>
+        <p>栈、队列、链表是学习数据结构必须掌握的知识点，初学者必须学会自己实现它们并完善相关的操作函数。下面是栈和队列的简单实现和应用：<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/Data-Structure/stack-queue/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-agenda" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/C-C/agenda/" class="article-date">
+  	<time datetime="2016-07-26T09:58:20.000Z" itemprop="datePublished">2016-07-26</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/C-C/agenda/">Agenda--会议管理系统</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用C++实现一个简单的会议管理系统，支持登陆、注册，创建会议、查询会议等等功能。<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/C-C/">C/C++</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/C-C/agenda/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-递归应用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/algorithm/Data-Structure/递归应用/" class="article-date">
+  	<time datetime="2016-07-25T10:43:41.000Z" itemprop="datePublished">2016-07-25</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/algorithm/Data-Structure/递归应用/">全排列和整数划分</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>以下是关于运用递归解决全排列问题和整数划分问题的具体讲解。<br>
       
     </div>
     
@@ -389,7 +604,7 @@
 
       
         <p class="article-more-link">
-          <a  href="/algorithm/Data-Structure/BSTree/#more">more >></a>
+          <a  href="/algorithm/Data-Structure/递归应用/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -411,11 +626,11 @@
 
 
   
-    <article id="post-Coroutines" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-无向图" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/3D游戏开发/Coroutines/" class="article-date">
-  	<time datetime="2016-07-23T09:15:55.000Z" itemprop="datePublished">2016-07-23</time>
+      <a href="/algorithm/Data-Structure/无向图/" class="article-date">
+  	<time datetime="2016-07-25T10:18:52.000Z" itemprop="datePublished">2016-07-25</time>
 </a>
     </div>
   
@@ -431,7 +646,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/3D游戏开发/Coroutines/">Coroutines</a>
+      <a class="article-title" href="/algorithm/Data-Structure/无向图/">无向图问题</a>
     </h1>
   
 
@@ -440,7 +655,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Coroutines即协程，一般我们调用函数的时候，这个函数就会在一帧的时间内完成。如果我们希望我们的函数不在一帧里完全完成，每次只执行一部分，这时候就要用到协程。协程通过yield，可以在执行的途中退出，下次再次执行的时候在yield的下一句执行。协程通过保存一个栈记录执行的顺序，就像操作系统中的保存上下文一样。<br>
+        <p>下面关于无向图的两个景点问题：连通块数目问题以及最大流问题。<br>
       
     </div>
     
@@ -448,18 +663,18 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity3d/">unity3d</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/递归/">递归</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/3D游戏开发/">3D游戏开发</a>
+	<a class="article-category-link" href="/categories/algorithm/">algorithm</a><a class="article-category-link" href="/categories/algorithm/Data-Structure/">Data Structure</a>
 	</div>
 
 
       
         <p class="article-more-link">
-          <a  href="/3D游戏开发/Coroutines/#more">more >></a>
+          <a  href="/algorithm/Data-Structure/无向图/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -481,11 +696,11 @@
 
 
   
-    <article id="post-序列化" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-图的最短路径" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/3D游戏开发/序列化/" class="article-date">
-  	<time datetime="2016-07-23T04:53:23.000Z" itemprop="datePublished">2016-07-23</time>
+      <a href="/algorithm/Data-Structure/图的最短路径/" class="article-date">
+  	<time datetime="2016-07-25T07:44:54.000Z" itemprop="datePublished">2016-07-25</time>
 </a>
     </div>
   
@@ -501,7 +716,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/3D游戏开发/序列化/">飞碟游戏序列化</a>
+      <a class="article-title" href="/algorithm/Data-Structure/图的最短路径/">图的最短路径</a>
     </h1>
   
 
@@ -510,7 +725,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>什么是序列化呢？序列化就是把一个内存对象变为与地址无关的可传输的数据格式，通常是文本格式；反序列化反之。更通俗一点说，就是把游戏运行时保存在内存中的对象或数据输出为文本，如json等；反序列化就是把这些文本重新转换为内存中对象的数据。
+        <p>图的最短路径问题是一个比较经典的问题，以下介绍Floyd算法和Dijkstra两个算法解决此问题。<br>
       
     </div>
     
@@ -518,228 +733,18 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity3d/">unity3d</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工厂模式/">工厂模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/序列化/">序列化</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/3D游戏开发/">3D游戏开发</a>
+	<a class="article-category-link" href="/categories/algorithm/">algorithm</a><a class="article-category-link" href="/categories/algorithm/Data-Structure/">Data Structure</a>
 	</div>
 
 
       
         <p class="article-more-link">
-          <a  href="/3D游戏开发/序列化/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-  
-
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-粒子系统" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/3D游戏开发/粒子系统/" class="article-date">
-  	<time datetime="2016-07-23T04:09:05.000Z" itemprop="datePublished">2016-07-23</time>
-</a>
-    </div>
-  
-
-
-
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/3D游戏开发/粒子系统/">粒子系统</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>学习了3D游戏的粒子系统，参考了<a href="http://i-remember.fr/en">I-remember</a>上的例子光环，决定自己做一个。开始动手之前，需要细心观察并发现，光环分两层，一层顺时针旋转另外一层逆时针旋转，且中间部分粒子较多；粒子在旋转的同时会在光环之间游离。<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity3d/">unity3d</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/3D游戏开发/">3D游戏开发</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/3D游戏开发/粒子系统/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-  
-
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-打飞碟改进" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/3D游戏开发/打飞碟改进/" class="article-date">
-  	<time datetime="2016-07-22T11:12:32.000Z" itemprop="datePublished">2016-07-22</time>
-</a>
-    </div>
-  
-
-
-
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/3D游戏开发/打飞碟改进/">打飞碟改进</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上次写的飞碟游戏确实很丑陋，这次改进一下。游戏分多个回合，每个回合有N个飞碟，玩家按空格后，321倒数3秒，飞碟飞出，点击鼠标，子弹飞出。飞碟落地或被击中，则准备下一次射击。每回合飞碟的大小、颜色、发射位置、发射角度、每次发射的数量可以变化。<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity3d/">unity3d</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工厂模式/">工厂模式</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/3D游戏开发/">3D游戏开发</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/3D游戏开发/打飞碟改进/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-  
-  
-
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-garen" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/3D游戏开发/garen/" class="article-date">
-  	<time datetime="2016-07-22T10:02:50.000Z" itemprop="datePublished">2016-07-22</time>
-</a>
-    </div>
-  
-
-
-
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/3D游戏开发/garen/">Garen击球游戏</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>现在使用unity3d的动画系统编写击球小游戏。这是<a href="http://pan.baidu.com/s/1i5exKNV">Garen</a>模型，下载完后将所有模型和动作设置成Legacy动画， inspector -&gt; Rig -&gt; Animation type -&gt; Legacy -&gt; Apply button。游戏过程中将所有随机放置的小球击毙即获得胜利，显示所用时间。方向键控制移动，鼠标控制点击。<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity3d/">unity3d</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工厂模式/">工厂模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/观察者模式/">观察者模式</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/3D游戏开发/">3D游戏开发</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/3D游戏开发/garen/#more">more >></a>
+          <a  href="/algorithm/Data-Structure/图的最短路径/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -763,7 +768,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 </div>

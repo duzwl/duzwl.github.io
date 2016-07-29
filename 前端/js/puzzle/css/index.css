@@ -1,0 +1,394 @@
+body {
+    background-color: rgb(252, 214, 143);
+}
+
+h1 {
+    text-align:center;
+    padding-top: 10px;
+}
+
+#all {
+    width: 360px;
+    height: 360px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    margin-top: 34px;
+}
+
+.c0, .c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8, .c9, .c10, .c11, .c12, .c13, .c14 {
+    width: 88px;
+    height: 88px;
+    border: 1px solid rgb(222, 222, 222);
+}
+
+/* 带c后缀的，比如c0c表示换图片后使用的相对应的类 */
+.c0c, .c1c, .c2c, .c3c, .c4c, .c5c, .c6c, .c7c, .c8c, .c9c, .c10c, .c11c, .c12c, .c13c, .c14c {
+    width: 88px;
+    height: 88px;
+    border: 1px solid rgb(222, 222, 222);
+}
+
+.c0 {
+    background-image: url(../images/one.jpg);
+}
+.c0c {
+    background-image: url(../images/two.jpg);
+}
+#d0 {
+    border-radius: 15px 7px 7px 7px;
+}
+
+.c1 {
+    background-position: -88px 0px;
+    background-image: url(../images/one.jpg);
+}
+.c1c {
+    background-position: -88px 0px;
+    background-image: url(../images/two.jpg);
+}
+#d1 {
+    position: relative;
+    top: -90px;
+    left: 90px;
+    border-radius: 7px;
+}
+
+.c2 {
+    background-position: -176px 0px;
+    background-image: url(../images/one.jpg);
+}
+.c2c {
+    background-position: -176px 0px;
+    background-image: url(../images/two.jpg);
+}
+#d2 {
+    position: relative;
+    top: -180px;
+    left: 180px;
+    border-radius: 7px;
+}
+
+.c3 {
+    background-position: -264px 0px;
+    background-image: url(../images/one.jpg);
+}  
+.c3c {
+    background-position: -264px 0px;
+    background-image: url(../images/two.jpg);
+} 
+#d3 {
+    position: relative;
+    top: -270px;
+    left: 270px;
+    border-radius: 7px 15px 7px 7px;
+}
+
+.c4 {
+    background-position: 0px -88px;
+    background-image: url(../images/one.jpg);
+} 
+.c4c {
+    background-position: 0px -88px;
+    background-image: url(../images/two.jpg);
+} 
+#d4 {
+    position: relative;
+    top: -270px;
+    left: 0px;
+    border-radius: 7px;
+}
+
+.c5 {
+    background-position: -88px -88px;
+    background-image: url(../images/one.jpg);
+}
+.c5c {
+    background-position: -88px -88px;
+    background-image: url(../images/two.jpg);
+}
+#d5 {
+    position: relative;
+    top: -360px;
+    left: 90px;
+    border-radius: 7px;
+}
+
+.c6 {
+    background-position: -176px -88px;
+    background-image: url(../images/one.jpg);
+}
+.c6c {
+    background-position: -176px -88px;
+    background-image: url(../images/two.jpg);
+}
+#d6 {
+    position: relative;
+    top: -450px;
+    left: 180px;
+    border-radius: 7px;
+}
+
+.c7 {
+    background-position: -264px -88px;
+    background-image: url(../images/one.jpg);
+}
+.c7c {
+    background-position: -264px -88px;
+    background-image: url(../images/two.jpg);
+}
+#d7 {
+    position: relative;
+    top: -540px;
+    left: 270px;
+    border-radius: 7px;
+}
+
+.c8 {
+    background-position: 0px -176px;
+    background-image: url(../images/one.jpg);
+}
+.c8c {
+    background-position: 0px -176px;
+    background-image: url(../images/two.jpg);
+}
+#d8 {
+    position: relative;
+    top: -540px;
+    left: 0px;
+    border-radius: 7px;
+}
+
+.c9 {
+    background-position: -88px -176px;
+    background-image: url(../images/one.jpg);
+}
+.c9c {
+    background-position: -88px -176px;
+    background-image: url(../images/two.jpg);
+}
+#d9 {
+    position: relative;
+    top: -630px;
+    left: 90px;
+    border-radius: 7px;
+}
+
+.c10 {
+    background-position: -176px -176px;
+    background-image: url(../images/one.jpg);
+}
+.c10c {
+    background-position: -176px -176px;
+    background-image: url(../images/two.jpg);
+}
+#d10 {
+    position: relative;
+    top: -720px;
+    left: 180px;
+    border-radius: 7px;
+}
+
+.c11 {
+    background-position: -264px -176px;
+    background-image: url(../images/one.jpg);
+}
+.c11c {
+    background-position: -264px -176px;
+    background-image: url(../images/two.jpg);
+}
+#d11 {
+    position: relative;
+    top: -810px;
+    left: 270px;
+    border-radius: 7px;
+}
+
+.c12 {
+    background-position: 0px -264px;
+    background-image: url(../images/one.jpg);
+}
+.c12c {
+    background-position: 0px -264px;
+    background-image: url(../images/two.jpg);
+}
+#d12 {
+    position: relative;
+    top: -810px;
+    left: 0px;
+    border-radius: 7px 7px 7px 15px;
+}
+
+.c13 {
+    background-position: -88px -264px;
+    background-image: url(../images/one.jpg);
+}
+.c13c {
+    background-position: -88px -264px;
+    background-image: url(../images/two.jpg);
+}
+#d13 {
+    position: relative;
+    top: -900px;
+    left: 90px;
+    border-radius: 7px;
+}
+
+.c14 {
+    background-position: -176px -264px;
+    background-image: url(../images/one.jpg);
+}
+.c14c {
+    background-position: -176px -264px;
+    background-image: url(../images/two.jpg);
+}
+#d14 {
+    position: relative;
+    top: -990px;
+    left: 180px;
+    border-radius: 7px;
+}
+
+.c15, .c15c {
+    width: 88px;
+    height: 88px;
+    border: 1px solid rgb(252, 214, 143);
+    background-image: none;
+}
+#d15 {
+    position: relative;
+    top: -1080px;
+    left: 270px;
+    border-radius: 7px 7px 15px 7px;
+}
+
+button {
+    background-color: rgb(74, 132, 240);
+    color: white;
+    border: 1px solid rgb(252, 214, 143);
+    cursor: pointer;
+    border-radius: 7px;
+}
+
+#bt {
+    width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#bt1 {
+    position: relative;
+    top: 20px;
+    left: 18px;
+}
+#bt2 {
+    position: relative;
+    top: 20px;
+    left: 39px;
+}
+
+#bg {
+    position: relative;
+    top: 44px;
+    width: 270px;
+    height: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 18px;
+}
+#bg1, #mode1, #mode2, #mode3 {
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid rgb(74, 132, 240);
+}
+.bg1c {      /* 选择按钮未被选择应用的样式*/
+    border: 1px solid rgb(74, 132, 240);
+}
+.bg11 {      /* 选择按钮被选择后应用的样式 */
+    border: 1px solid rgb(74, 132, 240);
+    box-shadow: 0px 0px 1px 4px rgb(68, 154, 250) inset;
+}
+
+#text {
+    position: relative;
+    top: -18px;
+    left: 22px;
+    width: 300px;
+    height: 30px;
+}
+
+#result {
+    position: relative;
+    left: 50px;
+    top: 60px;
+    font-size: 18px;
+    width: 200px;
+    height: 20px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#time {
+    position: relative;
+    left: -22px;
+}
+#leftt {
+    position: relative;
+    left: 53px;
+    top: -22px;
+    width: 50px;
+    height: 20px;
+    border: 1px solid rgb(74, 132, 240);
+    text-align: left;
+    border-radius: 3px;
+}
+
+#mode {
+    font-size: 18px;
+    width: 310px;
+    height: 25px;
+    position: relative;
+    top: 50px;
+    margin-right: auto;
+    margin-left: auto;
+}
+#mode1 {
+    position: relative;
+    top: 5px;
+    cursor: pointer;
+}
+#mode2 {
+    position: relative;
+    top: -30px;
+    left: 122px;
+    cursor: pointer;
+}
+#mode3 {
+    position: relative;
+    top: -65px;
+    left: 200px;
+    cursor: pointer;
+}
+
+#text1 {
+    text-align: left;
+    width: 87px;
+    position: relative;
+    top: -13px;
+    left: 18px;
+}
+#text2 {
+    text-align: left;
+    width: 50px;
+    position: relative;
+    top: -47px;
+    left: 141px;
+}
+#text3 {
+    text-align: left;
+    width: 60px;
+    position: relative;
+    top: -82px;
+    left: 220px;
+}
