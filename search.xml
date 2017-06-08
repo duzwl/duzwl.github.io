@@ -4,6 +4,169 @@
   
     
     <entry>
+      <title><![CDATA[电影售票系统技术详解]]></title>
+      <url>https://duzwl.github.io/MVC/%E7%94%B5%E5%BD%B1%E5%94%AE%E7%A5%A8%E7%B3%BB%E7%BB%9F/</url>
+      <content type="html"><![CDATA[<p>这学期在学习了Spring框架之后，课程作业是开发一个电影售票系统，在团队开发过程中，我主要参与后台开发，下面是系统开发过程中的一些要点与总结。<br><a id="more"></a></p>
+<p>互联网售票软件是比较常见的软件系统。通常由多个零售系统和多个供给系统系统。 机票、酒店房间、电影票似乎是风马牛大相关的系统，但它们之间存在极其相似的业务模型。 以电影票为例，格瓦拉、蜘蛛网、腾讯等等都做类似的电影票分销、推广业务，但票是由各大院线排期提供的。 分销-院线-影院形成了一个完整的生态体系。本次大作业实现一个简单的互联网电影售票系统。服务端采用Java语言， Spring 4 作为web开发技术框架， jesery 作为 RESTful 服务提供框架。</p>
+<p>在这次大作业中，个人贡献主要包括两个方面：数据库数据录入工作、学习Spring框架并参与Java后台开发相关工作。以下是本文的行文结构：</p>
+<ul>
+<li>电影售票系统简介<ul>
+<li>基本功能</li>
+<li>用例建模</li>
+<li>领域模型、部署图、包图</li>
+</ul>
+</li>
+<li>数据库数据录入</li>
+<li>Spring MVC架构在本次售票系统中的具体应用</li>
+</ul>
+<h2 id="电影售票系统简介"><a href="#电影售票系统简介" class="headerlink" title="电影售票系统简介"></a><strong>电影售票系统简介</strong></h2><h5 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a><strong>基本功能</strong></h5><p>基本功能包括：1. 电影资讯；2. 购票；3. 用户信息；4. 收藏；5. 评论</p>
+<p>用户使用该可以实现查看和搜索正在热映和即将上映的电影资讯，对感兴趣的电影可以进行收藏。想要观看某部电影，可以进行下单购票操作。对于已经放映的电影订单，用户可以对该订单对应的电影进行评分评价的操作。另外，用户还可以更新自己的个人信息。下面是整个应用的界面逻辑概要图，方便对应用有个直观的了解：</p>
+<p><img src="3.png" alt=""></p>
+<h5 id="用例建模"><a href="#用例建模" class="headerlink" title="用例建模"></a><strong>用例建模</strong></h5><p>系统的用例建模如下：</p>
+<p><img src="4.png" alt=""></p>
+<p>可以看出，其中包含了如下几个用例：</p>
+<ul>
+<li><p>查看电影用例</p>
+<p>  用户可以通过查看资讯来查看电影，也可以通过直接搜索来查看电影。电影资讯包括两种类型：正在热映和即将上映。除了以上两种方式外，在应用首页也会推荐一些热门电影供用户查看。不管是以何种方式查看电影，都可以点击进入详情页面查看某部电影的详细信息。</p>
+</li>
+<li><p>下单购票</p>
+<p>  选择想要观看的电影之后，可以进行购票操作。购票时需要选择该电影放映的场次和座位信息。基本信息选择完成之后就可以创建订单了，创建订单的时候，如果用户还有优惠券，那么可以选择使用优惠券。订单创建完成后可以对订单进行支付，支付订单需要输入支付密码。最后，订单完成支付后用户可以看到订单的详细信息，系统还会随机送给用户优惠券。</p>
+</li>
+<li><p>查看订单</p>
+<p>  根据订单类型不同，用户可以查看的订单列表也有多种。每种订单都可以查看到订单的详细信息。</p>
+</li>
+<li><p>用户信息</p>
+<p>  用户可以查看自己的用户信息，也可以对自己的部分信息进行修改。修改的信息根据内容的不同，修改方式也有所不同，例如修改头像需要上传文件，修改昵称或签名则只是简单的文本修改，而修改登录密码或支付密码则需要提供原始密码等关键信息。因此，这里可以分出3个修改信息的用例，这3个用例可以泛化为”修改个人信息”用例，所以下图中也是使用了泛化箭头符号。</p>
+</li>
+<li><p>用户信息</p>
+<p>  用户可以查看自己的用户信息，也可以对自己的部分信息进行修改。修改的信息根据内容的不同，修改方式也有所不同，例如修改头像需要上传文件，修改昵称或签名则只是简单的文本修改，而修改登录密码或支付密码则需要提供原始密码等关键信息。因此，这里可以分出3个修改信息的用例，这3个用例可以泛化为”修改个人信息”用例，所以下图中也是使用了泛化箭头符号。</p>
+</li>
+</ul>
+<h5 id="领域模型、部署图、包图"><a href="#领域模型、部署图、包图" class="headerlink" title="领域模型、部署图、包图"></a><strong>领域模型、部署图、包图</strong></h5><p>领域模型是一组概念类图，即没有定义操作的类图。通过分析整个应用的功能，找出其中的名词，大致可以分为如下8个概念类：电影(Movie)、场次(Screen)、评论(Comment)、用户(User)、订单(Order)。</p>
+<p><img src="5.png" alt=""></p>
+<p>关于部署图，这里主要采用了SSH的架构，所以数据库选用MySQL，server选用tomcat就好：</p>
+<p><img src="6.png" alt=""></p>
+<p>以下是系统的包图：</p>
+<p><img src="7.png" alt=""></p>
+<h2 id="数据库数据录入"><a href="#数据库数据录入" class="headerlink" title="数据库数据录入"></a><strong>数据库数据录入</strong></h2><p>项目开始阶段，数据库表格的数据是手工录入的，数据量不大。主要包括以下表格，这些表格在spring架构中有对应的类来读取相关的数据：</p>
+<ul>
+<li>movie表：条目为(id, name, type, stars)，分别表示电影的id、电影名、电影所属类型、电影星级</li>
+<li>cinema表：条目为(id, name, address, stars, info, max_discount, town)，分别表示电影院的id，名字、地址、星级、关于影院的额外信息、影院折扣</li>
+<li>movieItem表：条目为(id, movie, cinema, seat, price, duration)，分别表示电影场次的id、电影在movie表中的id、在cinema表中的id、票价、作为总数、电影时长</li>
+<li>city表：条目为(id, name, province)，分别表示城市的id、名字、所在省份的id</li>
+<li>province表：条目为(id, name)，分别表示省份的id、名字</li>
+<li>town表：条目为(id, name, city)，分别表示县的id、名字、所在城市的id</li>
+</ul>
+<p>表格中的数据由相应的DAO对象来获取，然后再返回给前端；唯一的不足之处是，本次作业中的数据库数据量有点少，这个在往后还需要编写相关的爬虫算法扒取商业网站上的电影数据。</p>
+<h2 id="Spring-MVC框架在本次售票系统中的具体应用"><a href="#Spring-MVC框架在本次售票系统中的具体应用" class="headerlink" title="Spring MVC框架在本次售票系统中的具体应用"></a><strong>Spring MVC框架在本次售票系统中的具体应用</strong></h2><p>下面详细介绍电影售票系统中五个主要的包的代码功能：</p>
+<ul>
+<li>teamid9527.moviebooking.dao：各种数据获取类，包括CinemaDao, CityDao, CustomerDao, MovieDao, MovieItemDao, ProvinceDao, ReservationDao, TownDao等，其功能是获取各种相关的数据，比如查找所有上映的电影，查找用户的名字，更新用户在数据库中的相关数据等等</li>
+<li>teamid9527.moviebooking.entities：基本的实体，包括Cinema, City, Customer, Movie, MovieItem, Province, Reservation, Town等，实体包含各自独有的属性，比如名字，id，地址等等，这里不累述</li>
+<li>teamid9527.moviebooking.exception：包括DeleteException, InsertException,  LoginException, QueryException, RegisterException, UpdateException等，用来处理各种数据处理异常或者逻辑异常</li>
+<li>teamid9527.moviebooking.service：包括CustomerService（用户登录、注册、更新用户数据等）、MovieItemService（通过电影院查询上映的电影）、ReservationService（查询用户的订单、添加订单、删除订单、更新订单等）</li>
+<li>teamid9527.moviebooking.handler：包括CustomerHandler（对于前端的不同路由请求做出响应，路由功能见下文）、MyInterceptor</li>
+</ul>
+<p>由此可见，Spring MVC在本系统中的使用如下：对于不同的前端路由请求，CustomerHandler接收到路由请求后，调用不同的service，比如CustomerService、ReservationService等，这些serivce又调用底层的entities和DAO获得数据，当然若处理过程中出现异常，需要用我们自己编写的exceptin类来作出相关处理。这里，前端属于V即view，CustomerHandler属于C即controller，entities和DAO等属于M即model。</p>
+<p>以下是各种路由处理：</p>
+<ul>
+<li>登录<ul>
+<li>/：使用GET，前往登录页面</li>
+<li>gotoLogin：使用GET，前往登录页面</li>
+<li>login：使用POST，提交表单进行用户登录，若成功前往用户详情页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>注册<ul>
+<li>gotoLRegister：使用GET，前往注册页面</li>
+<li>register：使用POST，提交表单进行用户注册，若成功前往用户详情页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>用户详情<ul>
+<li>update：使用POST，提交表单进行用户更新，若成功前往用户详情页面，否则返回登录页面</li>
+<li>backToInfo：使用GET，返回用户详情页面，若成功前往用户详情页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>查询用户预订<ul>
+<li>reservation：使用GET，查询用户订单，若成功前往用户订单页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>修改用户预订<ul>
+<li>MovieItem/{id}：使用DELETE，删除用户订单中的id电影场次，若成功返回用户订单页面，否则返回登录页面</li>
+<li>/MovieItem/{id}：使用PUT，向用户订单中添加id电影场次，若成功返回选票页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>查询影院<ul>
+<li>queryCinema：使用GET，查询所有的影院</li>
+</ul>
+</li>
+<li>查询电影<ul>
+<li>queryCinema：使用GET，查询所有的电影</li>
+</ul>
+</li>
+<li>查询电影场次<ul>
+<li>queryMovieItemsByCinema?id={id}：使用GET，查询id电影院放映的电影场次，返回电影场次</li>
+<li>queryMovieItemsByMovie？id={id}：使用GET，查询id电影上映的电影场次，返回电影场次</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java后台开发-spring框架入门]]></title>
+      <url>https://duzwl.github.io/MVC/spring/</url>
+      <content type="html"><![CDATA[<p>本文是我初步接触Spring框架后的学习所得，下面先介绍spring框架的具体内容，再介绍spring MVC的设计过程。<br><a id="more"></a></p>
+<h3 id="Spring-框架"><a href="#Spring-框架" class="headerlink" title="Spring 框架"></a><strong>Spring 框架</strong></h3><p>Spring 框架是一个分层架构，由 7 个定义良好的模块组成。Spring 模块构建在核心容器之上，核心容器定义了创建、配置和管理 bean 的方式，如下图所示：</p>
+<p><img src="1.png" alt=""></p>
+<p>组成 Spring 框架的每个模块（或组件）都可以单独存在，或者与其他一个或多个模块联合实现。每个模块的功能如下：</p>
+<ul>
+<li>Spring Core：核心容器提供 Spring 框架的基本功能。核心容器的主要组件是 BeanFactory，它是工厂模式的实现。BeanFactory 使用控制反转 （IOC） 模式将应用程序的配置和依赖性规范与实际的应用程序代码分开。</li>
+<li>Spring Context：Spring 上下文是一个配置文件，向 Spring 框架提供上下文信息。Spring 上下文包括企业服务，例如 JNDI、EJB、电子邮件、国际化、校验和调度功能。</li>
+<li>Spring AOP：通过配置管理特性，Spring AOP 模块直接将面向方面的编程功能集成到了 Spring 框架中。所以，可以很容易地使 Spring 框架管理的任何对象支持 AOP。Spring AOP 模块为基于 Spring 的应用程序中的对象提供了事务管理服务。通过使用 Spring AOP，不用依赖 EJB 组件，就可以将声明性事务管理集成到应用程序中。</li>
+<li>Spring DAO：JDBC DAO 抽象层提供了有意义的异常层次结构，可用该结构来管理异常处理和不同数据库供应商抛出的错误消息。异常层次结构简化了错误处理，并且极大地降低了需要编写的异常代码数量（例如打开和关闭连接）。Spring DAO 的面向 JDBC 的异常遵从通用的 DAO 异常层次结构。</li>
+<li>Spring ORM：Spring 框架插入了若干个 ORM 框架，从而提供了 ORM 的对象关系工具，其中包括 JDO、Hibernate 和 iBatis SQL Map。所有这些都遵从 Spring 的通用事务和 DAO 异常层次结构。</li>
+<li>Spring Web：Web 上下文模块建立在应用程序上下文模块之上，为基于 Web 的应用程序提供了上下文。所以，Spring 框架支持与 Jakarta Struts 的集成。Web 模块还简化了处理多部分请求以及将请求参数绑定到域对象的工作。</li>
+<li>Spring MVC 框架：MVC 框架是一个全功能的构建 Web 应用程序的 MVC 实现。通过策略接口，MVC 框架变成为高度可配置的，MVC 容纳了大量视图技术，其中包括 JSP、Velocity、Tiles、iText 和 POI。</li>
+</ul>
+<p>Spring 框架的功能可以用在任何 J2EE 服务器中，大多数功能也适用于不受管理的环境。Spring 的核心要点是：支持不绑定到特定 J2EE 服务的可重用业务和数据访问对象。毫无疑问，这样的对象可以在不同 J2EE 环境 （Web 或 EJB）、独立应用程序、测试环境之间重用。</p>
+<h3 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a><strong>IOC</strong></h3><p>控制反转模式（也称作依赖性介入）的基本概念是：不创建对象，但是描述创建它们的方式。在代码中不直接与对象和服务连接，但在配置文件中描述哪一个组件需要哪一项服务。容器 （在 Spring 框架中是 IOC 容器） 负责将这些联系在一起。</p>
+<p>在典型的 IOC 场景中，容器创建了所有对象，并设置必要的属性将它们连接在一起，决定什么时间调用方法。下面列出了 IOC 的一个实现模式：</p>
+<ol>
+<li>服务需要实现专门的接口，通过接口，由对象提供这些服务，可以从对象查询依赖性（例如，需要的附加服务）</li>
+<li>通过 JavaBean 的属性（例如 setter 方法）分配依赖性</li>
+<li>依赖性以构造函数的形式提供，不以 JavaBean 属性的形式公开</li>
+</ol>
+<p>Spring 框架的 IOC 容器采用类型 2 和类型3 实现。</p>
+<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a><strong>AOP</strong></h3><p>面向方面的编程，即 AOP，是一种编程技术，它允许程序员对横切关注点或横切典型的职责分界线的行为（例如日志和事务管理）进行模块化。AOP 的核心构造是方面，它将那些影响多个类的行为封装到可重用的模块中。</p>
+<p>AOP 和 IOC 是补充性的技术，它们都运用模块化方式解决企业应用程序开发中的复杂问题。在典型的面向对象开发方式中，可能要将日志记录语句放在所有方法和 Java 类中才能实现日志功能。在 AOP 方式中，可以反过来将日志服务模块化，并以声明的方式将它们应用到需要日志的组件上。当然，优势就是 Java 类不需要知道日志服务的存在，也不需要考虑相关的代码。所以，用 Spring AOP 编写的应用程序代码是松散耦合的。</p>
+<p>AOP 的功能完全集成到了 Spring 事务管理、日志和其他各种特性的上下文中。</p>
+<h3 id="Spring-MVC框架"><a href="#Spring-MVC框架" class="headerlink" title="Spring MVC框架"></a><strong>Spring MVC框架</strong></h3><p>下面简要的讲述 Java 后端的 Spring MVC 框架，其工作流程可以用下图表示：</p>
+<p><img src="2.png" alt=""></p>
+<p>结合上图，工作流程可以归纳为：</p>
+<ul>
+<li>DispatcherServlet 接受客户端请求。</li>
+<li>使用 HandlerMapping 找到对应的 Controller。</li>
+<li>Controller 处理该请求，调用业务层合适的 Service（Service 调用 Repository）获得持久层数据并返回一个 ModelAndView 对象，包含视图名（view name）和对应的 Model 层数据。</li>
+<li>DispatcherServlet 将该视图名发送至 ViewResolver，得到实际的 View。</li>
+<li>DispatcherServlet 将 Model 层数据传到 View 上，生成响应数据返回给客户端。</li>
+</ul>
+<p>以下是关于Spring MVC接口的相关说明：</p>
+<ul>
+<li>DispatcherServlet接口：<br>  Spring提供的前端控制器，所有的请求都有经过它来统一分发。在DispatcherServlet将请求分发给Spring Controller之前，需要借助于Spring提供的HandlerMapping定位到具体的Controller。</li>
+<li>HandlerMapping接口：<br>  能够完成客户请求到Controller映射。</li>
+<li>Controller接口：<br>  需要为并发用户处理上述请求，因此实现Controller接口时，必须保证线程安全并且可重用。<br>  Controller将处理用户请求，这和Struts Action扮演的角色是一致的。一旦Controller处理完用户请求，则返回ModelAndView对象给DispatcherServlet前端控制器，ModelAndView中包含了模型（Model）和视图（View）。<br>  从宏观角度考虑，DispatcherServlet是整个Web应用的控制器；从微观考虑，Controller是单个Http请求处理过程中的控制器，而ModelAndView是Http请求过程中返回的模型（Model）和视图（View）。</li>
+<li><p>ViewResolver接口：<br>Spring提供的视图解析器（ViewResolver）在Web应用中查找View对象，从而将相应结果渲染给客户。</p>
+<p>DispatcherServlet是整个Spring MVC的核心。它负责接收HTTP请求组织协调Spring MVC的各个组成部分。其主要工作有以下三项：</p>
+</li>
+</ul>
+<ol>
+<li>截获符合特定格式的URL请求。</li>
+<li>初始化DispatcherServlet上下文对应的WebApplicationContext，并将其与业务层、持久化层的WebApplicationContext建立关联。</li>
+<li>初始化Spring MVC的各个组成组件，并装配到DispatcherServlet中。</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[JavaScript原型链与继承]]></title>
       <url>https://duzwl.github.io/%E5%89%8D%E7%AB%AF/js/</url>
       <content type="html"><![CDATA[<p>关于JS中面向对象部分，结合《Javascript高级程序设计》中的例子总结一下原型链和继承部分的内容。<br><a id="more"></a><br>在Js当中没有类这个概念，当我们想要创建具有相同属性的对象的时候，有如下解决方法：</p>

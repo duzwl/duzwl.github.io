@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Java后台开发-spring框架入门 | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文是我初步接触Spring框架后的学习所得，下面先介绍spring框架的具体内容，再介绍spring MVC的设计过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java后台开发-spring框架入门">
+<meta property="og:url" content="https://duzwl.github.io/MVC/spring/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="本文是我初步接触Spring框架后的学习所得，下面先介绍spring框架的具体内容，再介绍spring MVC的设计过程。">
+<meta property="og:image" content="https://duzwl.github.io/1.png">
+<meta property="og:image" content="https://duzwl.github.io/2.png">
+<meta property="og:updated_time" content="2017-06-08T09:39:45.526Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java后台开发-spring框架入门">
+<meta name="twitter:description" content="本文是我初步接触Spring框架后的学习所得，下面先介绍spring框架的具体内容，再介绍spring MVC的设计过程。">
+<meta name="twitter:image" content="https://duzwl.github.io/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Neither joy in material things or sorrow for personnal losses</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzwl" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/Java/" style="font-size: 11.67px;">Java</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 18.33px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/jQuery/" style="font-size: 15px;">jQuery</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 16.67px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 16.67px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">大山中学14级本科生，零基础，爱篮球，爱音乐</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Neither joy in material things or sorrow for personnal losses</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzwl" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-spring" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/MVC/spring/" class="article-date">
+  	<time datetime="2017-06-08T04:23:54.000Z" itemprop="datePublished">2017-06-08</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java后台开发-spring框架入门
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/MVC/">MVC</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文是我初步接触Spring框架后的学习所得，下面先介绍spring框架的具体内容，再介绍spring MVC的设计过程。<br><a id="more"></a></p>
+<h3 id="Spring-框架"><a href="#Spring-框架" class="headerlink" title="Spring 框架"></a><strong>Spring 框架</strong></h3><p>Spring 框架是一个分层架构，由 7 个定义良好的模块组成。Spring 模块构建在核心容器之上，核心容器定义了创建、配置和管理 bean 的方式，如下图所示：</p>
+<p><img src="1.png" alt=""></p>
+<p>组成 Spring 框架的每个模块（或组件）都可以单独存在，或者与其他一个或多个模块联合实现。每个模块的功能如下：</p>
+<ul>
+<li>Spring Core：核心容器提供 Spring 框架的基本功能。核心容器的主要组件是 BeanFactory，它是工厂模式的实现。BeanFactory 使用控制反转 （IOC） 模式将应用程序的配置和依赖性规范与实际的应用程序代码分开。</li>
+<li>Spring Context：Spring 上下文是一个配置文件，向 Spring 框架提供上下文信息。Spring 上下文包括企业服务，例如 JNDI、EJB、电子邮件、国际化、校验和调度功能。</li>
+<li>Spring AOP：通过配置管理特性，Spring AOP 模块直接将面向方面的编程功能集成到了 Spring 框架中。所以，可以很容易地使 Spring 框架管理的任何对象支持 AOP。Spring AOP 模块为基于 Spring 的应用程序中的对象提供了事务管理服务。通过使用 Spring AOP，不用依赖 EJB 组件，就可以将声明性事务管理集成到应用程序中。</li>
+<li>Spring DAO：JDBC DAO 抽象层提供了有意义的异常层次结构，可用该结构来管理异常处理和不同数据库供应商抛出的错误消息。异常层次结构简化了错误处理，并且极大地降低了需要编写的异常代码数量（例如打开和关闭连接）。Spring DAO 的面向 JDBC 的异常遵从通用的 DAO 异常层次结构。</li>
+<li>Spring ORM：Spring 框架插入了若干个 ORM 框架，从而提供了 ORM 的对象关系工具，其中包括 JDO、Hibernate 和 iBatis SQL Map。所有这些都遵从 Spring 的通用事务和 DAO 异常层次结构。</li>
+<li>Spring Web：Web 上下文模块建立在应用程序上下文模块之上，为基于 Web 的应用程序提供了上下文。所以，Spring 框架支持与 Jakarta Struts 的集成。Web 模块还简化了处理多部分请求以及将请求参数绑定到域对象的工作。</li>
+<li>Spring MVC 框架：MVC 框架是一个全功能的构建 Web 应用程序的 MVC 实现。通过策略接口，MVC 框架变成为高度可配置的，MVC 容纳了大量视图技术，其中包括 JSP、Velocity、Tiles、iText 和 POI。</li>
+</ul>
+<p>Spring 框架的功能可以用在任何 J2EE 服务器中，大多数功能也适用于不受管理的环境。Spring 的核心要点是：支持不绑定到特定 J2EE 服务的可重用业务和数据访问对象。毫无疑问，这样的对象可以在不同 J2EE 环境 （Web 或 EJB）、独立应用程序、测试环境之间重用。</p>
+<h3 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a><strong>IOC</strong></h3><p>控制反转模式（也称作依赖性介入）的基本概念是：不创建对象，但是描述创建它们的方式。在代码中不直接与对象和服务连接，但在配置文件中描述哪一个组件需要哪一项服务。容器 （在 Spring 框架中是 IOC 容器） 负责将这些联系在一起。</p>
+<p>在典型的 IOC 场景中，容器创建了所有对象，并设置必要的属性将它们连接在一起，决定什么时间调用方法。下面列出了 IOC 的一个实现模式：</p>
+<ol>
+<li>服务需要实现专门的接口，通过接口，由对象提供这些服务，可以从对象查询依赖性（例如，需要的附加服务）</li>
+<li>通过 JavaBean 的属性（例如 setter 方法）分配依赖性</li>
+<li>依赖性以构造函数的形式提供，不以 JavaBean 属性的形式公开</li>
+</ol>
+<p>Spring 框架的 IOC 容器采用类型 2 和类型3 实现。</p>
+<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a><strong>AOP</strong></h3><p>面向方面的编程，即 AOP，是一种编程技术，它允许程序员对横切关注点或横切典型的职责分界线的行为（例如日志和事务管理）进行模块化。AOP 的核心构造是方面，它将那些影响多个类的行为封装到可重用的模块中。</p>
+<p>AOP 和 IOC 是补充性的技术，它们都运用模块化方式解决企业应用程序开发中的复杂问题。在典型的面向对象开发方式中，可能要将日志记录语句放在所有方法和 Java 类中才能实现日志功能。在 AOP 方式中，可以反过来将日志服务模块化，并以声明的方式将它们应用到需要日志的组件上。当然，优势就是 Java 类不需要知道日志服务的存在，也不需要考虑相关的代码。所以，用 Spring AOP 编写的应用程序代码是松散耦合的。</p>
+<p>AOP 的功能完全集成到了 Spring 事务管理、日志和其他各种特性的上下文中。</p>
+<h3 id="Spring-MVC框架"><a href="#Spring-MVC框架" class="headerlink" title="Spring MVC框架"></a><strong>Spring MVC框架</strong></h3><p>下面简要的讲述 Java 后端的 Spring MVC 框架，其工作流程可以用下图表示：</p>
+<p><img src="2.png" alt=""></p>
+<p>结合上图，工作流程可以归纳为：</p>
+<ul>
+<li>DispatcherServlet 接受客户端请求。</li>
+<li>使用 HandlerMapping 找到对应的 Controller。</li>
+<li>Controller 处理该请求，调用业务层合适的 Service（Service 调用 Repository）获得持久层数据并返回一个 ModelAndView 对象，包含视图名（view name）和对应的 Model 层数据。</li>
+<li>DispatcherServlet 将该视图名发送至 ViewResolver，得到实际的 View。</li>
+<li>DispatcherServlet 将 Model 层数据传到 View 上，生成响应数据返回给客户端。</li>
+</ul>
+<p>以下是关于Spring MVC接口的相关说明：</p>
+<ul>
+<li>DispatcherServlet接口：<br>  Spring提供的前端控制器，所有的请求都有经过它来统一分发。在DispatcherServlet将请求分发给Spring Controller之前，需要借助于Spring提供的HandlerMapping定位到具体的Controller。</li>
+<li>HandlerMapping接口：<br>  能够完成客户请求到Controller映射。</li>
+<li>Controller接口：<br>  需要为并发用户处理上述请求，因此实现Controller接口时，必须保证线程安全并且可重用。<br>  Controller将处理用户请求，这和Struts Action扮演的角色是一致的。一旦Controller处理完用户请求，则返回ModelAndView对象给DispatcherServlet前端控制器，ModelAndView中包含了模型（Model）和视图（View）。<br>  从宏观角度考虑，DispatcherServlet是整个Web应用的控制器；从微观考虑，Controller是单个Http请求处理过程中的控制器，而ModelAndView是Http请求过程中返回的模型（Model）和视图（View）。</li>
+<li><p>ViewResolver接口：<br>Spring提供的视图解析器（ViewResolver）在Web应用中查找View对象，从而将相应结果渲染给客户。</p>
+<p>DispatcherServlet是整个Spring MVC的核心。它负责接收HTTP请求组织协调Spring MVC的各个组成部分。其主要工作有以下三项：</p>
+</li>
+</ul>
+<ol>
+<li>截获符合特定格式的URL请求。</li>
+<li>初始化DispatcherServlet上下文对应的WebApplicationContext，并将其与业务层、持久化层的WebApplicationContext建立关联。</li>
+<li>初始化Spring MVC的各个组成组件，并装配到DispatcherServlet中。</li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/MVC/电影售票系统/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          电影售票系统技术详解
+        
+      </div>
+    </a>
+  
+
+
+
+  
+    <a href="/前端/js/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JavaScript原型链与继承</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="spring" data-title="Java后台开发-spring框架入门" data-url="https://duzwl.github.io/MVC/spring/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>电影售票系统技术详解 | duzw|博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这学期在学习了Spring框架之后，课程作业是开发一个电影售票系统，在团队开发过程中，我主要参与后台开发，下面是系统开发过程中的一些要点与总结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电影售票系统技术详解">
+<meta property="og:url" content="https://duzwl.github.io/MVC/电影售票系统/index.html">
+<meta property="og:site_name" content="duzw|博客">
+<meta property="og:description" content="这学期在学习了Spring框架之后，课程作业是开发一个电影售票系统，在团队开发过程中，我主要参与后台开发，下面是系统开发过程中的一些要点与总结。">
+<meta property="og:image" content="https://duzwl.github.io/3.png">
+<meta property="og:image" content="https://duzwl.github.io/4.png">
+<meta property="og:image" content="https://duzwl.github.io/5.png">
+<meta property="og:image" content="https://duzwl.github.io/6.png">
+<meta property="og:image" content="https://duzwl.github.io/7.png">
+<meta property="og:updated_time" content="2017-06-08T09:39:25.859Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="电影售票系统技术详解">
+<meta name="twitter:description" content="这学期在学习了Spring框架之后，课程作业是开发一个电影售票系统，在团队开发过程中，我主要参与后台开发，下面是系统开发过程中的一些要点与总结。">
+<meta name="twitter:image" content="https://duzwl.github.io/3.png">
+  
+    <link rel="alternative" href="/atom.xml" title="duzw|博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+
+
+
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/blog.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">笑看</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Neither joy in material things or sorrow for personnal losses</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">日志</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/duzwl" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 18.33px;">C#</a> <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/CPU/" style="font-size: 13.33px;">CPU</a> <a href="/tags/Java/" style="font-size: 11.67px;">Java</a> <a href="/tags/MIPS/" style="font-size: 13.33px;">MIPS</a> <a href="/tags/MVC/" style="font-size: 18.33px;">MVC</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/jQuery/" style="font-size: 15px;">jQuery</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/procedure/" style="font-size: 10px;">procedure</a> <a href="/tags/semaphore/" style="font-size: 11.67px;">semaphore</a> <a href="/tags/thread/" style="font-size: 13.33px;">thread</a> <a href="/tags/unity3d/" style="font-size: 18.33px;">unity3d</a> <a href="/tags/verilog/" style="font-size: 11.67px;">verilog</a> <a href="/tags/工厂模式/" style="font-size: 16.67px;">工厂模式</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/排序/" style="font-size: 13.33px;">排序</a> <a href="/tags/汇编/" style="font-size: 10px;">汇编</a> <a href="/tags/观察者模式/" style="font-size: 10px;">观察者模式</a> <a href="/tags/递归/" style="font-size: 16.67px;">递归</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.cnblogs.com/KnowLXQ/p/5427555.html">小白入门</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2013/11/22/hexo-your-blog/">不如的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://theme-next.iissnan.com/third-party-services.html">NexT</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ibruce.info/2015/04/04/busuanzi/">不蒜子</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">大山中学14级本科生，零基础，爱篮球，爱音乐</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">笑看</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/blog.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">笑看</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Neither joy in material things or sorrow for personnal losses</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">日志</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/duzwl" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="https://mail.qq.com/609707451@qq.com" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="https://www.facebook.com/profile.php?id=Zewei%20Du" title="facebook">facebook</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-电影售票系统" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/MVC/电影售票系统/" class="article-date">
+  	<time datetime="2017-06-08T09:31:31.000Z" itemprop="datePublished">2017-06-08</time>
+</a>
+    </div>
+  
+
+
+
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      电影售票系统技术详解
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/MVC/">MVC</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这学期在学习了Spring框架之后，课程作业是开发一个电影售票系统，在团队开发过程中，我主要参与后台开发，下面是系统开发过程中的一些要点与总结。<br><a id="more"></a></p>
+<p>互联网售票软件是比较常见的软件系统。通常由多个零售系统和多个供给系统系统。 机票、酒店房间、电影票似乎是风马牛大相关的系统，但它们之间存在极其相似的业务模型。 以电影票为例，格瓦拉、蜘蛛网、腾讯等等都做类似的电影票分销、推广业务，但票是由各大院线排期提供的。 分销-院线-影院形成了一个完整的生态体系。本次大作业实现一个简单的互联网电影售票系统。服务端采用Java语言， Spring 4 作为web开发技术框架， jesery 作为 RESTful 服务提供框架。</p>
+<p>在这次大作业中，个人贡献主要包括两个方面：数据库数据录入工作、学习Spring框架并参与Java后台开发相关工作。以下是本文的行文结构：</p>
+<ul>
+<li>电影售票系统简介<ul>
+<li>基本功能</li>
+<li>用例建模</li>
+<li>领域模型、部署图、包图</li>
+</ul>
+</li>
+<li>数据库数据录入</li>
+<li>Spring MVC架构在本次售票系统中的具体应用</li>
+</ul>
+<h2 id="电影售票系统简介"><a href="#电影售票系统简介" class="headerlink" title="电影售票系统简介"></a><strong>电影售票系统简介</strong></h2><h5 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a><strong>基本功能</strong></h5><p>基本功能包括：1. 电影资讯；2. 购票；3. 用户信息；4. 收藏；5. 评论</p>
+<p>用户使用该可以实现查看和搜索正在热映和即将上映的电影资讯，对感兴趣的电影可以进行收藏。想要观看某部电影，可以进行下单购票操作。对于已经放映的电影订单，用户可以对该订单对应的电影进行评分评价的操作。另外，用户还可以更新自己的个人信息。下面是整个应用的界面逻辑概要图，方便对应用有个直观的了解：</p>
+<p><img src="3.png" alt=""></p>
+<h5 id="用例建模"><a href="#用例建模" class="headerlink" title="用例建模"></a><strong>用例建模</strong></h5><p>系统的用例建模如下：</p>
+<p><img src="4.png" alt=""></p>
+<p>可以看出，其中包含了如下几个用例：</p>
+<ul>
+<li><p>查看电影用例</p>
+<p>  用户可以通过查看资讯来查看电影，也可以通过直接搜索来查看电影。电影资讯包括两种类型：正在热映和即将上映。除了以上两种方式外，在应用首页也会推荐一些热门电影供用户查看。不管是以何种方式查看电影，都可以点击进入详情页面查看某部电影的详细信息。</p>
+</li>
+<li><p>下单购票</p>
+<p>  选择想要观看的电影之后，可以进行购票操作。购票时需要选择该电影放映的场次和座位信息。基本信息选择完成之后就可以创建订单了，创建订单的时候，如果用户还有优惠券，那么可以选择使用优惠券。订单创建完成后可以对订单进行支付，支付订单需要输入支付密码。最后，订单完成支付后用户可以看到订单的详细信息，系统还会随机送给用户优惠券。</p>
+</li>
+<li><p>查看订单</p>
+<p>  根据订单类型不同，用户可以查看的订单列表也有多种。每种订单都可以查看到订单的详细信息。</p>
+</li>
+<li><p>用户信息</p>
+<p>  用户可以查看自己的用户信息，也可以对自己的部分信息进行修改。修改的信息根据内容的不同，修改方式也有所不同，例如修改头像需要上传文件，修改昵称或签名则只是简单的文本修改，而修改登录密码或支付密码则需要提供原始密码等关键信息。因此，这里可以分出3个修改信息的用例，这3个用例可以泛化为”修改个人信息”用例，所以下图中也是使用了泛化箭头符号。</p>
+</li>
+<li><p>用户信息</p>
+<p>  用户可以查看自己的用户信息，也可以对自己的部分信息进行修改。修改的信息根据内容的不同，修改方式也有所不同，例如修改头像需要上传文件，修改昵称或签名则只是简单的文本修改，而修改登录密码或支付密码则需要提供原始密码等关键信息。因此，这里可以分出3个修改信息的用例，这3个用例可以泛化为”修改个人信息”用例，所以下图中也是使用了泛化箭头符号。</p>
+</li>
+</ul>
+<h5 id="领域模型、部署图、包图"><a href="#领域模型、部署图、包图" class="headerlink" title="领域模型、部署图、包图"></a><strong>领域模型、部署图、包图</strong></h5><p>领域模型是一组概念类图，即没有定义操作的类图。通过分析整个应用的功能，找出其中的名词，大致可以分为如下8个概念类：电影(Movie)、场次(Screen)、评论(Comment)、用户(User)、订单(Order)。</p>
+<p><img src="5.png" alt=""></p>
+<p>关于部署图，这里主要采用了SSH的架构，所以数据库选用MySQL，server选用tomcat就好：</p>
+<p><img src="6.png" alt=""></p>
+<p>以下是系统的包图：</p>
+<p><img src="7.png" alt=""></p>
+<h2 id="数据库数据录入"><a href="#数据库数据录入" class="headerlink" title="数据库数据录入"></a><strong>数据库数据录入</strong></h2><p>项目开始阶段，数据库表格的数据是手工录入的，数据量不大。主要包括以下表格，这些表格在spring架构中有对应的类来读取相关的数据：</p>
+<ul>
+<li>movie表：条目为(id, name, type, stars)，分别表示电影的id、电影名、电影所属类型、电影星级</li>
+<li>cinema表：条目为(id, name, address, stars, info, max_discount, town)，分别表示电影院的id，名字、地址、星级、关于影院的额外信息、影院折扣</li>
+<li>movieItem表：条目为(id, movie, cinema, seat, price, duration)，分别表示电影场次的id、电影在movie表中的id、在cinema表中的id、票价、作为总数、电影时长</li>
+<li>city表：条目为(id, name, province)，分别表示城市的id、名字、所在省份的id</li>
+<li>province表：条目为(id, name)，分别表示省份的id、名字</li>
+<li>town表：条目为(id, name, city)，分别表示县的id、名字、所在城市的id</li>
+</ul>
+<p>表格中的数据由相应的DAO对象来获取，然后再返回给前端；唯一的不足之处是，本次作业中的数据库数据量有点少，这个在往后还需要编写相关的爬虫算法扒取商业网站上的电影数据。</p>
+<h2 id="Spring-MVC框架在本次售票系统中的具体应用"><a href="#Spring-MVC框架在本次售票系统中的具体应用" class="headerlink" title="Spring MVC框架在本次售票系统中的具体应用"></a><strong>Spring MVC框架在本次售票系统中的具体应用</strong></h2><p>下面详细介绍电影售票系统中五个主要的包的代码功能：</p>
+<ul>
+<li>teamid9527.moviebooking.dao：各种数据获取类，包括CinemaDao, CityDao, CustomerDao, MovieDao, MovieItemDao, ProvinceDao, ReservationDao, TownDao等，其功能是获取各种相关的数据，比如查找所有上映的电影，查找用户的名字，更新用户在数据库中的相关数据等等</li>
+<li>teamid9527.moviebooking.entities：基本的实体，包括Cinema, City, Customer, Movie, MovieItem, Province, Reservation, Town等，实体包含各自独有的属性，比如名字，id，地址等等，这里不累述</li>
+<li>teamid9527.moviebooking.exception：包括DeleteException, InsertException,  LoginException, QueryException, RegisterException, UpdateException等，用来处理各种数据处理异常或者逻辑异常</li>
+<li>teamid9527.moviebooking.service：包括CustomerService（用户登录、注册、更新用户数据等）、MovieItemService（通过电影院查询上映的电影）、ReservationService（查询用户的订单、添加订单、删除订单、更新订单等）</li>
+<li>teamid9527.moviebooking.handler：包括CustomerHandler（对于前端的不同路由请求做出响应，路由功能见下文）、MyInterceptor</li>
+</ul>
+<p>由此可见，Spring MVC在本系统中的使用如下：对于不同的前端路由请求，CustomerHandler接收到路由请求后，调用不同的service，比如CustomerService、ReservationService等，这些serivce又调用底层的entities和DAO获得数据，当然若处理过程中出现异常，需要用我们自己编写的exceptin类来作出相关处理。这里，前端属于V即view，CustomerHandler属于C即controller，entities和DAO等属于M即model。</p>
+<p>以下是各种路由处理：</p>
+<ul>
+<li>登录<ul>
+<li>/：使用GET，前往登录页面</li>
+<li>gotoLogin：使用GET，前往登录页面</li>
+<li>login：使用POST，提交表单进行用户登录，若成功前往用户详情页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>注册<ul>
+<li>gotoLRegister：使用GET，前往注册页面</li>
+<li>register：使用POST，提交表单进行用户注册，若成功前往用户详情页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>用户详情<ul>
+<li>update：使用POST，提交表单进行用户更新，若成功前往用户详情页面，否则返回登录页面</li>
+<li>backToInfo：使用GET，返回用户详情页面，若成功前往用户详情页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>查询用户预订<ul>
+<li>reservation：使用GET，查询用户订单，若成功前往用户订单页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>修改用户预订<ul>
+<li>MovieItem/{id}：使用DELETE，删除用户订单中的id电影场次，若成功返回用户订单页面，否则返回登录页面</li>
+<li>/MovieItem/{id}：使用PUT，向用户订单中添加id电影场次，若成功返回选票页面，否则返回登录页面</li>
+</ul>
+</li>
+<li>查询影院<ul>
+<li>queryCinema：使用GET，查询所有的影院</li>
+</ul>
+</li>
+<li>查询电影<ul>
+<li>queryCinema：使用GET，查询所有的电影</li>
+</ul>
+</li>
+<li>查询电影场次<ul>
+<li>queryMovieItemsByCinema?id={id}：使用GET，查询id电影院放映的电影场次，返回电影场次</li>
+<li>queryMovieItemsByMovie？id={id}：使用GET，查询id电影上映的电影场次，返回电影场次</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+
+
+
+  
+    <a href="/MVC/spring/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java后台开发-spring框架入门</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+  <div class="busuanziye">
+  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+
+    
+  
+  
+  
+
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="电影售票系统" data-title="电影售票系统技术详解" data-url="https://duzwl.github.io/MVC/电影售票系统/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 笑看
+    	</div>
+
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+        </script>
+        <div id="busuanzi_container_site_uv" class="count">
+        本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+    </div>
+
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+<div id="totop" style="position:fixed;bottom:45px;right:65px;cursor: pointer;">
+<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+  </div>
+</body>
+</html>
