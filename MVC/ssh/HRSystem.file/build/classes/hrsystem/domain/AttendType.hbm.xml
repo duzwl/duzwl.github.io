@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2017-7-28 11:12:29 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="hrsystem.domain.AttendType" table="type_table">
+    	<!-- 使用只读缓存 -->
+		<cache usage="read-only"/>
+		
+        <id name="id" type="java.lang.Integer">
+            <column name="type_id" />
+            <generator class="identity" />
+        </id>
+        
+        <property name="name" type="java.lang.String"
+        	not-null="true" length="50">
+            <column name="type_name" />
+        </property>
+        
+        <property name="amerce" type="double" not-null="true">
+            <column name="amerce_amount" />
+        </property>
+    </class>
+</hibernate-mapping>

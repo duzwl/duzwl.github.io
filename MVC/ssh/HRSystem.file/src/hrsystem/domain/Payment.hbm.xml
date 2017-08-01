@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2017-7-28 10:41:56 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="hrsystem.domain.Payment" table="pay_table">
+    	<!-- 使用只读缓存 -->
+		<cache usage="read-only"/>
+		
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        
+        <property name="payMonth" type="java.lang.String"
+        	not-null="true" length="50">
+            <column name="pay_month" />
+        </property>
+        
+        <property name="amount" type="double" not-null="true">
+            <column name="pay_amount" />
+        </property>
+        
+        <many-to-one name="employee" class="hrsystem.domain.Employee" not-null="true" lazy="false">
+            <column name="emp_id" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

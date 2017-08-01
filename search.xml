@@ -4,6 +4,64 @@
   
     
     <entry>
+      <title><![CDATA[SSH框架入门]]></title>
+      <url>https://duzwl.github.io/MVC/ssh/</url>
+      <content type="html"><![CDATA[<p>暑期实习过程中需要使用到SSH框架进行相关开发，于是我花了两周时间，学习李刚的《轻量级Java EE企业应用实战第三版》，这本书对于入门级的小白来说还是挺有指导性的。以下是我的学习所得。<br><a id="more"></a></p>
+<h3 id="SSH总览"><a href="#SSH总览" class="headerlink" title="SSH总览"></a><strong>SSH总览</strong></h3><p>Struts+Spring+Hibernate三者各自有各自的特点：Struts的MVC设计模式可以使逻辑变得很清晰，主要负责表示层的显示；Spring 的IOC和AOP可以使我们的项目在最大限度上解藕；hibernate的就是实体对象的持久化了, 数据库操作的封装。Spring的作用贯穿了整个中间层，将Web层、Service层、DAO层及PO无缝整合，其数据服务层用来存放数据。下面是主要的层体系：</p>
+<ul>
+<li>表现层是传统的JSP技术。</li>
+</ul>
+<ul>
+<li>Web层，就是MVC模式里面的“C”（controller），负责控制业务逻辑层与表现层的交互，调用业务逻辑层，并将业务数据返回给表现层作组织表现，该系统的MVC框架采用Struts。</li>
+</ul>
+<ul>
+<li>Service层（就是业务逻辑层），负责实现业务逻辑。业务逻辑层以DAO层为基础，通过对DAO组件的正面模式包装，完成系统所要求的业务逻辑。</li>
+</ul>
+<ul>
+<li>DAO层，负责与持久化对象交互。该层封装了数据的增、删、查、改的操作。</li>
+</ul>
+<ul>
+<li>PO层，持久化对象。通过实体关系映射工具将关系型数据库的数据映射成对象，很方便地实现以面向对象方式操作数据库。</li>
+</ul>
+<h4 id="Struts2"><a href="#Struts2" class="headerlink" title="Struts2"></a><strong>Struts2</strong></h4><p>Struts是Apache软件基金会（ASF）赞助的一个开源项目。它最初是jakarta项目中的一个子项目，并在2004年3月成为ASF的顶级项目。它通过采用JavaServlet/JSP技术，实现了基于JavaEEWeb应用的MVC设计模式的应用框架，是MVC经典设计模式中的一个经典产品。</p>
+<p>struts.xml是Struts的核心和桥梁，view和controller通过struts.xml联系起来，Struts的使用过程，简单来说为：在/WEB-INF/web.xml中配置filter为struts2，并配置filter-mapping为struts2，即拦截所有请求给struts处理；src/struts.xml是WEB-INF中的jsp文件、src中的properties文件和Java文件的集中点。前端的每一个客户端请求对应一个src/struts.xml中定义好的action，通过src/struts.xml中action的配置，struts可以找到action对应的Java处理文件，Java代码的处理结果返回一个string，struts通过这个string在src/struts.xml中找到需要跳转的页面，进行页面的跳转。</p>
+<h4 id="Hibernate5-2"><a href="#Hibernate5-2" class="headerlink" title="Hibernate5.2"></a><strong>Hibernate5.2</strong></h4><p>hibernate核心内容是ORM（关系对象模型）。可以将对象自动的生成数据库中的信息，使得开发更加的面向对象。这样作为程序员就可以使用面向对象的思想来操作数据库，而不用关心繁琐的JDBC。所以，Hibernate处于三层架构中的D层（持久层）。</p>
+<p>Hibernate的使用过程比较简单，总结如下：每个model/entity对应一个.hbm.xml配置文件，文件中配置entity的属性的储存方式以及相互之间的关联关系，该配置文件与entity的Java文件在同一文件夹下；src/hibernate.cfg.xml文件配置连接数据库的各个参数以及使用的数据源等，还有每个entity的mapping文件，即.hbm.xml配置文件。在SSH整合过后，hibernate.cfg.xml的文件内容被整合到applicationContext中。</p>
+<h4 id="Spring4-3"><a href="#Spring4-3" class="headerlink" title="Spring4.3"></a><strong>Spring4.3</strong></h4><p>spring是J2EE应用程序框架，是轻量级的IoC和AOP的容器框架，主要是针对javaBean的生命周期进行管理的轻量级容器，可以单独使用，也可以和Struts框架，ibatis框架等组合使用。在SSH框架中，Spring是框架的核心。</p>
+<p>Spring的核心是IOC，即控制反转/依赖注入，IOC使得代码之间得到更好的解耦合。在Spring中，对象的创建有Spring容器自动创建，而对象之间的依赖关系，由IOC完成，所需要做的就是实现相关的setter方法，并在bean.xml中配置对象相互之间的依赖关系即可。Spring使用过程总结如下：写好Java文件然后在src/bean.xml配置文件中配置bean的依赖关系，spring容器启动时会自动实例化各个bean以及完成依赖注入；要使用AOP时，先在src/bean.xml中注册AOP的处理类，然后再在<aop:config>，<aop:aspect>中配置增强处理，指明需要增强处理的类和具体的处理方法名，这样就可以在不修改原来代码的情况下插入额外的相关的处理过程。</aop:aspect></aop:config></p>
+<h3 id="Struts-Spring-Hibernate"><a href="#Struts-Spring-Hibernate" class="headerlink" title="Struts+Spring+Hibernate"></a><strong>Struts+Spring+Hibernate</strong></h3><p>Spring整合Struts时，先在web.xml中注册ContextLoaderListener来初始化Spring容器，这样在Struts启动的时候，spring容器也可以自动启动，这里使用的是Struts的Spring插件。编写action处理类和service类，在applicationContext.XML中注册并添加依赖。这样，对于前端的某个请求，我们可以得到对应的一个action名，由于我们使用了Spring插件，这个action其实是一个伪action，真action在applicationContext.XML中所配置的名为action所对应的那个处理类。真action返回的结果由struts.xml捕获，通过这个结果struts可以跳转到不同的页面。</p>
+<p>Spring整合Hibernate时，首先需要让Spring管理sessionFactory，即在配置文件中注册c3p0数据源和sessionFactory。sessionFactory是单个数据库映射关系编译后的内存镜像。Dao组件继承HibernateDaoSupport，在applicationContext.XML中配置Dao组件的同时需要注入sessionFactory，这样Dao组件有了sessionFactory之后就能访问数据库；整合之后hibernate.cfg.xml文件中相关的配置信息写在applicationContext.XML中。所有组件配置完成之后需要添加事务管理，让Spring管理不同的事务。</p>
+<h3 id="SSH的简单应用"><a href="#SSH的简单应用" class="headerlink" title="SSH的简单应用"></a><strong>SSH的简单应用</strong></h3><p>学习SSH框架之后，根据教程，简单的开发了一个轻量级的Java EE应用。该系统包含一个公司的日常事务：考勤、工资结算、审核申请等等。系统使用Struts2+Spring4.3+Hibernate5.2开发，数据库使用MySQL，数据源为c3p0。服务器使用tomcat9.0。</p>
+<p>在使用系统之前，需要将<a href="">mysql.sql</a>脚本中的语句导入MySql数据库。修改WEB-INF路径下的applicationContext.xml<br>文件，将其中的数据库连接信息修改为你的数据库连接信息。再将该项目导入Eclipse，部署到指定Web服务器即可。普通员工的用户名和密码有：mysql mysql、tomcat tomcat、hsql hsql、jetty jetty；经理的用户名和密码有：weblogic weblogic、oracle oracle。</p>
+<p>系统采用严格的Java EE应用架构，主要有如下几个层：</p>
+<ul>
+<li>表现层：由JSP页面组成</li>
+<li>MVC层：使用struts的MVC架构技术</li>
+<li>业务逻辑层：主要有Spring的IOC管理的业务逻辑组件组成</li>
+<li>DAO层：由7个DAo组件组成</li>
+<li>domain层：由7个PO组成，并在hibernate的管理下完成数据库的访问（贫血模式设计）</li>
+<li>数据库服务层：使用MySQL数据库储存持久化数据、</li>
+</ul>
+<p>系统大致可以分为两个功能模块：经理模块和员工模块，其主要业务逻辑通过EmpManager和MgrManager两个业务逻辑组件实现，因而用这两个业务逻辑组件来封装DAO组件。底层的DAO组件有：</p>
+<ul>
+<li>ApplicationDao：提供对app_table的基本操作，对于员工申请的数据的操作</li>
+<li>AttendDao：提供对attend_table表的基本操作</li>
+<li>AttendTypeDao：提供对type_table表的基本操作</li>
+<li>CheckBackDao：提供对check_table表的基本操作</li>
+<li>EmployeeDao：提供对emp_table表的基本操作</li>
+<li>ManagerDao：提供对mgr_table表的基本操作</li>
+<li>PaymentDao：提供对pay_table表的基本操作</li>
+</ul>
+<p>两个业务逻辑组件为：</p>
+<ul>
+<li>EmpManager：提供Employee角色所需业务逻辑功能的实现</li>
+<li>MgrManager：提供manager角色所需业务逻辑功能的实现</li>
+</ul>
+<p><a href="">代码</a>我已经放在github上了，有兴趣的可以下载看看。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[电影售票系统技术详解]]></title>
       <url>https://duzwl.github.io/MVC/%E7%94%B5%E5%BD%B1%E5%94%AE%E7%A5%A8%E7%B3%BB%E7%BB%9F/</url>
       <content type="html"><![CDATA[<p>这学期在学习了Spring框架之后，课程作业是开发一个电影售票系统，在团队开发过程中，我主要参与后台开发，下面是系统开发过程中的一些要点与总结。<br><a id="more"></a></p>
