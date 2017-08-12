@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://duzwl.github.io/MVC/ssh/index.html">
 <meta property="og:site_name" content="duzw|博客">
 <meta property="og:description" content="暑期实习过程中需要使用到SSH框架进行相关开发，于是我花了两周时间，学习李刚的《轻量级Java EE企业应用实战第三版》，这本书对于入门级的小白来说还是挺有指导性的。以下是我的学习所得。">
-<meta property="og:updated_time" content="2017-08-01T11:54:59.825Z">
+<meta property="og:updated_time" content="2017-08-12T10:38:12.509Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH框架入门">
 <meta name="twitter:description" content="暑期实习过程中需要使用到SSH框架进行相关开发，于是我花了两周时间，学习李刚的《轻量级Java EE企业应用实战第三版》，这本书对于入门级的小白来说还是挺有指导性的。以下是我的学习所得。">
@@ -270,7 +270,7 @@
 <h3 id="Struts-Spring-Hibernate"><a href="#Struts-Spring-Hibernate" class="headerlink" title="Struts+Spring+Hibernate"></a><strong>Struts+Spring+Hibernate</strong></h3><p>Spring整合Struts时，先在web.xml中注册ContextLoaderListener来初始化Spring容器，这样在Struts启动的时候，spring容器也可以自动启动，这里使用的是Struts的Spring插件。编写action处理类和service类，在applicationContext.XML中注册并添加依赖。这样，对于前端的某个请求，我们可以得到对应的一个action名，由于我们使用了Spring插件，这个action其实是一个伪action，真action在applicationContext.XML中所配置的名为action所对应的那个处理类。真action返回的结果由struts.xml捕获，通过这个结果struts可以跳转到不同的页面。</p>
 <p>Spring整合Hibernate时，首先需要让Spring管理sessionFactory，即在配置文件中注册c3p0数据源和sessionFactory。sessionFactory是单个数据库映射关系编译后的内存镜像。Dao组件继承HibernateDaoSupport，在applicationContext.XML中配置Dao组件的同时需要注入sessionFactory，这样Dao组件有了sessionFactory之后就能访问数据库；整合之后hibernate.cfg.xml文件中相关的配置信息写在applicationContext.XML中。所有组件配置完成之后需要添加事务管理，让Spring管理不同的事务。</p>
 <h3 id="SSH的简单应用"><a href="#SSH的简单应用" class="headerlink" title="SSH的简单应用"></a><strong>SSH的简单应用</strong></h3><p>学习SSH框架之后，根据教程，简单的开发了一个轻量级的Java EE应用。该系统包含一个公司的日常事务：考勤、工资结算、审核申请等等。系统使用Struts2+Spring4.3+Hibernate5.2开发，数据库使用MySQL，数据源为c3p0。服务器使用tomcat9.0。</p>
-<p>在使用系统之前，需要将<a href="">mysql.sql</a>脚本中的语句导入MySql数据库。修改WEB-INF路径下的applicationContext.xml<br>文件，将其中的数据库连接信息修改为你的数据库连接信息。再将该项目导入Eclipse，部署到指定Web服务器即可。普通员工的用户名和密码有：mysql mysql、tomcat tomcat、hsql hsql、jetty jetty；经理的用户名和密码有：weblogic weblogic、oracle oracle。</p>
+<p>在使用系统之前，需要将<a href="https://github.com/duzwl/duzwl.github.io/blob/master/MVC/ssh/HRSystem/mysql.sql" target="_blank" rel="external">mysql.sql</a>脚本中的语句导入MySql数据库。修改WEB-INF路径下的applicationContext.xml<br>文件，将其中的数据库连接信息修改为你的数据库连接信息。再将该项目导入Eclipse，部署到指定Web服务器即可。普通员工的用户名和密码有：mysql mysql、tomcat tomcat、hsql hsql、jetty jetty；经理的用户名和密码有：weblogic weblogic、oracle oracle。</p>
 <p>系统采用严格的Java EE应用架构，主要有如下几个层：</p>
 <ul>
 <li>表现层：由JSP页面组成</li>
@@ -295,7 +295,7 @@
 <li>EmpManager：提供Employee角色所需业务逻辑功能的实现</li>
 <li>MgrManager：提供manager角色所需业务逻辑功能的实现</li>
 </ul>
-<p><a href="">代码</a>我已经放在github上了，有兴趣的可以下载看看。</p>
+<p><a href="https://github.com/duzwl/duzwl.github.io/tree/master/MVC/ssh/HRSystem" target="_blank" rel="external">代码</a>我已经放在github上了，有兴趣的可以下载看看。</p>
 
       
     </div>
